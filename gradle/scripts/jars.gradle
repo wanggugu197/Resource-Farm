@@ -18,20 +18,20 @@ sourcesJar {
 }
 
 base {
-    archivesName = "${project.name}-${libs.versions.minecraft.get()}"
+    archivesName = "${mod_name}-${minecraft_version}"
 }
 
 afterEvaluate {
     tasks.withType(org.gradle.jvm.tasks.Jar).configureEach {
         destinationDirectory = file('build/libs/')
         manifest.attributes([
-                'MixinConfigs': 'resource_farm.mixins.json',
+                'MixinConfigs': mod_id + '.mixins.json',
                 'Specification-Title': project.name,
                 'Specification-Version': mod_version,
-                'Specification-Vendor': 'Maple',
+                'Specification-Vendor': mod_authors,
                 'Implementation-Title': base.archivesName,
                 'Implementation-Version': version,
-                'Implementation-Vendor': 'Maple',
+                'Implementation-Vendor': mod_authors,
         ])
     }
 }

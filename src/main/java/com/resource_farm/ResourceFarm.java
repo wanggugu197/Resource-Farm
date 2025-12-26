@@ -3,22 +3,29 @@ package com.resource_farm;
 import com.resource_farm.common.CommonInit;
 import com.resource_farm.config.ConfigHolder;
 import com.resource_farm.utils.FormattingUtil;
+import com.resource_farm.utils.RLUtils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.javafmlmod.FMLModContainer;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.neoforge.data.loading.DatagenModLoader;
 
 import com.mojang.serialization.Codec;
-import net.neoforged.neoforge.data.loading.DatagenModLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.ApiStatus;
+
+import java.nio.file.Path;
 
 @Mod(ResourceFarm.MOD_ID)
 public class ResourceFarm {
 
     public static final String MOD_ID = "resource_farm";
-    private static final ResourceLocation TEMPLATE_LOCATION = ResourceLocation.fromNamespaceAndPath(MOD_ID, "");
+    private static final ResourceLocation TEMPLATE_LOCATION = RLUtils.get(MOD_ID, "");
     public static final Codec<ResourceLocation> ResourceFarm_ID = Codec.STRING.comapFlatMap(
             str -> ResourceLocation.read(appendIdString(str)),
             s -> s.getNamespace().equals(MOD_ID) ? s.getPath() : s.toString());
@@ -26,14 +33,29 @@ public class ResourceFarm {
     public static final String NAME = "Resource Farm";
     public static final Logger LOGGER = LogManager.getLogger(NAME);
 
-    public ResourceFarm(IEventBus modBus, FMLModContainer container) {
-        ConfigHolder.init();
+    @ApiStatus.Internal
+    public static IEventBus rfModBus;
 
+    public ResourceFarm(IEventBus modBus, FMLModContainer container) {
+        ResourceFarm.rfModBus = modBus;
+        ConfigHolder.init();
         CommonInit.init(modBus);
     }
 
     public static boolean isDataGen() {
         return DatagenModLoader.isRunningDataGen();
+    }
+
+    public static boolean isClientSide() {
+        return FMLEnvironment.dist.isClient();
+    }
+
+    public static Path getGameDir() {
+        return FMLPaths.GAMEDIR.get();
+    }
+
+    public static Path getGamePath() {
+        return FMLLoader.getGamePath();
     }
 
     public static ResourceLocation id(String path) {

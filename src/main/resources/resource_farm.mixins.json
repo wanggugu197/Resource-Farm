@@ -1,11 +1,17 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.mixin",
+  "package": "com.resource_farm.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "BlockBehaviourAccessor",
+    "ReloadableServerResourcesMixin",
+    "TagLoaderMixin",
+    "TagManagerMixin",
+    "registrate.AbstractRegistrateAccessor"
   ],
   "client": [
+    "client.ModelManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

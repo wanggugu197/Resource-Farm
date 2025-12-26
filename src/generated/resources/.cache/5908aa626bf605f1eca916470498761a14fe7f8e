@@ -1,0 +1,5 @@
+// 1.21.1	2026-01-07T15:08:59.5320255	Registrate Provider for resource_farm [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider, Lang (zh_cn), Lang (zh_tw)]
+f5debc44f48c47d44a3d0055dce8e05c46205a9a assets/resource_farm/lang/en_ud.json
+9c315390100c8f1eabde515864c140b15e1d998a assets/resource_farm/lang/en_us.json
+c509813b0877afbaae14a4dae350b6e885d623e6 assets/resource_farm/lang/zh_cn.json
+9a655ec78d83da8e2221c547952ea7a1c45f8b93 assets/resource_farm/lang/zh_tw.json

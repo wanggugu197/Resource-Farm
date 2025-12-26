@@ -1,0 +1,103 @@
+[
+  {
+    "item": "minecraft:nether_star",
+    "translateKey": "block.resource_farm.nether_star_tree",
+    "treeStyle": "crimson",
+    "oreStyle": "nether_star",
+    "fertilizeSetting": {
+      "mainItem": "minecraft:glow_berries",
+      "mainChance": 0.5,
+      "secondaryItem": "minecraft:nether_wart",
+      "secondaryChance": 0.2
+    },
+    "growthFrequency": 100,
+    "customPlaceBlock": "minecraft:netherrack",
+    "customPlaceBlockTag": "minecraft:nether_blocks",
+    "lightLevel": 10,
+    "colors": "0xFF800080"
+  },
+  {
+    "item": "minecraft:heart_of_the_sea",
+    "translateKey": "block.resource_farm.heart_of_the_sea_tree",
+    "lightLevel": 8,
+    "colors": "0xFF0000FF"
+  },
+  {
+    "item": "minecraft:amethyst_shard",
+    "treeStyle": "azalea",
+    "oreStyle": "amethyst",
+    "customPlaceBlockTag": "minecraft:stone_ore_replaceables",
+    "lightLevel": 7,
+    "colors": "0xFF9966CC"
+  },
+  {
+    "item": "minecraft:smithing_template",
+    "treeStyle": "invalid_tree_style",
+    "oreStyle": "invalid_ore_style",
+    "customPlaceBlock": "minecraft:sculk_shrieker",
+    "lightLevel": 20,
+    "colors": -1
+  },
+  {
+    "translateKey": "block.resource_farm.ender_pearl_tree",
+    "treeStyle": "dark_oak",
+    "oreStyle": "ender",
+    "fertilizeSetting": {
+      "type": "default"
+    },
+    "customPlaceBlock": "minecraft:end_stone",
+    "lightLevel": 15,
+    "colors": "0xFF000000"
+  },
+  {
+    "item": "minecraft:paper"
+  },
+  {
+    "item": "minecraft:totem_of_undying",
+    "translateKey": "block.resource_farm.totem_tree",
+    "fertilizeSetting": {
+      "mainItem": "minecraft:gold_ingot",
+      "mainChance": 0.8
+    },
+    "customPlaceBlock": "minecraft:gold_block",
+    "lightLevel": 9,
+    "colors": "0xFFFFD700"
+  },
+  {
+    "item": "minecraft:honeycomb",
+    "treeStyle": "birch",
+    "oreStyle": "gold",
+    "lightLevel": 12,
+    "colors": "0xFFFFB6C1"
+  },
+  {
+    "item": "minecraft:heavy_core",
+    "translateKey": "block.resource_farm.heavy_core_tree",
+    "customPlaceBlock": "minecraft:heavy_core_block",
+    "lightLevel": 3,
+    "colors": "0xFF808080"
+  },
+  {
+    "item": "minecraft:echo_shard",
+    "treeStyle": "warped",
+    "oreStyle": "netherite",
+    "fertilizeSetting": {
+      "type": "null"
+    },
+    "customPlaceBlockTag": "minecraft:nether_ores",
+    "lightLevel": 5,
+    "colors": "0xFF000000"
+  },
+  {
+    "item": "minecraft:gilded_blackstone",
+    "translateKey": "block.resource_farm.gilded_blackstone_tree",
+    "customPlaceBlock": "minecraft:gilded_blackstone",
+    "lightLevel": 4,
+    "colors": "0xFF8B4513"
+  },
+  {
+    "treeStyle": "crimson",
+    "oreStyle": "netherite",
+    "lightLevel": 10
+  }
+]

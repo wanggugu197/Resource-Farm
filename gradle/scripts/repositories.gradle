@@ -1,5 +1,8 @@
 repositories {
     mavenLocal()
+    flatDir {
+        dir "libs"
+    }
     mavenCentral()
 
     maven { // JEI
@@ -10,11 +13,6 @@ repositories {
     maven { // JEI mirror, AE2
         name = "ModMaven"
         url = "https://modmaven.dev/"
-    }
-
-    maven { // LDLib, Shimmer
-        name = "FirstDarkDev Maven"
-        url = "https://maven.firstdarkdev.xyz/snapshots/"
     }
 
     exclusiveContent { // KubeJS and Rhino

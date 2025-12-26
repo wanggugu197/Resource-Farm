@@ -1,0 +1,53 @@
+{
+  "format_version": "1.21.0",
+  "parent": "minecraft:block/cross",
+  "render_type": "minecraft:cutout",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "#layer0",
+    "layer0": "resource_farm:block/void",
+    "layer1": "resource_farm:block/void"
+  },
+  "elements": [
+    {
+      "from": [0.8, 0, 8],
+      "to": [15.2, 16, 8],
+      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true },
+      "shade": false,
+      "faces": {
+        "north": { "texture": "#layer0", "tintindex": 0 },
+        "south": { "texture": "#layer0", "tintindex": 0 }
+      }
+    },
+    {
+      "from": [8, 0, 0.8],
+      "to": [8, 16, 15.2],
+      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true },
+      "shade": false,
+      "faces": {
+        "west": { "texture": "#layer0", "tintindex": 0 },
+        "east": { "texture": "#layer0", "tintindex": 0 }
+      }
+    },
+    {
+      "from": [0.8, 0, 8],
+      "to": [15.2, 16, 8],
+      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true },
+      "shade": false,
+      "faces": {
+        "north": { "texture": "#layer1", "tintindex": 1 },
+        "south": { "texture": "#layer1", "tintindex": 1 }
+      }
+    },
+    {
+      "from": [8, 0, 0.8],
+      "to": [8, 16, 15.2],
+      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true },
+      "shade": false,
+      "faces": {
+        "west": { "texture": "#layer1", "tintindex": 1 },
+        "east": { "texture": "#layer1", "tintindex": 1 }
+      }
+    }
+  ]
+}

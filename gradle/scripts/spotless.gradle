@@ -4,9 +4,9 @@ spotless {
     format 'misc', {
         target '.gitignore'
 
+
         trimTrailingWhitespace()
         leadingTabsToSpaces()
-        endWithNewline()
     }
     java {
         target 'src/main/java/**/*.java'

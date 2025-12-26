@@ -1,0 +1,7 @@
+{
+  "format_version": "1.21.0",
+  "parent": "resource_farm:block/cube_multi_layer/default",
+  "textures": {
+    "particle": "#layer0_side"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "format_version": "1.21.0",
+  "parent": "minecraft:block/cube_column_horizontal",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "particle": "#layer0_side",
+    "layer0_side": "resource_farm:block/void",
+    "layer0_end": "resource_farm:block/void",
+    "layer1_side": "resource_farm:block/void",
+    "layer1_end": "resource_farm:block/void"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "shade": false,
+      "faces": {
+        "north": { "texture": "#layer0_side", "cullface": "north", "tintindex": 0 },
+        "south": { "texture": "#layer0_side", "cullface": "south", "tintindex": 0 },
+        "east": { "texture": "#layer0_side", "cullface": "east", "tintindex": 0 },
+        "west": { "texture": "#layer0_side", "cullface": "west", "tintindex": 0 },
+        "up": { "texture": "#layer0_end", "cullface": "up", "tintindex": 0 },
+        "down": { "texture": "#layer0_end", "cullface": "down", "tintindex": 0 }
+      }
+    },
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "shade": false,
+      "faces": {
+        "north": { "texture": "#layer1_side", "cullface": "north", "tintindex": 1 },
+        "south": { "texture": "#layer1_side", "cullface": "south", "tintindex": 1 },
+        "east": { "texture": "#layer1_side", "cullface": "east", "tintindex": 1 },
+        "west": { "texture": "#layer1_side", "cullface": "west", "tintindex": 1 },
+        "up": { "texture": "#layer1_end", "cullface": "up", "tintindex": 1 },
+        "down": { "texture": "#layer1_end", "cullface": "down", "tintindex": 1 }
+      }
+    }
+  ]
+}
