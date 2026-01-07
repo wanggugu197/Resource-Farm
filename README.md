@@ -1,4 +1,3 @@
-<p align="center"><img src="https://github.com/wanggugu197/Resource-Farm/tree/main/src/main/resources/icon.png" alt="Logo"></p>
 <h1 align="center">Resource Farm</h1>
 <h1 align="center">
     <a href="https://www.curseforge.com/minecraft/mc-mods/resource-farm"><img src="https://img.shields.io/badge/Available%20for-MC%201.21.1+%20-informational?style=for-the-badge" alt="Supported Versions"></a>
