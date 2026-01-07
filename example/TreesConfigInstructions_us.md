@@ -1,3 +1,4 @@
+## How to register a resource tree through Config
 | Core Fields         | Function                                                                                                             | Value Examples                         | Default Value                |
 |---------------------|----------------------------------------------------------------------------------------------------------------------|----------------------------------------|------------------------------|
 | item                | Item ID associated with the resource tree (alternative to translateKey; translateKey takes priority if both are set) | "minecraft:nether_star"                | null                         |
@@ -11,8 +12,10 @@
 | lightLevel          | Resource tree light level (0-15, Minecraft's light level range)                                                      | 10/15                                  | 0                            |
 | colors              | Resource tree color (hexadecimal integer, e.g., 0xFF0000 = red)                                                      | 0xFF5500/0x00FFFF                      | 0                            |
 
-Example 1: Full Configuration (Nether Star) – All Fields Customized
-json
+
+
+### Example 1: Full Configuration (Nether Star) – All Fields Customized
+```
 {
   // Core field: item (used for ID generation by priority)
   "item": "minecraft:nether_star",
@@ -40,10 +43,11 @@ json
   // Color: Magenta (0xFF800080)
   "colors": "0xFF800080"
 }
+```
 Note: Demonstrates a full custom configuration with no default value fallbacks, ideal for resource trees requiring precise control.
 
-Example 2: Partial Fields Missing (Heart of the Sea) – Relying on Defaults
-json
+### Example 2: Partial Fields Missing (Heart of the Sea) – Relying on Defaults
+```
 {
   "item": "minecraft:heart_of_the_sea",
   "translateKey": "block.resource_farm.heart_of_the_sea_tree",
@@ -55,10 +59,11 @@ json
   "lightLevel": 8,  // Only customize light level
   "colors": "0xFF0000FF"  // Only customize color to blue (ocean theme)
 }
+```
 Note: Demonstrates a scenario where required fields (item/translateKey) are filled, and missing fields use defaults to simplify configuration.
 
-Example 3: Custom Tag + Enum (Amethyst) – Tag Instead of Block
-json
+### Example 3: Custom Tag + Enum (Amethyst) – Tag Instead of Block
+```
 {
   "item": "minecraft:amethyst_shard",
   "treeStyle": "azalea",  // Azalea tree style (if enum exists)
@@ -68,10 +73,11 @@ json
   "lightLevel": 7,
   "colors": "0xFF9966CC"  // Amethyst color
 }
+```
 Note: Demonstrates using customPlaceBlockTag instead of customPlaceBlock for bulk placement block specification (e.g., all replaceable stones).
 
-Example 4: Invalid Value Scenario (Smithing Template) – Fallback Behavior
-json
+### Example 4: Invalid Value Scenario (Smithing Template) – Fallback Behavior
+```
 {
   "item": "minecraft:smithing_template",
   "treeStyle": "invalid_tree_style",  // Invalid tree style → falls back to oak
@@ -80,10 +86,11 @@ json
   "lightLevel": 20,  // Exceeds light level range (0-15) → passed as-is (game auto-clamps)
   "colors": "-1"     // Negative color value → passed as-is (handled by ColoringSettings)
 }
+```
 Note: Intentionally uses invalid values to demonstrate fallback logic: invalid enums → defaults, invalid block IDs → null, value out of range → passed as-is.
 
-Example 5: TranslateKey Only (Ender Pearl) – No Item
-json
+### Example 5: TranslateKey Only (Ender Pearl) – No Item
+```
 {
   // No item; use translateKey only (for ID generation)
   "translateKey": "block.resource_farm.ender_pearl_tree",
@@ -96,10 +103,11 @@ json
   "lightLevel": 15,  // Maximum brightness
   "colors": "0xFF000000"  // Black (Ender theme)
 }
+```
 Note: Demonstrates a scenario where item is null and translateKey is used alone. The code generates an ID by extracting the part after the last dot in the translateKey.
 
-Example 6: Item Only (Paper) – Minimal Core Configuration
-json
+### Example 6: Item Only (Paper) – Minimal Core Configuration
+```
 {
   // Only fill the item field; all others use defaults
   "item": "minecraft:paper"
@@ -111,10 +119,11 @@ json
   // Missing lightLevel → 0
   // Missing colors → 0
 }
+```
 Note: Most minimal configuration – only the required item field is filled, and all other fields rely on defaults. Ideal for quickly registering basic resource trees.
 
-Example 7: Custom Fertilization Configuration (Totem of Undying) – Special Rules
-json
+### Example 7: Custom Fertilization Configuration (Totem of Undying) – Special Rules
+```
 {
   "item": "minecraft:totem_of_undying",
   "translateKey": "block.resource_farm.totem_tree",
@@ -127,10 +136,11 @@ json
   "lightLevel": 9,
   "colors": "0xFFFFD700"  // Gold color (Totem of Undying theme)
 }
+```
 Note: Demonstrates a configuration with only a primary fertilization item. If secondaryItem is omitted, FertilizeSettings automatically sets it to null with 0% success rate.
 
-Example 8: High Brightness + Custom Color (Honeycomb)
-json
+### Example 8: High Brightness + Custom Color (Honeycomb)
+```
 {
   "item": "minecraft:honeycomb",
   "treeStyle": "birch",
@@ -138,10 +148,11 @@ json
   "lightLevel": 12,  // High brightness (close to maximum)
   "colors": "0xFFFFB6C1"  // Honeycomb pink
 }
+```
 Note: Focuses on customizing lightLevel and colors, ideal for resource trees requiring glowing effects or thematic coloring.
 
-Example 9: Invalid Block ID (Heavy Core) – Null Handling
-json
+### Example 9: Invalid Block ID (Heavy Core) – Null Handling
+```
 {
   "item": "minecraft:heavy_core",
   "translateKey": "block.resource_farm.heavy_core_tree",
@@ -150,10 +161,11 @@ json
   "lightLevel": 3,
   "colors": "0xFF808080"  // Gray (metal theme)
 }
+```
 Note: Demonstrates handling of invalid customPlaceBlock IDs. The code detects null and logs a warning without affecting registration (customPlaceBlock is set to null).
 
-Example 10: Fertilization Configuration as NULL (Echo Shard) – Disable Fertilization
-json
+### Example 10: Fertilization Configuration as NULL (Echo Shard) – Disable Fertilization
+```
 {
   "item": "minecraft:echo_shard",
   "treeStyle": "warped",
@@ -166,10 +178,11 @@ json
   "lightLevel": 5,
   "colors": "0xFF000000"  // Black (Deep Dark theme)
 }
+```
 Note: Demonstrates disabling fertilization by setting fertilizeSetting.Type to "null", ideal for resource trees that should not be fertilized.
 
-Example 11: Special Block Configuration (Gilded Blackstone)
-json
+### Example 11: Special Block Configuration (Gilded Blackstone)
+```
 {
   "item": "minecraft:gilded_blackstone",
   "translateKey": "block.resource_farm.gilded_blackstone_tree",
@@ -177,14 +190,47 @@ json
   "lightLevel": 4,
   "colors": "0xFF8B4513"  // Golden brown (Gilded Blackstone theme)
 }
+```
 Note: Demonstrates a valid customPlaceBlock configuration. The code correctly parses Gilded Blackstone and applies it to the resource tree's placement rules.
 
-Example 12: Missing Core Fields (Respawn Anchor) – Trigger Skip Logic
-json
+### Example 12: Missing Core Fields (Respawn Anchor) – Trigger Skip Logic
+```
 {
   // Missing both item and translateKey → code logs a warning and skips this configuration
   "treeStyle": "crimson",
   "oreStyle": "netherite",
   "lightLevel": 10
 }
+```
 Note: Intentionally omits both item and translateKey. The code identifies this as an invalid configuration, logs a warning, and skips registration without affecting other configurations.
+
+---
+
+# How to Remove Resource Trees via Config
+When registering resource trees, the system will automatically generate a `treeId` based on the two input parameters: `item` and `translateKey`. The core step to remove a resource tree is to fill the generated `treeId` into the corresponding `.json` file.
+
+### Core Rules for `treeId` Generation
+The logic for `treeId` generation is divided into two core scenarios, with the priority rule: **the `item` parameter takes precedence over the `translateKey` parameter**.
+
+#### Scenario 1: The `item` Parameter Is Provided
+The generation rule depends on whether the `namespace` corresponding to the `item` is `minecraft`:
+- If `namespace` = `minecraft`: `treeId = [path] + "_tree"`
+- If `namespace` ≠ `minecraft`: `treeId = [namespace] + "_" + [path] + "_tree"`
+
+#### Scenario 2: The `item` Parameter Is Not Provided
+In this case, the `treeId` is generated based on the `translateKey`:
+`treeId = (the substring after the last "." in the translateKey) + "_tree"`
+
+#### Steps to Remove a Resource Tree
+Accurately fill the `treeId` generated according to the above rules into the corresponding `.json` configuration file to complete the removal of the target resource tree.
+
+1. Example 1 (with `item` parameter, `namespace` is `minecraft`):
+    - `item` parameter: `minecraft:stick` (where `namespace` = `minecraft`, `path` = `stick`)
+    - Generated `treeId`: `stick_tree`
+2. Example 2 (with `item` parameter, `namespace` is not `minecraft`):
+    - `item` parameter: `create:andesite_alloy` (where `namespace` = `create`, `path` = `andesite_alloy`)
+    - Generated `treeId`: `create_andesite_alloy_tree`
+3. Example 3 (without `item` parameter, only `translateKey` is provided):
+    - `translateKey`: `gui.example.resource_tree`
+    - Extracted substring: the part after the last "." → `resource_tree`
+    - Generated `treeId`: `resource_tree_tree`

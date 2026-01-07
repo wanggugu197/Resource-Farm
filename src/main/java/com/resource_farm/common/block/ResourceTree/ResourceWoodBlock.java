@@ -3,7 +3,7 @@ package com.resource_farm.common.block.ResourceTree;
 import com.resource_farm.api.ResourceTree.ResourceTreeType;
 import com.resource_farm.api.block.ColoringSettings;
 import com.resource_farm.common.block.ColoringBlock;
-import com.resource_farm.config.ConfigHolder;
+import com.resource_farm.config.ResourceFarmConfigHolder;
 import com.resource_farm.data.ResourceFarmBlocks;
 
 import net.minecraft.network.chat.Component;
@@ -42,7 +42,7 @@ public class ResourceWoodBlock extends ColoringBlock {
 
     @Override
     public @Nullable BlockState getToolModifiedState(@NotNull BlockState state, @NotNull UseOnContext context, @NotNull ItemAbility ability, boolean simulate) {
-        if (ConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood) {
+        if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood) {
             if (ability == ItemAbilities.AXE_STRIP) {
                 BlockEntry<?> strippedWood = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getStrippedWood();
                 if (strippedWood != null) {

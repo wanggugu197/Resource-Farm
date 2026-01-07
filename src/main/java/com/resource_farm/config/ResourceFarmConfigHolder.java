@@ -4,6 +4,7 @@ import com.resource_farm.ResourceFarm;
 
 import dev.toma.configuration.Configuration;
 import dev.toma.configuration.config.Config;
+import dev.toma.configuration.config.ConfigHolder;
 import dev.toma.configuration.config.Configurable;
 import dev.toma.configuration.config.format.ConfigFormats;
 import org.jetbrains.annotations.ApiStatus;
@@ -11,21 +12,24 @@ import org.jetbrains.annotations.ApiStatus;
 @Config(
         id = ResourceFarm.MOD_ID,
         filename = "resource_farm/resource_farm")
-public class ConfigHolder {
+public class ResourceFarmConfigHolder {
 
-    public static ConfigHolder INSTANCE;
+    public static ResourceFarmConfigHolder INSTANCE;
     private static final Object LOCK = new Object();
 
     @ApiStatus.Internal
-    public static dev.toma.configuration.config.ConfigHolder<ConfigHolder> INTERNAL_INSTANCE;
+    public static ConfigHolder<ResourceFarmConfigHolder> INTERNAL_INSTANCE;
 
     public static void init() {
         synchronized (LOCK) {
             if (INSTANCE == null || INTERNAL_INSTANCE == null) {
-                INTERNAL_INSTANCE = Configuration.registerConfig(ConfigHolder.class, ConfigFormats.YAML);
+                INTERNAL_INSTANCE = Configuration.registerConfig(ResourceFarmConfigHolder.class, ConfigFormats.YAML);
                 INSTANCE = INTERNAL_INSTANCE.getConfigInstance();
 
-                RegisterTreesConfig.init();
+                // 资源树-配置文件注册
+                TreeRegisterConfig.init();
+                // 资源树-配置文件移除
+                TreeRemoveConfig.init();
             }
         }
     }

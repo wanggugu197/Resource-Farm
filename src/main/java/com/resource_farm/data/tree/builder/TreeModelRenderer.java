@@ -4,7 +4,7 @@ import com.resource_farm.ResourceFarm;
 import com.resource_farm.api.ResourceOre.ResourceOreType;
 import com.resource_farm.api.ResourceTree.ResourceTreeType;
 import com.resource_farm.common.pack.ResourceFarmDynamicResourcePack;
-import com.resource_farm.config.ConfigHolder;
+import com.resource_farm.config.ResourceFarmConfigHolder;
 import com.resource_farm.data.ResourceFarmBlocks;
 import com.resource_farm.data.misc.ResourceFarmModels;
 import com.resource_farm.data.misc.ResourceFarmModels.LayerFaceTextures;
@@ -32,10 +32,10 @@ public class TreeModelRenderer {
     private static final String BLOCK_PATH_PREFIX = "block/";
     private static final int ROTATE_90_DEGREE = 90;
 
-    private static final boolean STRIPPED_LOG_ENABLED = ConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog;
-    private static final boolean WOOD_ENABLED = ConfigHolder.INSTANCE.tree.blockGeneration.generateWood;
-    private static final boolean STRIPPED_WOOD_ENABLED = ConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood;
-    private static final boolean PLANKS_ENABLED = ConfigHolder.INSTANCE.tree.blockGeneration.generatePlanks;
+    private static final boolean STRIPPED_LOG_ENABLED = ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog;
+    private static final boolean WOOD_ENABLED = ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateWood;
+    private static final boolean STRIPPED_WOOD_ENABLED = ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood;
+    private static final boolean PLANKS_ENABLED = ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generatePlanks;
 
     // 父模型
     private static final ResourceLocation PARENT_ALL = ResourceFarmModels.STATIC_ALL_PARENT;
@@ -450,9 +450,7 @@ public class TreeModelRenderer {
     }
 
     public static void reinitModels() {
-        long startTime = System.currentTimeMillis();
         clearCache();
-        AtomicInteger i = new AtomicInteger(0);
 
         ResourceFarmBlocks.ResourceTreeMap.values().parallelStream().forEach(resourceTree -> {
             if (resourceTree == null) return;
@@ -464,12 +462,10 @@ public class TreeModelRenderer {
                 var blockBundle = new ResourceTreeBundle(treeConfig.id(), resourceTree);
                 if (blockBundle.isValid()) {
                     buildAndRegisterTreeBlockBundle(blockBundle);
-                    i.getAndIncrement();
                 }
             } catch (Exception ignored) {}
         });
 
         BATCH_REGISTRAR.commit();
-        ResourceFarm.LOGGER.info("Resource Farm Tree Model loading took {}ms, lode 「{}」 Tree", System.currentTimeMillis() - startTime, i.get());
     }
 }

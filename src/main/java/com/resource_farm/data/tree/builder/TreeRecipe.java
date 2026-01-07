@@ -1,6 +1,6 @@
 package com.resource_farm.data.tree.builder;
 
-import com.resource_farm.config.ConfigHolder;
+import com.resource_farm.config.ResourceFarmConfigHolder;
 import com.resource_farm.data.ResourceFarmBlocks;
 import com.resource_farm.utils.VanillaRecipeHelper;
 
@@ -11,24 +11,24 @@ import net.minecraft.world.item.ItemStack;
 public class TreeRecipe {
 
     // === 配置缓存 ===
-    private static final boolean GENERATE_STRIPPED_LOG = ConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog;
-    private static final boolean GENERATE_WOOD = ConfigHolder.INSTANCE.tree.blockGeneration.generateWood;
-    private static final boolean GENERATE_STRIPPED_WOOD = ConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood;
-    private static final boolean GENERATE_PLANKS = ConfigHolder.INSTANCE.tree.blockGeneration.generatePlanks;
+    private static final boolean GENERATE_STRIPPED_LOG = ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog;
+    private static final boolean GENERATE_WOOD = ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateWood;
+    private static final boolean GENERATE_STRIPPED_WOOD = ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood;
+    private static final boolean GENERATE_PLANKS = ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generatePlanks;
 
     public static void init(RecipeOutput consumer) {
         ResourceFarmBlocks.ResourceTreeMap.forEach((name, resourceTree) -> {
 
             // 制作树苗/物品
             if (resourceTree.getTreeItem() != null) {
-                if (ConfigHolder.INSTANCE.tree.recipeGeneration.generateTreeItemRecipes) {
+                if (ResourceFarmConfigHolder.INSTANCE.tree.recipeGeneration.generateTreeItemRecipes) {
                     VanillaRecipeHelper.addShapedRecipe(consumer, name + "_craft_tree_item",
                             new ItemStack(resourceTree.getTreeItem()),
                             "AAA", "ABA", "AAA",
                             'A', resourceTree.getResin(), 'B', resourceTree.getFruit());
                 }
 
-                if (ConfigHolder.INSTANCE.tree.recipeGeneration.generateSaplingRecipes) {
+                if (ResourceFarmConfigHolder.INSTANCE.tree.recipeGeneration.generateSaplingRecipes) {
                     VanillaRecipeHelper.addShapedRecipe(consumer, name + "_craft_sapling",
                             new ItemStack(resourceTree.getSapling()),
                             "AAA", "ABA", "AAA",
@@ -37,7 +37,7 @@ public class TreeRecipe {
             }
 
             // 处理配方 烟熏/熔炼获得树脂
-            if (ConfigHolder.INSTANCE.tree.recipeGeneration.generateResinRecipes) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.recipeGeneration.generateResinRecipes) {
                 VanillaRecipeHelper.addSmokingRecipe(consumer, name + "_smoke_resin_from_logs",
                         resourceTree.getLog(), resourceTree.getResin().asStack(4), 0.5f);
 
@@ -65,7 +65,7 @@ public class TreeRecipe {
             }
 
             // 通用配方
-            if (ConfigHolder.INSTANCE.tree.recipeGeneration.generateBasicWoodConversionRecipes) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.recipeGeneration.generateBasicWoodConversionRecipes) {
                 if (GENERATE_PLANKS) {
                     VanillaRecipeHelper.addShapelessRecipe(consumer, name + "_craft_planks_from_log",
                             resourceTree.getPlanks().asStack(4), resourceTree.getLog());

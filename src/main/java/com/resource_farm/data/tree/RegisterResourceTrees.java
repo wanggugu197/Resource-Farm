@@ -1,6 +1,7 @@
 package com.resource_farm.data.tree;
 
-import com.resource_farm.config.RegisterTreesConfig;
+import com.resource_farm.config.TreeRegisterConfig;
+import com.resource_farm.config.TreeRemoveConfig;
 import com.resource_farm.data.ResourceFarmBlocks;
 import com.resource_farm.data.tree.builder.TreesRegister;
 
@@ -25,10 +26,13 @@ public class RegisterResourceTrees {
     }
 
     public static void registerTree() {
-        // 基础注册
+        // 资源树-基础注册
         TreesRegister.commonRegister();
 
-        // 配置文件注册
-        RegisterTreesConfig.parseJSONtoRegisterTree();
+        // 资源树-配置文件注册
+        TreeRegisterConfig.parseJSONtoRegisterTree();
+
+        // 资源树-配置文件移除
+        TreeRemoveConfig.parseJSONtoRemoveTree();
     }
 }

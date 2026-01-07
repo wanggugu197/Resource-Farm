@@ -32,8 +32,8 @@ public record ColoringSettings(
 
         int[] originalColors = original == null ? new int[0] : original.colors();
         int[] newColors = Arrays.copyOf(originalColors, originalColors.length);
-        if (newColors.length >= 1) newColors[0] = 0x77C255;
-        else newColors = new int[] { 0x77C255 };
+        if (newColors.length >= 1) newColors[0] = 0x61964F;
+        else newColors = new int[] { 0x61964F };
 
         return ColoringSettings.of(newTintLayers, newColors);
     }

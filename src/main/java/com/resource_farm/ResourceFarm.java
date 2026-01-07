@@ -1,7 +1,7 @@
 package com.resource_farm;
 
 import com.resource_farm.common.CommonInit;
-import com.resource_farm.config.ConfigHolder;
+import com.resource_farm.config.ResourceFarmConfigHolder;
 import com.resource_farm.utils.FormattingUtil;
 import com.resource_farm.utils.RLUtils;
 
@@ -38,7 +38,7 @@ public class ResourceFarm {
 
     public ResourceFarm(IEventBus modBus, FMLModContainer container) {
         ResourceFarm.rfModBus = modBus;
-        ConfigHolder.init();
+        ResourceFarmConfigHolder.init();
         CommonInit.init(modBus);
     }
 

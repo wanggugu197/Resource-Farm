@@ -9,7 +9,7 @@ import com.resource_farm.common.block.grower.ResourceTreeGrowerType;
 import com.resource_farm.common.item.ColoringBlockItem;
 import com.resource_farm.common.item.ResourceTree.ResourceFruitItem;
 import com.resource_farm.common.item.ResourceTree.ResourceResinItem;
-import com.resource_farm.config.ConfigHolder;
+import com.resource_farm.config.ResourceFarmConfigHolder;
 import com.resource_farm.data.ResourceFarmBlocks;
 import com.resource_farm.data.tree.ResourceTreeConfig;
 
@@ -91,7 +91,7 @@ public class TreeBuilder {
 
             );
 
-            if (ConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog) {
                 resourceTree.setStrippedLog(
                         REGISTRATE.object("stripped_" + name + "_log")
                                 .block(props -> ResourceStrippedLogBlock.create(
@@ -108,7 +108,7 @@ public class TreeBuilder {
                                 .register());
             }
 
-            if (ConfigHolder.INSTANCE.tree.blockGeneration.generateWood) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateWood) {
                 resourceTree.setWood(
                         REGISTRATE.object(name + "_wood")
                                 .block(props -> ResourceWoodBlock.create(
@@ -125,7 +125,7 @@ public class TreeBuilder {
                                 .register());
             }
 
-            if (ConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood) {
                 resourceTree.setStrippedWood(
                         REGISTRATE.object("stripped_" + name + "_wood")
                                 .block(props -> ResourceStrippedWoodBlock.create(
@@ -142,7 +142,7 @@ public class TreeBuilder {
                                 .register());
             }
 
-            if (ConfigHolder.INSTANCE.tree.blockGeneration.generatePlanks) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generatePlanks) {
                 resourceTree.setPlanks(
                         REGISTRATE.object(name + "_planks")
                                 .block(props -> ResourcePlanksBlock.create(

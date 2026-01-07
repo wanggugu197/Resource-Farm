@@ -1,6 +1,6 @@
 package com.resource_farm.data.tree.builder;
 
-import com.resource_farm.config.ConfigHolder;
+import com.resource_farm.config.ResourceFarmConfigHolder;
 import com.resource_farm.data.ResourceFarmBlocks;
 import com.resource_farm.data.misc.ResourceFarmBlockTags;
 import com.resource_farm.data.misc.ResourceFarmItemTags;
@@ -71,7 +71,7 @@ public class TreeTagManager {
                 tempBlockTagMap.computeIfAbsent(BLOCK_TAG_LOGS, k -> new ArrayList<>()).add(logBlockEntry);
                 tempBlockTagMap.computeIfAbsent(BLOCK_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(logBlockEntry);
             }
-            if (ConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog) {
                 BlockEntry<?> strippedLogEntry = resourceTree.getStrippedLog();
                 if (strippedLogEntry != null) {
                     TagLoader.EntryWithSource strippedLogBlockEntry = makeBlockTagEntry(strippedLogEntry);
@@ -79,7 +79,7 @@ public class TreeTagManager {
                     tempBlockTagMap.computeIfAbsent(BLOCK_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(strippedLogBlockEntry);
                 }
             }
-            if (ConfigHolder.INSTANCE.tree.blockGeneration.generateWood) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateWood) {
                 BlockEntry<?> woodEntry = resourceTree.getWood();
                 if (woodEntry != null) {
                     TagLoader.EntryWithSource woodBlockEntry = makeBlockTagEntry(woodEntry);
@@ -87,7 +87,7 @@ public class TreeTagManager {
                     tempBlockTagMap.computeIfAbsent(BLOCK_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(woodBlockEntry);
                 }
             }
-            if (ConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood) {
                 BlockEntry<?> strippedWoodEntry = resourceTree.getStrippedWood();
                 if (strippedWoodEntry != null) {
                     TagLoader.EntryWithSource strippedWoodBlockEntry = makeBlockTagEntry(strippedWoodEntry);
@@ -95,7 +95,7 @@ public class TreeTagManager {
                     tempBlockTagMap.computeIfAbsent(BLOCK_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(strippedWoodBlockEntry);
                 }
             }
-            if (ConfigHolder.INSTANCE.tree.blockGeneration.generatePlanks) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generatePlanks) {
                 BlockEntry<?> planksEntry = resourceTree.getPlanks();
                 if (planksEntry != null) {
                     TagLoader.EntryWithSource planksBlockEntry = makeBlockTagEntry(planksEntry);
@@ -129,7 +129,7 @@ public class TreeTagManager {
                 tempItemTagMap.computeIfAbsent(ITEM_TAG_LOGS_THAT_BURN, k -> new ArrayList<>()).add(logItemEntry);
                 tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(logItemEntry);
             }
-            if (ConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog) {
                 BlockEntry<?> strippedLogEntry = resourceTree.getStrippedLog();
                 if (strippedLogEntry != null) {
                     TagLoader.EntryWithSource strippedLogItemEntry = makeItemTagEntry(strippedLogEntry);
@@ -137,7 +137,7 @@ public class TreeTagManager {
                     tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(strippedLogItemEntry);
                 }
             }
-            if (ConfigHolder.INSTANCE.tree.blockGeneration.generateWood) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateWood) {
                 BlockEntry<?> woodEntry = resourceTree.getWood();
                 if (woodEntry != null) {
                     TagLoader.EntryWithSource woodItemEntry = makeItemTagEntry(woodEntry);
@@ -145,7 +145,7 @@ public class TreeTagManager {
                     tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(woodItemEntry);
                 }
             }
-            if (ConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood) {
                 BlockEntry<?> strippedWoodEntry = resourceTree.getStrippedWood();
                 if (strippedWoodEntry != null) {
                     TagLoader.EntryWithSource strippedWoodItemEntry = makeItemTagEntry(strippedWoodEntry);
@@ -153,7 +153,7 @@ public class TreeTagManager {
                     tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(strippedWoodItemEntry);
                 }
             }
-            if (ConfigHolder.INSTANCE.tree.blockGeneration.generatePlanks) {
+            if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generatePlanks) {
                 BlockEntry<?> planksEntry = resourceTree.getPlanks();
                 if (planksEntry != null) {
                     TagLoader.EntryWithSource planksItemEntry = makeItemTagEntry(planksEntry);

@@ -6,6 +6,7 @@ import com.resource_farm.api.ResourceOre.ResourceOreTypes;
 import com.resource_farm.api.ResourceTree.ResourceTreeType;
 import com.resource_farm.api.ResourceTree.ResourceTreeTypes;
 import com.resource_farm.api.block.FertilizeSettings;
+import com.resource_farm.data.tree.RegisterResourceTrees;
 import com.resource_farm.data.tree.ResourceTreeConfig;
 import com.resource_farm.utils.FormattingUtil;
 import com.resource_farm.utils.RLUtils;
@@ -16,30 +17,39 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.resource_farm.data.tree.RegisterResourceTrees.createResourceTree;
+public class TreeRegisterConfig {
 
-public class RegisterTreesConfig {
+    private static final String fileName = "resource_tree_register_configs.json";
 
-    public static List<JsonObject> registerTreesConfig;
+    private static List<JsonObject> treeRegisterConfig;
 
     public static void init() {
-        registerTreesConfig = JsonConfigUtil.loadResourceTreeRawJsons();
+        JsonArray jsonArray = JsonConfigUtil.loadJsonArray(fileName);
+        treeRegisterConfig = new ArrayList<>();
+        for (JsonElement element : jsonArray) {
+            if (element.isJsonObject()) treeRegisterConfig.add(element.getAsJsonObject());
+            else ResourceFarm.LOGGER.warn("There are non JsonObject elements in the resource tree configuration, skip them");
+        }
+
         ResourceFarm.LOGGER.info(
                 "⌈Resource Tree Config Initialization⌋ Registration of resource trees via JSON configuration completed. " +
                         "Successfully loaded ⌈{}⌋ registered resource tree configuration entries.",
-                registerTreesConfig.size());
+                treeRegisterConfig.size());
     }
 
-    // 解析JSON并注册资源树：核心优化逻辑
+    // 解析JSON并注册资源树
     public static void parseJSONtoRegisterTree() {
         int configCount = 0;
         int successCount = 0;
 
-        for (JsonObject json : registerTreesConfig) {
+        for (JsonObject json : treeRegisterConfig) {
             configCount++;
             try {
                 String item = GsonHelper.getAsString(json, "item", null);
@@ -79,7 +89,7 @@ public class RegisterTreesConfig {
                 int colors = FormattingUtil.parseColorString(GsonHelper.getAsString(json, "colors", "0"));
 
                 // 构建配置并注册资源树
-                createResourceTree(ResourceTreeConfig.create(
+                RegisterResourceTrees.createResourceTree(ResourceTreeConfig.create(
                         item, translateKey,
                         treeType, oreType,
                         fertilizeSetting, growthFrequency,
@@ -88,11 +98,11 @@ public class RegisterTreesConfig {
                 successCount++;
 
             } catch (Exception e) {
-                ResourceFarm.LOGGER.error("Failed to parse {}th resource tree config: {}", configCount, e.getMessage(), e);
+                ResourceFarm.LOGGER.error("Failed to parse {}th resource tree register config: {}", configCount, e.getMessage(), e);
             }
         }
 
-        // 解析完成日志：统计成功/总数量，便于排查
+        // 解析完成日志：统计成功/总数量
         ResourceFarm.LOGGER.info("⌈Resource Tree Registration⌋ Parsed {} configs, successfully registered {} resource trees.",
                 configCount, successCount);
     }

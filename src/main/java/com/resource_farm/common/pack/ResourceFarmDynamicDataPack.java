@@ -2,7 +2,7 @@ package com.resource_farm.common.pack;
 
 import com.resource_farm.ResourceFarm;
 import com.resource_farm.api.addon.AddonFinder;
-import com.resource_farm.config.ConfigHolder;
+import com.resource_farm.config.ResourceFarmConfigHolder;
 import com.resource_farm.utils.RLUtils;
 
 import net.minecraft.SharedConstants;
@@ -105,7 +105,7 @@ public class ResourceFarmDynamicDataPack implements PackResources {
             byte[] recipeBytes = jsonToBytes(recipeJson);
 
             Path parent = ResourceFarm.getGameDir().resolve("resource_farm/dumped/data");
-            if (ConfigHolder.INSTANCE.dev.dumpData) {
+            if (ResourceFarmConfigHolder.INSTANCE.dev.dumpData) {
                 writeJson(targetRecipeLoc, null, parent, recipeBytes);
             }
             addToData(targetRecipeLoc, recipeBytes);
@@ -116,7 +116,7 @@ public class ResourceFarmDynamicDataPack implements PackResources {
                         .encodeStart(provider.createSerializationContext(JsonOps.INSTANCE), advancement.value())
                         .getOrThrow();
                 byte[] advancementBytes = jsonToBytes(advancementJson);
-                if (ConfigHolder.INSTANCE.dev.dumpData) {
+                if (ResourceFarmConfigHolder.INSTANCE.dev.dumpData) {
                     writeJson(targetAdvancementLoc, null, parent, advancementBytes);
                 }
                 addToData(targetAdvancementLoc, advancementBytes);
@@ -139,7 +139,7 @@ public class ResourceFarmDynamicDataPack implements PackResources {
             byte[] lootTableBytes = jsonToBytes(lootTableJson);
 
             Path parent = ResourceFarm.getGameDir().resolve("resource_farm/dumped/data");
-            if (ConfigHolder.INSTANCE.dev.dumpData) {
+            if (ResourceFarmConfigHolder.INSTANCE.dev.dumpData) {
                 writeJson(targetLootLoc, null, parent, lootTableBytes);
             }
             addToData(targetLootLoc, lootTableBytes);
@@ -165,7 +165,7 @@ public class ResourceFarmDynamicDataPack implements PackResources {
                     .getOrThrow();
             byte[] dataMapBytes = jsonToBytes(dataMapJson);
             Path parent = ResourceFarm.getGameDir().resolve("resource_farm/dumped/data");
-            if (ConfigHolder.INSTANCE.dev.dumpData) {
+            if (ResourceFarmConfigHolder.INSTANCE.dev.dumpData) {
                 writeJson(dataMapId, null, parent, dataMapBytes);
             }
             addToData(dataMapId, dataMapBytes);

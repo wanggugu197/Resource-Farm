@@ -2,7 +2,7 @@ package com.resource_farm.common.pack;
 
 import com.resource_farm.ResourceFarm;
 import com.resource_farm.api.addon.AddonFinder;
-import com.resource_farm.config.ConfigHolder;
+import com.resource_farm.config.ResourceFarmConfigHolder;
 
 import net.minecraft.SharedConstants;
 import net.minecraft.client.renderer.texture.atlas.SpriteSource;
@@ -74,7 +74,7 @@ public class ResourceFarmDynamicResourcePack implements PackResources {
     }
 
     private static void addResourceInternal(ResourceLocation targetLoc, byte[] data) {
-        if (ConfigHolder.INSTANCE.dev.dumpAssets) {
+        if (ResourceFarmConfigHolder.INSTANCE.dev.dumpAssets) {
             Path parent = ResourceFarm.getGameDir().resolve("resource_farm/dumped/assets");
             writeByteArray(targetLoc, null, parent, data);
         }

@@ -3,7 +3,7 @@ package com.resource_farm.common.block.ResourceTree;
 import com.resource_farm.api.ResourceTree.ResourceTreeType;
 import com.resource_farm.api.block.ColoringSettings;
 import com.resource_farm.common.block.RotatedColoringPillarBlock;
-import com.resource_farm.config.ConfigHolder;
+import com.resource_farm.config.ResourceFarmConfigHolder;
 import com.resource_farm.data.ResourceFarmBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -86,7 +86,7 @@ public class ResourceLogBlock extends RotatedColoringPillarBlock {
 
     @Override
     public @Nullable BlockState getToolModifiedState(@NotNull BlockState state, @NotNull UseOnContext context, @NotNull ItemAbility ability, boolean simulate) {
-        if (ConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog) {
+        if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog) {
             if (ability == ItemAbilities.AXE_STRIP) {
                 BlockEntry<?> strippedLog = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getStrippedLog();
                 if (strippedLog != null) {
