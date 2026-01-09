@@ -1,7 +1,8 @@
 package com.resource_farm.config;
 
 import com.resource_farm.ResourceFarm;
-import com.resource_farm.data.tree.RegisterResourceTrees;
+import com.resource_farm.data.tree.builder.TreeRegister;
+import com.resource_farm.utils.JsonConfigUtil;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -29,14 +30,14 @@ public class TreeRemoveConfig {
             configCount++;
             try {
                 String removeTree = json.getAsString();
-                RegisterResourceTrees.removeResourceTree(removeTree);
+                TreeRegister.removeResourceTree(removeTree);
                 successCount++;
             } catch (Exception e) {
                 ResourceFarm.LOGGER.error("Failed to parse {}th resource tree remove config: {}", configCount, e.getMessage(), e);
             }
         }
 
-        ResourceFarm.LOGGER.info("⌈Resource Tree Removal⌋ Detected {} removal entries, removal completed.",
-                successCount);
+        ResourceFarm.LOGGER.info("⌈Resource Tree Removal⌋ Detected {} removal entries, removal completed.", successCount);
+        removeTreesConfig = null;
     }
 }

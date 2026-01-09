@@ -11,6 +11,7 @@ import com.resource_farm.common.item.ResourceTree.ResourceFruitItem;
 import com.resource_farm.common.item.ResourceTree.ResourceResinItem;
 import com.resource_farm.config.ResourceFarmConfigHolder;
 import com.resource_farm.data.ResourceFarmBlocks;
+import com.resource_farm.data.tree.ResourceTree;
 import com.resource_farm.data.tree.ResourceTreeConfig;
 
 import net.minecraft.world.level.block.Blocks;
@@ -26,7 +27,9 @@ import static com.resource_farm.data.misc.ResourceFarmCreativeModeTabs.TREE_TAB;
 public class TreeBuilder {
 
     public static void registerResourceTree() {
-        ResourceFarmBlocks.ResourceTreeMap.forEach((treeId, resourceTree) -> {
+        ResourceFarmBlocks.ResourceTreeKeyList.forEach(treeId -> {
+            ResourceTree resourceTree = ResourceFarmBlocks.ResourceTreeMap.get(treeId);
+
             ResourceTreeConfig resourceTreeConfig = resourceTree.getResourceTreeConfig();
 
             String name = resourceTreeConfig.id();

@@ -1,4 +1,4 @@
-package com.resource_farm.config;
+package com.resource_farm.utils;
 
 import com.resource_farm.ResourceFarm;
 

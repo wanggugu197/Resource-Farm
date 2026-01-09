@@ -7,15 +7,15 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 public class ResourceTreeTypes {
 
-    public static final ResourceTreeType OAK = create("oak");
-    public static final ResourceTreeType DARK_OAK = create("dark_oak");
-    public static final ResourceTreeType BIRCH = create("birch");
-    public static final ResourceTreeType SPRUCE = create("spruce");
-    public static final ResourceTreeType JUNGLE = create("jungle");
-    public static final ResourceTreeType ACACIA = create("acacia");
-    public static final ResourceTreeType CHERRY = create("cherry");
-    public static final ResourceTreeType MANGROVE = createPropagule("mangrove");
-    public static final ResourceTreeType PALE_OAK = create("pale_oak");
+    public static final ResourceTreeType OAK = create("oak"); // 橡树
+    public static final ResourceTreeType DARK_OAK = create("dark_oak"); // 深色橡树
+    public static final ResourceTreeType BIRCH = create("birch"); // 白桦树
+    public static final ResourceTreeType SPRUCE = create("spruce"); // 云杉树
+    public static final ResourceTreeType JUNGLE = create("jungle"); // 丛林树
+    public static final ResourceTreeType ACACIA = create("acacia"); // 合金欢树
+    public static final ResourceTreeType CHERRY = create("cherry"); // 樱花树
+    public static final ResourceTreeType MANGROVE = createPropagule("mangrove"); // 红树
+    public static final ResourceTreeType PALE_OAK = create("pale_oak"); // 苍白橡木 1.21.1 没有这个
 
     public static final Object2ObjectOpenHashMap<String, ResourceTreeType> TREE_TYPES = new Object2ObjectOpenHashMap<>();
 

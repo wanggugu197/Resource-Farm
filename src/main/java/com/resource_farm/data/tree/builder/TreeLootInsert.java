@@ -23,7 +23,7 @@ import org.apache.logging.log4j.util.TriConsumer;
 
 import java.util.List;
 
-public class TreeLootManager {
+public class TreeLootInsert {
 
     public static void generateBlockLoot(TriConsumer<ResourceLocation, LootTable, RegistryAccess.Frozen> lootTables,
                                          final RegistryAccess.Frozen access) {
@@ -45,8 +45,8 @@ public class TreeLootManager {
                 if (leavesEntry != null && resinEntry != null && fruitEntry != null) {
                     ResourceLocation leavesId = getId(leavesEntry);
                     lootTables.accept(leavesId, LootTableUtils.createLeavesStyleLootTable(leavesEntry.get().asItem(), saplingEntry.get().asItem(),
-                            List.of(ItemWeightCountHolder.of(resinEntry.get().asItem(), 1, UniformGenerator.between(-1, 2)),
-                                    ItemWeightCountHolder.of(fruitEntry.get().asItem(), 4, UniformGenerator.between(-1, 2))),
+                            List.of(ItemWeightCountHolder.of(resinEntry.get().asItem(), 1, UniformGenerator.between(-1, 1)),
+                                    ItemWeightCountHolder.of(fruitEntry.get().asItem(), 4, UniformGenerator.between(-1, 1))),
                             fortune).build(), access);
                     ((BlockBehaviourAccessor) leavesEntry.get()).setDrops(ResourceKey.create(Registries.LOOT_TABLE, leavesId));
                 }

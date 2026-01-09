@@ -4,6 +4,7 @@ import com.resource_farm.config.ResourceFarmConfigHolder;
 import com.resource_farm.data.ResourceFarmBlocks;
 import com.resource_farm.data.misc.ResourceFarmBlockTags;
 import com.resource_farm.data.misc.ResourceFarmItemTags;
+import com.resource_farm.data.tree.ResourceTree;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -20,7 +21,7 @@ import java.util.List;
 import static com.resource_farm.common.Manager.ResourceFarmTagManager.makeBlockTagEntry;
 import static com.resource_farm.common.Manager.ResourceFarmTagManager.makeItemTagEntry;
 
-public class TreeTagManager {
+public class TreeTagInsert {
 
     // === BlockTags 缓存 ===
     private static final ResourceLocation BLOCK_TAG_SAPLINGS = BlockTags.SAPLINGS.location();
@@ -50,7 +51,9 @@ public class TreeTagManager {
 
     public static void generateBlockTags(Object2ObjectOpenHashMap<ResourceLocation, List<TagLoader.EntryWithSource>> tempBlockTagMap) {
         // 遍历ResourceTree，条目收集
-        ResourceFarmBlocks.ResourceTreeMap.forEach((a, resourceTree) -> {
+        ResourceFarmBlocks.ResourceTreeKeyList.forEach(treeId -> {
+            ResourceTree resourceTree = ResourceFarmBlocks.ResourceTreeMap.get(treeId);
+
             if (resourceTree == null) return;
             BlockEntry<?> saplingEntry = resourceTree.getSapling();
             if (saplingEntry != null) {
@@ -109,7 +112,9 @@ public class TreeTagManager {
 
     public static void generateItemTags(Object2ObjectOpenHashMap<ResourceLocation, List<TagLoader.EntryWithSource>> tempItemTagMap) {
         // 遍历ResourceTree，条目收集
-        ResourceFarmBlocks.ResourceTreeMap.forEach((a, resourceTree) -> {
+        ResourceFarmBlocks.ResourceTreeKeyList.forEach(treeId -> {
+            ResourceTree resourceTree = ResourceFarmBlocks.ResourceTreeMap.get(treeId);
+
             if (resourceTree == null) return;
             BlockEntry<?> saplingEntry = resourceTree.getSapling();
             if (saplingEntry != null) {

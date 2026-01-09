@@ -1,6 +1,6 @@
 package com.resource_farm.common.Manager;
 
-import com.resource_farm.data.tree.builder.TreeRecipe;
+import com.resource_farm.data.tree.ResourceTreeAccessManagement;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
@@ -29,6 +29,6 @@ public class ResourceFarmRecipesManager {
             }
         };
 
-        TreeRecipe.init(consumer);
+        ResourceTreeAccessManagement.registerTreeRecipe(consumer);
     }
 }

@@ -6,9 +6,10 @@ import com.resource_farm.api.ResourceOre.ResourceOreTypes;
 import com.resource_farm.api.ResourceTree.ResourceTreeType;
 import com.resource_farm.api.ResourceTree.ResourceTreeTypes;
 import com.resource_farm.api.block.FertilizeSettings;
-import com.resource_farm.data.tree.RegisterResourceTrees;
 import com.resource_farm.data.tree.ResourceTreeConfig;
+import com.resource_farm.data.tree.builder.TreeRegister;
 import com.resource_farm.utils.FormattingUtil;
+import com.resource_farm.utils.JsonConfigUtil;
 import com.resource_farm.utils.RLUtils;
 import com.resource_farm.utils.RegistriesUtils;
 
@@ -60,14 +61,14 @@ public class TreeRegisterConfig {
                 }
 
                 // 解析树/矿石样式
-                String treeStyle = GsonHelper.getAsString(json, "treeStyle", "oak").toLowerCase(); // 统一小写，提升容错
+                String treeStyle = GsonHelper.getAsString(json, "treeStyle", "oak").toLowerCase();
                 ResourceTreeType treeType = ResourceTreeTypes.TREE_TYPES.get(treeStyle);
                 if (treeType == null) {
                     ResourceFarm.LOGGER.warn("{}th config: invalid treeStyle '{}', use default OAK.", configCount, treeStyle);
                     treeType = ResourceTreeTypes.OAK;
                 }
 
-                String oreStyle = GsonHelper.getAsString(json, "oreStyle", "iron").toLowerCase(); // 统一小写
+                String oreStyle = GsonHelper.getAsString(json, "oreStyle", "iron").toLowerCase();
                 ResourceOreType oreType = ResourceOreTypes.ORE_TYPES.get(oreStyle);
                 if (oreType == null) {
                     ResourceFarm.LOGGER.warn("{}th config: invalid oreStyle '{}', use default IRON.", configCount, oreStyle);
@@ -89,7 +90,7 @@ public class TreeRegisterConfig {
                 int colors = FormattingUtil.parseColorString(GsonHelper.getAsString(json, "colors", "0"));
 
                 // 构建配置并注册资源树
-                RegisterResourceTrees.createResourceTree(ResourceTreeConfig.create(
+                TreeRegister.createResourceTree(ResourceTreeConfig.create(
                         item, translateKey,
                         treeType, oreType,
                         fertilizeSetting, growthFrequency,
@@ -103,7 +104,8 @@ public class TreeRegisterConfig {
         }
 
         // 解析完成日志：统计成功/总数量
-        ResourceFarm.LOGGER.info("⌈Resource Tree Registration⌋ Parsed {} configs, successfully registered {} resource trees.",
-                configCount, successCount);
+        ResourceFarm.LOGGER.info("⌈Resource Tree Registration⌋ Parsed {} configs, successfully registered {} resource trees.", configCount, successCount);
+        treeRegisterConfig.clear();
+        treeRegisterConfig = null;
     }
 }

@@ -1,10 +1,13 @@
 package com.resource_farm.data;
 
-import com.resource_farm.data.tree.RegisterResourceTrees;
 import com.resource_farm.data.tree.ResourceTree;
+import com.resource_farm.data.tree.ResourceTreeAccessManagement;
 import com.resource_farm.data.tree.builder.TreeBuilder;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.resource_farm.ResourceFarm.isDataGen;
 import static com.resource_farm.data.tree.builder.TreeInitialization.initializationTreeMap;
@@ -20,8 +23,9 @@ public class ResourceFarmBlocks {
     }
 
     public static final Object2ObjectOpenHashMap<String, ResourceTree> ResourceTreeMap = new Object2ObjectOpenHashMap<>();
+    public static final List<String> ResourceTreeKeyList = new ArrayList<>();
 
     static {
-        RegisterResourceTrees.registerTree();
+        ResourceTreeAccessManagement.registerTree();
     }
 }

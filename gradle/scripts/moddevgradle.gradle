@@ -48,7 +48,7 @@ neoForge {
             sourceSet = sourceSets.clientExtra
             ideName = "Client 2"
 
-            programArguments.addAll('--username', 'YoungOnion', '--uuid', '3a27782d-6864-4814-a9fe-7c6931f29a8a')
+            programArguments.addAll('--username', 'maple197', '--uuid', '990992ce-a4ad-40ff-bb7a-ff3e211589fd')
             systemProperty('neoforge.enabledGameTestNamespaces', project.mod_id)
         }
 

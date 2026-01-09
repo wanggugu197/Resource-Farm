@@ -1,7 +1,7 @@
 package com.resource_farm.common.Manager;
 
 import com.resource_farm.ResourceFarm;
-import com.resource_farm.data.tree.builder.TreeTagManager;
+import com.resource_farm.data.tree.builder.TreeTagInsert;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -28,7 +28,7 @@ public class ResourceFarmTagManager {
             Object2ObjectOpenHashMap<ResourceLocation, List<TagLoader.EntryWithSource>> tempBlockTagMap = new Object2ObjectOpenHashMap<>();
 
             // 资源树 Tag
-            TreeTagManager.generateBlockTags(tempBlockTagMap);
+            TreeTagInsert.generateBlockTags(tempBlockTagMap);
 
             // 批量追加到最终tagMap
             for (Map.Entry<ResourceLocation, List<TagLoader.EntryWithSource>> entry : tempBlockTagMap.entrySet()) {
@@ -42,7 +42,7 @@ public class ResourceFarmTagManager {
             Object2ObjectOpenHashMap<ResourceLocation, List<TagLoader.EntryWithSource>> tempItemTagMap = new Object2ObjectOpenHashMap<>();
 
             // 资源树 Tag
-            TreeTagManager.generateItemTags(tempItemTagMap);
+            TreeTagInsert.generateItemTags(tempItemTagMap);
 
             // 批量追加到最终tagMap
             for (Map.Entry<ResourceLocation, List<TagLoader.EntryWithSource>> entry : tempItemTagMap.entrySet()) {

@@ -8,7 +8,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 
-public class TreeRecipe {
+public class TreeCommonRecipe {
 
     // === 配置缓存 ===
     private static final boolean GENERATE_STRIPPED_LOG = ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog;
@@ -24,7 +24,7 @@ public class TreeRecipe {
                 if (ResourceFarmConfigHolder.INSTANCE.tree.recipeGeneration.generateTreeItemRecipes) {
                     VanillaRecipeHelper.addShapedRecipe(consumer, name + "_craft_tree_item",
                             new ItemStack(resourceTree.getTreeItem()),
-                            "AAA", "ABA", "AAA",
+                            " A ", "ABA", " A ",
                             'A', resourceTree.getResin(), 'B', resourceTree.getFruit());
                 }
 

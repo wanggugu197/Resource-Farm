@@ -15,8 +15,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLConstructModEvent;
 import net.neoforged.neoforge.event.AddPackFindersEvent;
 
-import static com.resource_farm.ResourceFarm.isDataGen;
-
 public class CommonInit {
 
     private static IEventBus modBus;
@@ -24,9 +22,7 @@ public class CommonInit {
     public static void init(final IEventBus modBus) {
         CommonInit.modBus = modBus;
         modBus.register(CommonInit.class);
-        if (!isDataGen()) {
-            ResourceFarmCreativeModeTabs.init();
-        }
+        ResourceFarmCreativeModeTabs.init();
         ResourceFarmBlocks.init();
         modBus.addListener(CommonInit::commonSetup);
         modBus.addListener(CommonInit::modConstruct);
