@@ -60,6 +60,9 @@ public class TreeRegisterConfig {
                     continue;
                 }
 
+                // 主物品的合成数量
+                int productOutput = GsonHelper.getAsInt(json, "productOutput", 1);
+
                 // 解析树/矿石样式
                 String treeStyle = GsonHelper.getAsString(json, "treeStyle", "oak").toLowerCase();
                 ResourceTreeType treeType = ResourceTreeTypes.TREE_TYPES.get(treeStyle);
@@ -92,6 +95,7 @@ public class TreeRegisterConfig {
                 // 构建配置并注册资源树
                 TreeRegister.createResourceTree(ResourceTreeConfig.create(
                         item, translateKey,
+                        productOutput,
                         treeType, oreType,
                         fertilizeSetting, growthFrequency,
                         customPlaceBlock, customPlaceBlockTag,

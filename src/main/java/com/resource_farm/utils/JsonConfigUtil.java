@@ -33,12 +33,11 @@ public class JsonConfigUtil {
         try {
             Files.createDirectories(configDir);
         } catch (IOException e) {
-            ResourceFarm.LOGGER.error("创建配置文件夹失败: {}", configDir, e);
+            ResourceFarm.LOGGER.error("Failed to create configuration folder: {}", configDir, e);
         }
         return configDir.resolve(fileName);
     }
 
-    // ====================== 新增：通用基础读取方法 ======================
     /**
      * 通用读取方法：读取指定配置文件并解析为JsonElement
      */
@@ -49,10 +48,10 @@ public class JsonConfigUtil {
         if (!configFile.exists()) {
             try (FileWriter writer = new FileWriter(configFile)) {
                 GSON.toJson(defaultElement, writer);
-                ResourceFarm.LOGGER.info("配置文件不存在，已创建默认文件: {}", configPath);
+                ResourceFarm.LOGGER.info("The configuration file does not exist, a default file has been created: {}", configPath);
                 return defaultElement;
             } catch (IOException e) {
-                ResourceFarm.LOGGER.error("创建默认配置文件失败: {}", configPath, e);
+                ResourceFarm.LOGGER.error("Failed to create default configuration file: {}", configPath, e);
                 return defaultElement;
             }
         }
@@ -60,10 +59,10 @@ public class JsonConfigUtil {
         try (FileReader reader = new FileReader(configFile)) {
             return GSON.fromJson(reader, JsonElement.class);
         } catch (IOException e) {
-            ResourceFarm.LOGGER.error("读取配置文件IO失败: {}", configPath, e);
+            ResourceFarm.LOGGER.error("Reading configuration file IO failed: {}", configPath, e);
             return defaultElement;
         } catch (JsonParseException e) {
-            ResourceFarm.LOGGER.error("配置文件JSON格式错误，无法解析: {}", configPath, e);
+            ResourceFarm.LOGGER.error("The JSON format of the configuration file is incorrect and cannot be parsed: {}", configPath, e);
             return defaultElement;
         }
     }
@@ -78,7 +77,7 @@ public class JsonConfigUtil {
         if (element.isJsonObject()) {
             return element.getAsJsonObject();
         } else {
-            ResourceFarm.LOGGER.warn("配置文件 {} 不是合法的JsonObject，返回空对象", fileName);
+            ResourceFarm.LOGGER.warn("The configuration file {} is not a valid JsonObject and returns an empty object", fileName);
             return new JsonObject();
         }
     }
@@ -93,7 +92,7 @@ public class JsonConfigUtil {
         if (element.isJsonArray()) {
             return element.getAsJsonArray();
         } else {
-            ResourceFarm.LOGGER.warn("配置文件 {} 不是合法的JsonArray，返回空数组", fileName);
+            ResourceFarm.LOGGER.warn("The configuration file {} is not a valid JsonArray and returns an empty array", fileName);
             return new JsonArray();
         }
     }

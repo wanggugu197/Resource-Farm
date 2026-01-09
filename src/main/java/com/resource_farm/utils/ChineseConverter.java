@@ -13,20 +13,16 @@ public final class ChineseConverter {
 
     static {
         ResourceBundle bundle = ResourceBundle.getBundle("SimplifiedToTraditional");
-        for (String key : bundle.keySet()) {
+        for (String key : bundle.keySet())
             mappingTable.put(key.charAt(0), bundle.getString(key).charAt(0));
-        }
     }
 
     public static String convert(String text) {
         StringBuilder outputTextBuilder = new StringBuilder();
         for (char character : text.toCharArray()) {
             Character convertedChar = mappingTable.get(character);
-            if (convertedChar == null) {
-                outputTextBuilder.append(character);
-            } else {
-                outputTextBuilder.append(convertedChar);
-            }
+            if (convertedChar == null) outputTextBuilder.append(character);
+            else outputTextBuilder.append(convertedChar);
         }
         return outputTextBuilder.toString();
     }

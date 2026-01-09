@@ -86,7 +86,7 @@ public class ResourceLogBlock extends RotatedColoringPillarBlock {
 
     @Override
     public @Nullable BlockState getToolModifiedState(@NotNull BlockState state, @NotNull UseOnContext context, @NotNull ItemAbility ability, boolean simulate) {
-        if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedLog) {
+        if (ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateStrippedLog) {
             if (ability == ItemAbilities.AXE_STRIP) {
                 BlockEntry<?> strippedLog = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getStrippedLog();
                 if (strippedLog != null) {

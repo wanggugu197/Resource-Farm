@@ -64,8 +64,7 @@ public final class AddonFinder {
                     IAddon instance = constructor.newInstance();
                     instances.put(modId, instance);
                 } catch (ReflectiveOperationException e) {
-                    ResourceFarm.LOGGER.error(
-                            "Resource Farm addon class {} for addon {} must have a public constructor with no arguments, found {}",
+                    ResourceFarm.LOGGER.error("Resource Farm addon class {} for addon {} must have a public constructor with no arguments, found {}",
                             className, modId, Arrays.toString(asmInstanceClass.getConstructors()));
                 }
             } catch (ClassCastException e) {

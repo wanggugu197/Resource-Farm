@@ -7,8 +7,7 @@
     "BlockBehaviourAccessor",
     "ReloadableServerResourcesMixin",
     "TagLoaderMixin",
-    "TagManagerMixin",
-    "registrate.AbstractRegistrateAccessor"
+    "TagManagerMixin"
   ],
   "client": [
     "client.ModelManagerMixin"

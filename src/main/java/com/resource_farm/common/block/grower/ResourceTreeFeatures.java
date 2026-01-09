@@ -85,7 +85,7 @@ public class ResourceTreeFeatures {
     public static final ResourceTreeConfiguration.ResourceTreeConfigurationBuilder MEGA_JUNGLE_TREE = new ResourceTreeConfiguration.ResourceTreeConfigurationBuilder(
             BlockStateProvider.simple(Blocks.JUNGLE_LOG), new MegaJungleTrunkPlacer(10, 2, 19),
             BlockStateProvider.simple(Blocks.JUNGLE_LEAVES), new MegaJungleFoliagePlacer(ConstantInt.of(2), ConstantInt.of(0), 2),
-            new TwoLayersFeatureSize(1, 1, 2)).decorators(ImmutableList.of(TrunkVineDecorator.INSTANCE, new LeaveVineDecorator(0.25F)));
+            new TwoLayersFeatureSize(1, 1, 2)).decorators(ImmutableList.of(TrunkVineDecorator.INSTANCE, new LeaveVineDecorator(0.125F)));
 
     public static final ResourceTreeConfiguration.ResourceTreeConfigurationBuilder ACACIA = new ResourceTreeConfiguration.ResourceTreeConfigurationBuilder(
             BlockStateProvider.simple(Blocks.ACACIA_LOG), new ForkingTrunkPlacer(5, 2, 2),
@@ -114,7 +114,7 @@ public class ResourceTreeFeatures {
                     new MangroveRootPlacement(HolderSet.empty(), HolderSet.direct(Block::builtInRegistryHolder, Blocks.MUD, Blocks.MUDDY_MANGROVE_ROOTS),
                             BlockStateProvider.simple(Blocks.MUDDY_MANGROVE_ROOTS), 8, 15, 0.2F))),
             new TwoLayersFeatureSize(2, 0, 2))
-            .decorators(List.of(new LeaveVineDecorator(0.125F), new BeehiveDecorator(0.01F)))
+            .decorators(List.of(new LeaveVineDecorator(0.075F), new BeehiveDecorator(0.01F)))
             .ignoreVines();
     public static final ResourceTreeConfiguration.ResourceTreeConfigurationBuilder TALL_MANGROVE = new ResourceTreeConfiguration.ResourceTreeConfigurationBuilder(
             BlockStateProvider.simple(Blocks.MANGROVE_LOG),
@@ -126,7 +126,7 @@ public class ResourceTreeFeatures {
                     new MangroveRootPlacement(HolderSet.empty(), HolderSet.direct(Block::builtInRegistryHolder, Blocks.MUD, Blocks.MUDDY_MANGROVE_ROOTS),
                             BlockStateProvider.simple(Blocks.MUDDY_MANGROVE_ROOTS), 8, 15, 0.2F))),
             new TwoLayersFeatureSize(3, 0, 2))
-            .decorators(List.of(new LeaveVineDecorator(0.125F), new BeehiveDecorator(0.01F)))
+            .decorators(List.of(new LeaveVineDecorator(0.075F), new BeehiveDecorator(0.01F)))
             .ignoreVines();
 
     public static final Object2ObjectOpenHashMap<String, ResourceTreeConfiguration> ResourceTreeConfigurationMap = new Object2ObjectOpenHashMap<>();

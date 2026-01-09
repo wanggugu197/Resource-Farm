@@ -26,8 +26,7 @@ public abstract class ModelManagerMixin {
                                    ProfilerFiller reloadProfiler, Executor backgroundExecutor,
                                    Executor gameExecutor, CallbackInfoReturnable<CompletableFuture<Void>> cir) {
         if (ModLoader.hasErrors()) {
-            ResourceFarm.LOGGER
-                    .warn("Resource Farm Model loading CANCELLED because loading errors have been encountered");
+            ResourceFarm.LOGGER.warn("Resource Farm Model loading CANCELLED because loading errors have been encountered");
             return;
         }
 

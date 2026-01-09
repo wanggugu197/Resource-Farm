@@ -74,7 +74,7 @@ public class ResourceFarmDynamicResourcePack implements PackResources {
     }
 
     private static void addResourceInternal(ResourceLocation targetLoc, byte[] data) {
-        if (ResourceFarmConfigHolder.INSTANCE.dev.dumpAssets) {
+        if (ResourceFarmConfigHolder.resourceFarmConfigHolder.dev.dumpAssets) {
             Path parent = ResourceFarm.getGameDir().resolve("resource_farm/dumped/assets");
             writeByteArray(targetLoc, null, parent, data);
         }

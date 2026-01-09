@@ -39,16 +39,12 @@ public record FertilizeSettings(
 
     public static FertilizeSettings of(@Nullable Item mainItem, double mainChance,
                                        @Nullable Item secondaryItem, double secondaryChance) {
-        if (mainItem == Items.BARRIER || secondaryItem == Items.BARRIER || isChanceValid(mainChance) || isChanceValid(secondaryChance)) {
-            return DEFAULT;
-        }
+        if (mainItem == Items.BARRIER || secondaryItem == Items.BARRIER || isChanceValid(mainChance) || isChanceValid(secondaryChance)) return DEFAULT;
         return new FertilizeSettings(mainItem, mainChance, secondaryItem, secondaryChance);
     }
 
     public static FertilizeSettings of(@Nullable Item mainItem, double mainChance) {
-        if (mainItem == Items.BARRIER || isChanceValid(mainChance)) {
-            return DEFAULT;
-        }
+        if (mainItem == Items.BARRIER || isChanceValid(mainChance)) return DEFAULT;
         return new FertilizeSettings(mainItem, mainChance, null, 0.0);
     }
 
@@ -69,10 +65,9 @@ public record FertilizeSettings(
         Item mainItem = mainItemStr == null ? null : RegistriesUtils.getItem(mainItemStr);
         Item secondaryItem = secondaryItemStr == null ? null : RegistriesUtils.getItem(secondaryItemStr);
 
-        if (mainItem != null) {
+        if (mainItem != null)
             return secondaryItem != null ? FertilizeSettings.of(mainItem, mainChance, secondaryItem, secondaryChance) :
                     FertilizeSettings.of(mainItem, mainChance);
-        }
 
         return DEFAULT;
     }

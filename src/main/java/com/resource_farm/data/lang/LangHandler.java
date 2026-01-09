@@ -3,6 +3,7 @@ package com.resource_farm.data.lang;
 import com.resource_farm.api.lang.CNEN;
 import com.resource_farm.api.lang.SimplifiedChineseLanguageProvider;
 import com.resource_farm.api.lang.TraditionalChineseLanguageProvider;
+import com.resource_farm.data.ResourceFarmBlocks;
 import com.resource_farm.utils.ChineseConverter;
 
 import net.minecraft.network.chat.Component;
@@ -35,6 +36,8 @@ public final class LangHandler {
     }
 
     private static void init() {
+        ResourceFarmBlocks.init();
+
         // 创造标签
         addLang("itemGroup.resource_farm.resource_farm", "资源农场", "Resource Farm");
         addLang("itemGroup.resource_farm.resource_tree", "资源农场 | 资源树", "Resource Farm | Resource Tree");

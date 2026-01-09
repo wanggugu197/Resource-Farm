@@ -42,7 +42,7 @@ public class ResourceWoodBlock extends ColoringBlock {
 
     @Override
     public @Nullable BlockState getToolModifiedState(@NotNull BlockState state, @NotNull UseOnContext context, @NotNull ItemAbility ability, boolean simulate) {
-        if (ResourceFarmConfigHolder.INSTANCE.tree.blockGeneration.generateStrippedWood) {
+        if (ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateStrippedWood) {
             if (ability == ItemAbilities.AXE_STRIP) {
                 BlockEntry<?> strippedWood = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getStrippedWood();
                 if (strippedWood != null) {

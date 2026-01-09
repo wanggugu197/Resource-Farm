@@ -3,6 +3,7 @@
 |----------------------|----------------------------------|-----------------------------------------|--------|
 | item	                | 资源树关联的物品 ID（与 translateKey 二选一）	 | "minecraft:nether_star"	                | null   |
 | translateKey	        | 翻译键（与 item 二选一） 同时输入优先使用翻译键显示	   | "block.resource_farm.nether_star_tree"	 | null   |
+| productOutput	       | 资源树基础合成产量	                       | 8/16	                                   | 1      |
 | treeStyle	           | 树样式（对应 ResourceTreeTypes）	       | "oak"/"spruce"/"birch"	                 | "oak"  |
 | oreStyle	            | 矿石样式（对应 ResourceOreTypes）	       | "iron"/"diamond"/"netherite"	           | "iron" |
 | fertilizeSetting	    | 催熟配置（嵌套对象，参考 FertilizeSettings）	 | 见示例	                                    | 默认催熟配置 |
@@ -64,6 +65,7 @@
 ```
 {
   "item": "minecraft:amethyst_shard",
+  "productOutput": 16
   "treeStyle": "azalea", // 杜鹃树样式（若枚举存在）
   "oreStyle": "amethyst", // 紫水晶矿石样式
   // 不填customPlaceBlock，改用Tag指定可放置方块

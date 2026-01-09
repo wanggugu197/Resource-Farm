@@ -16,9 +16,7 @@ public class RLUtils {
         int i = location.indexOf(':');
         if (i >= 0) {
             path = location.substring(i + 1);
-            if (i >= 1) {
-                namespace = location.substring(0, i);
-            }
+            if (i >= 1) namespace = location.substring(0, i);
         }
         return RLUtils.get(namespace, path);
     }

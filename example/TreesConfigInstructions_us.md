@@ -3,6 +3,7 @@
 |---------------------|----------------------------------------------------------------------------------------------------------------------|----------------------------------------|------------------------------|
 | item                | Item ID associated with the resource tree (alternative to translateKey; translateKey takes priority if both are set) | "minecraft:nether_star"                | null                         |
 | translateKey        | Translation key (alternative to item; used for in-game localization and ID generation if item is null)               | "block.resource_farm.nether_star_tree" | null                         |
+| productOutput       | Resource tree based synthesis yield	                                                                                 | 8/16	                                  | 1                            |
 | treeStyle           | Tree style (corresponds to ResourceTreeTypes enum)                                                                   | "oak"/"spruce"/"birch"                 | "oak"                        |
 | oreStyle            | Ore style (corresponds to ResourceOreTypes enum)                                                                     | "iron"/"diamond"/"netherite"           | "iron"                       |
 | fertilizeSetting    | Fertilization configuration (nested object, refer to FertilizeSettings class)                                        | See examples                           | Default fertilization config |

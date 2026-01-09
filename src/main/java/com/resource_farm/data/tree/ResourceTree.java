@@ -23,6 +23,9 @@ public class ResourceTree {
     private String translateKey;
 
     @Setter
+    private int recipeCount;
+
+    @Setter
     private ResourceLocation treeConfigKey;
     @Setter
     private BlockEntry<ResourceSaplingBlock> sapling;
@@ -49,5 +52,9 @@ public class ResourceTree {
 
     public static ResourceTree create(ResourceTreeConfig resourceTreeConfig) {
         return new ResourceTree(resourceTreeConfig);
+    }
+
+    public void addRecipeCount() {
+        recipeCount++;
     }
 }

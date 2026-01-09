@@ -7,6 +7,7 @@ import com.resource_farm.utils.RLUtils;
 
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.javafmlmod.FMLModContainer;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -56,6 +57,10 @@ public class ResourceFarm {
 
     public static Path getGamePath() {
         return FMLLoader.getGamePath();
+    }
+
+    public static boolean isModLoaded(String modId) {
+        return ModList.get().isLoaded(modId);
     }
 
     public static ResourceLocation id(String path) {

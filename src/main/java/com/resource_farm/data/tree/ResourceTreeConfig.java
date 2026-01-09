@@ -15,6 +15,7 @@ public record ResourceTreeConfig(
                                  String id,                                     // 唯一标识，自动生成
                                  @Nullable String correspondingItem,            // 对应物品
                                  @Nullable String translateKey,                 // 对应翻译键
+                                 int productOutput,                             // 基础合成产量
                                  ResourceTreeType treeType,                     // 树木样式
                                  ResourceOreType oreType,                       // 矿石样式
                                  FertilizeSettings fertilizeSetting,            // 施肥设置
@@ -55,6 +56,7 @@ public record ResourceTreeConfig(
     public static ResourceTreeConfig create(
                                             @Nullable String correspondingItem,
                                             @Nullable String translateKey,
+                                            int productOutput,
                                             ResourceTreeType treeStyle,
                                             ResourceOreType oreStyle,
                                             FertilizeSettings fertilizeSetting,
@@ -67,6 +69,7 @@ public record ResourceTreeConfig(
                 null,
                 correspondingItem,
                 translateKey,
+                productOutput,
                 treeStyle,
                 oreStyle,
                 fertilizeSetting,

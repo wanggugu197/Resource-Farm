@@ -9,9 +9,9 @@ public record ColoringSettings(
     public static ColoringSettings of(boolean[] tintLayers, int[] colors) {
         boolean[] processedTintLayers = tintLayers == null ? new boolean[0] : tintLayers;
         int[] processedColors = colors == null ? new int[0] : colors;
-        for (int i = 0; i < processedColors.length; i++) {
+        for (int i = 0; i < processedColors.length; i++)
             processedColors[i] = processColorAlphaChannel(processedColors[i]);
-        }
+
         int minLength = Math.min(processedTintLayers.length, processedColors.length);
         boolean[] finalTintLayers = Arrays.copyOf(processedTintLayers, minLength);
         int[] finalColors = Arrays.copyOf(processedColors, minLength);

@@ -27,7 +27,7 @@ public final class RegistriesUtils {
     public static Item getItem(ResourceLocation id) {
         Item i = BuiltInRegistries.ITEM.get(id);
         if (i == Items.AIR && !id.equals(AIR)) {
-            ResourceFarm.LOGGER.error("未找到ID为{}的物品", id);
+            ResourceFarm.LOGGER.error("Item with ID {} not found", id);
             return Items.BARRIER;
         }
         return i;
