@@ -31,10 +31,10 @@ public class TreeModelRenderer {
     private static final String BLOCK_PATH_PREFIX = "block/";
     private static final int ROTATE_90_DEGREE = 90;
 
-    private static final boolean STRIPPED_LOG_ENABLED = ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateStrippedLog;
-    private static final boolean WOOD_ENABLED = ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateWood;
-    private static final boolean STRIPPED_WOOD_ENABLED = ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateStrippedWood;
-    private static final boolean PLANKS_ENABLED = ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generatePlanks;
+    private static final boolean STRIPPED_LOG_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedLog;
+    private static final boolean WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateWood;
+    private static final boolean STRIPPED_WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedWood;
+    private static final boolean PLANKS_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generatePlanks;
 
     // 父模型
     private static final ResourceLocation PARENT_ALL = ResourceFarmModels.STATIC_ALL_PARENT;

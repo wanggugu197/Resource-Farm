@@ -3,16 +3,19 @@ ldlib = "1.0.35.a"
 registrate = "MC1.21-1.3.0+67"
 configuration = "3.1.0-neoforge"
 
-jei = "19.21.0.247"
+jei = "19.27.0.340"
 rei = "16.0.799"
-emi = "1.1.21+1.21.1"
-kubejs = "2101.7.1-build.181"
-rhino = "2101.2.7-build.74"
+emi = "1.1.22+1.21.1"
+kubejs = "2101.7.2-build.348"
+rhino = "2101.2.7-build.77"
 theoneprobe = "1.21_neo-12.0.4-6"
 
 jade = "15.10.0+neoforge"
 modernfix = "4SPHwiDB"
 
+create_version = "6.0.9-215"
+ponder_version = "1.0.81+mc1.21.1"
+flywheel_version = "1.0.6"
 
 
 [libraries]
@@ -30,8 +33,13 @@ kubejs              = { module = "dev.latvian.mods:kubejs-neoforge", version.ref
 rhino               = { module = "dev.latvian.mods:rhino", version.ref = "rhino" }
 theoneprobe         = { module = "mcjty.theoneprobe:theoneprobe", version.ref = "theoneprobe" }
 
-
 jade                = { module = "maven.modrinth:jade", version.ref = "jade" }
+
+create              = { module = "com.simibubi.create:create-1.21.1", version.ref = "create_version" }
+createmod           = { module = "net.createmod.ponder:ponder-neoforge", version.ref = "ponder_version" }
+flywheelapi        = { module = "dev.engine-room.flywheel:flywheel-neoforge-api-1.21.1", version.ref = "flywheel_version" }
+flywheel            = { module = "dev.engine-room.flywheel:flywheel-neoforge-1.21.1", version.ref = "flywheel_version" }
+
 
 [bundles]
 jei = ["jei-common-api", "jei-neoforge-api", "jei-neoforge-impl"]

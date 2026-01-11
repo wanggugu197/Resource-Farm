@@ -57,7 +57,7 @@ public class TreeLootInsert {
                 lootTables.accept(logId, LootTableUtils.createSelf(logEntry.get().asItem()).build(), access);
                 ((BlockBehaviourAccessor) logEntry.get()).setDrops(ResourceKey.create(Registries.LOOT_TABLE, logId));
             }
-            if (ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateStrippedLog) {
+            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedLog) {
                 BlockEntry<?> strippedLogEntry = resourceTree.getStrippedLog();
                 if (strippedLogEntry != null) {
                     ResourceLocation strippedLogId = getId(strippedLogEntry);
@@ -65,7 +65,7 @@ public class TreeLootInsert {
                     ((BlockBehaviourAccessor) strippedLogEntry.get()).setDrops(ResourceKey.create(Registries.LOOT_TABLE, strippedLogId));
                 }
             }
-            if (ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateWood) {
+            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateWood) {
                 BlockEntry<?> woodEntry = resourceTree.getWood();
                 if (woodEntry != null) {
                     ResourceLocation woodId = getId(woodEntry);
@@ -73,7 +73,7 @@ public class TreeLootInsert {
                     ((BlockBehaviourAccessor) woodEntry.get()).setDrops(ResourceKey.create(Registries.LOOT_TABLE, woodId));
                 }
             }
-            if (ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateStrippedWood) {
+            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedWood) {
                 BlockEntry<?> strippedWoodEntry = resourceTree.getStrippedWood();
                 if (strippedWoodEntry != null) {
                     ResourceLocation strippedWoodId = getId(strippedWoodEntry);
@@ -81,7 +81,7 @@ public class TreeLootInsert {
                     ((BlockBehaviourAccessor) strippedWoodEntry.get()).setDrops(ResourceKey.create(Registries.LOOT_TABLE, strippedWoodId));
                 }
             }
-            if (ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generatePlanks) {
+            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generatePlanks) {
                 BlockEntry<?> planksEntry = resourceTree.getPlanks();
                 if (planksEntry != null) {
                     ResourceLocation planksId = getId(planksEntry);

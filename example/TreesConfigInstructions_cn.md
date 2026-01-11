@@ -1,17 +1,18 @@
 # 如何通过Config注册资源树
-| 核心字段	                | 作用	                              | 取值示例	                                   | 默认值    |
-|----------------------|----------------------------------|-----------------------------------------|--------|
-| item	                | 资源树关联的物品 ID（与 translateKey 二选一）	 | "minecraft:nether_star"	                | null   |
-| translateKey	        | 翻译键（与 item 二选一） 同时输入优先使用翻译键显示	   | "block.resource_farm.nether_star_tree"	 | null   |
-| productOutput	       | 资源树基础合成产量	                       | 8/16	                                   | 1      |
-| treeStyle	           | 树样式（对应 ResourceTreeTypes）	       | "oak"/"spruce"/"birch"	                 | "oak"  |
-| oreStyle	            | 矿石样式（对应 ResourceOreTypes）	       | "iron"/"diamond"/"netherite"	           | "iron" |
-| fertilizeSetting	    | 催熟配置（嵌套对象，参考 FertilizeSettings）	 | 见示例	                                    | 默认催熟配置 |
-| growthFrequency	     | 生成频率（每个随机刻，会有 其分之一 概率长大）	        | 5/10	                                   | 10     |
-| customPlaceBlock	    | 自定义放置方块 ID	                      | "minecraft:netherrack"	                 | null   |
-| customPlaceBlockTag	 | 自定义放置方块标签	                       | "minecraft:nether_blocks"	              | null   |
-| lightLevel	          | 资源树亮度（0-15，Minecraft 亮度范围）	      | 10/15	                                  | 0      |
-| colors	              | 资源树颜色（16 进制整数，如 0xFF0000 = 红色）	  | 0xFF5500/0x00FFFF	                      | 0      |
+| 核心字段                  | 作用	                              | 取值示例	                                   | 默认值    |
+|-----------------------|----------------------------------|-----------------------------------------|--------|
+| item	                 | 资源树关联的物品 ID（与 translateKey 二选一）	 | "minecraft:nether_star"	                | null   |
+| translateKey	         | 翻译键（与 item 二选一） 同时输入优先使用翻译键显示	   | "block.resource_farm.nether_star_tree"	 | null   |
+| automaticBasicRecipe	 | 是否自动生成树木物品和树苗的配方	                | true/false	                             | true   |
+| productOutput         | 资源树基础合成产量	                       | 8/16	                                   | 1      |
+| treeStyle             | 树样式（对应 ResourceTreeTypes）	       | "oak"/"spruce"/"birch"	                 | "oak"  |
+| oreStyle	             | 矿石样式（对应 ResourceOreTypes）	       | "iron"/"diamond"/"netherite"	           | "iron" |
+| fertilizeSetting	     | 催熟配置（嵌套对象，参考 FertilizeSettings）	 | 见示例	                                    | 默认催熟配置 |
+| growthFrequency       | 生成频率（每个随机刻，会有 其分之一 概率长大）	        | 5/10	                                   | 10     |
+| customPlaceBlock	     | 自定义放置方块 ID	                      | "minecraft:netherrack"	                 | null   |
+| customPlaceBlockTag   | 自定义放置方块标签	                       | "minecraft:nether_blocks"	              | null   |
+| lightLevel            | 资源树亮度（0-15，Minecraft 亮度范围）	      | 10/15	                                  | 0      |
+| colors                | 资源树颜色（16 进制整数，如 0xFF0000 = 红色）	  | 0xFF5500/0x00FFFF	                      | 0      |
 
 ### 示例 1：完整配置（下界之星）—— 所有字段自定义
 ```

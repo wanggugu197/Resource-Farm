@@ -20,6 +20,7 @@
   "resource_farm.resource_tree.echo": "Echo",
   "resource_farm.resource_tree.minor_creature": "Minor Creature",
   "resource_farm.resource_tree.prismarine": "Prismarine",
+  "resource_farm.resource_tree.sculk": "Sculk",
   "resource_farm.resource_tree.wood": "Wood",
   "tag.block.resource_farm.resource_leaves": "Resource Leaves",
   "tag.block.resource_farm.resource_log": "Resource Log",

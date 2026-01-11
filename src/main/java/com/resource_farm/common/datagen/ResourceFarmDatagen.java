@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * 构建 ResourceFarm 的数据生成类
  */
-@EventBusSubscriber(modid = ResourceFarm.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = ResourceFarm.MOD_ID)
 public class ResourceFarmDatagen {
 
     /**

@@ -6,6 +6,7 @@ import com.resource_farm.common.item.ResourceTree.ResourceResinItem;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.common.util.Lazy;
 
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
@@ -15,15 +16,13 @@ import lombok.Setter;
 @Getter
 public class ResourceTree {
 
-    private final ResourceTreeConfig resourceTreeConfig;
+    @Setter
+    private ResourceTreeConfig resourceTreeConfig;
 
     @Setter
-    private Item treeItem;
+    private Lazy<Item> treeItem;
     @Setter
-    private String translateKey;
-
-    @Setter
-    private int recipeCount;
+    private Lazy<String> translateKey;
 
     @Setter
     private ResourceLocation treeConfigKey;
@@ -52,9 +51,5 @@ public class ResourceTree {
 
     public static ResourceTree create(ResourceTreeConfig resourceTreeConfig) {
         return new ResourceTree(resourceTreeConfig);
-    }
-
-    public void addRecipeCount() {
-        recipeCount++;
     }
 }

@@ -23,6 +23,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
+import net.neoforged.neoforge.common.util.Lazy;
 
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
@@ -34,7 +35,7 @@ import java.util.List;
 public class ResourceLogBlock extends RotatedColoringPillarBlock {
 
     private final String treeId;
-    private final String translateKey;
+    private final Lazy<String> translateKey;
     private final ResourceTreeType treeType;
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
 
@@ -86,7 +87,7 @@ public class ResourceLogBlock extends RotatedColoringPillarBlock {
 
     @Override
     public @Nullable BlockState getToolModifiedState(@NotNull BlockState state, @NotNull UseOnContext context, @NotNull ItemAbility ability, boolean simulate) {
-        if (ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateStrippedLog) {
+        if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedLog) {
             if (ability == ItemAbilities.AXE_STRIP) {
                 BlockEntry<?> strippedLog = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getStrippedLog();
                 if (strippedLog != null) {
@@ -100,6 +101,6 @@ public class ResourceLogBlock extends RotatedColoringPillarBlock {
 
     @Override
     public @NotNull MutableComponent getName() {
-        return Component.translatable(treeType.logTranslateKey(), Component.translatable(translateKey));
+        return Component.translatable(treeType.logTranslateKey(), Component.translatable(translateKey.get()));
     }
 }

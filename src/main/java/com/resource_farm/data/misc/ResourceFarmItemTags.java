@@ -31,7 +31,7 @@ public class ResourceFarmItemTags {
         return TagKey.create(Registries.ITEM, ResourceFarm.id(path));
     }
 
-    private static TagKey<Item> createItemTag(ResourceLocation location) {
+    public static TagKey<Item> createItemTag(ResourceLocation location) {
         return TagKey.create(Registries.ITEM, location);
     }
 }

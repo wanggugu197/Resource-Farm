@@ -95,7 +95,7 @@ public class TreeBuilder {
 
             );
 
-            if (ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateStrippedLog) {
+            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedLog) {
                 resourceTree.setStrippedLog(
                         REGISTRATE.object("stripped_" + name + "_log")
                                 .block(props -> ResourceStrippedLogBlock.create(
@@ -112,7 +112,7 @@ public class TreeBuilder {
                                 .register());
             }
 
-            if (ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateWood) {
+            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateWood) {
                 resourceTree.setWood(
                         REGISTRATE.object(name + "_wood")
                                 .block(props -> ResourceWoodBlock.create(
@@ -129,7 +129,7 @@ public class TreeBuilder {
                                 .register());
             }
 
-            if (ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateStrippedWood) {
+            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedWood) {
                 resourceTree.setStrippedWood(
                         REGISTRATE.object("stripped_" + name + "_wood")
                                 .block(props -> ResourceStrippedWoodBlock.create(
@@ -146,7 +146,7 @@ public class TreeBuilder {
                                 .register());
             }
 
-            if (ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generatePlanks) {
+            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generatePlanks) {
                 resourceTree.setPlanks(
                         REGISTRATE.object(name + "_planks")
                                 .block(props -> ResourcePlanksBlock.create(

@@ -7,13 +7,14 @@ import com.resource_farm.data.ResourceFarmBlocks;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.neoforged.neoforge.common.util.Lazy;
 
 import org.jetbrains.annotations.NotNull;
 
 public class ResourceStrippedWoodBlock extends ColoringBlock {
 
     private final String treeId;
-    private final String translateKey;
+    private final Lazy<String> translateKey;
     private final ResourceTreeType treeType;
 
     public ResourceStrippedWoodBlock(String treeId,
@@ -35,6 +36,6 @@ public class ResourceStrippedWoodBlock extends ColoringBlock {
 
     @Override
     public @NotNull MutableComponent getName() {
-        return Component.translatable(treeType.strippedWoodTranslateKey(), Component.translatable(translateKey));
+        return Component.translatable(treeType.strippedWoodTranslateKey(), Component.translatable(translateKey.get()));
     }
 }

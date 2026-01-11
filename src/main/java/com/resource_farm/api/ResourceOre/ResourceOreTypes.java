@@ -15,6 +15,7 @@ public class ResourceOreTypes {
     public static final ResourceOreType NETHER_GOLD = create("block/ore/", "nether_gold");
     public static final ResourceOreType NETHER_QUARTZ = create("block/ore/", "nether_quartz");
     public static final ResourceOreType REDSTONE = create("block/ore/", "redstone");
+    public static final ResourceOreType CRACK = create("block/ore/", "crack");
 
     public static final Object2ObjectOpenHashMap<String, ResourceOreType> ORE_TYPES = new Object2ObjectOpenHashMap<>();
 
@@ -31,6 +32,6 @@ public class ResourceOreTypes {
     }
 
     public static ResourceOreType create(String contents, String name) {
-        return ResourceOreType.of(ResourceFarm.id(contents + name));
+        return ResourceOreType.of(ResourceFarm.id(contents + name), ResourceFarm.id("block/ore/center"));
     }
 }

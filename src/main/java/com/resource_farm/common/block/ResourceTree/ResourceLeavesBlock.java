@@ -9,13 +9,14 @@ import com.resource_farm.data.ResourceFarmBlocks;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.block.LeavesBlock;
+import net.neoforged.neoforge.common.util.Lazy;
 
 import org.jetbrains.annotations.NotNull;
 
 public class ResourceLeavesBlock extends LeavesBlock implements LightEmittingBlock, TintableBlock {
 
     private final String treeId;
-    private final String translateKey;
+    private final Lazy<String> translateKey;
     private final ResourceTreeType treeType;
 
     private final int lightLevel;
@@ -53,6 +54,6 @@ public class ResourceLeavesBlock extends LeavesBlock implements LightEmittingBlo
 
     @Override
     public @NotNull MutableComponent getName() {
-        return Component.translatable(treeType.leavesTranslateKey(), Component.translatable(translateKey));
+        return Component.translatable(treeType.leavesTranslateKey(), Component.translatable(translateKey.get()));
     }
 }

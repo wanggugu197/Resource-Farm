@@ -11,7 +11,6 @@ import com.resource_farm.data.tree.builder.TreeRegister;
 import com.resource_farm.utils.FormattingUtil;
 import com.resource_farm.utils.JsonConfigUtil;
 import com.resource_farm.utils.RLUtils;
-import com.resource_farm.utils.RegistriesUtils;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
@@ -60,6 +59,8 @@ public class TreeRegisterConfig {
                     continue;
                 }
 
+                // 自动生成主物品合成树苗-树脂果实合成主物品配方
+                boolean automaticBasicRecipe = GsonHelper.getAsBoolean(json, "automaticBasicRecipe", true);
                 // 主物品的合成数量
                 int productOutput = GsonHelper.getAsInt(json, "productOutput", 1);
 
@@ -84,7 +85,6 @@ public class TreeRegisterConfig {
 
                 // 解析自定义放置方块/放置方块Tag
                 String placeBlockStr = GsonHelper.getAsString(json, "customPlaceBlock", null);
-                Block customPlaceBlock = placeBlockStr != null ? RegistriesUtils.getBlock(placeBlockStr) : null;
                 String placeBlockTagStr = GsonHelper.getAsString(json, "customPlaceBlockTag", null);
                 TagKey<Block> customPlaceBlockTag = placeBlockTagStr != null ? TagKey.create(Registries.BLOCK, RLUtils.parse(placeBlockTagStr)) : null;
 
@@ -95,10 +95,10 @@ public class TreeRegisterConfig {
                 // 构建配置并注册资源树
                 TreeRegister.createResourceTree(ResourceTreeConfig.create(
                         item, translateKey,
-                        productOutput,
+                        automaticBasicRecipe, productOutput,
                         treeType, oreType,
                         fertilizeSetting, growthFrequency,
-                        customPlaceBlock, customPlaceBlockTag,
+                        placeBlockStr, customPlaceBlockTag,
                         lightLevel, colors));
                 successCount++;
 

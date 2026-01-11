@@ -93,4 +93,9 @@ repositories {
         forRepository { maven { url = "https://jitpack.io/" } }
         filter { includeGroup("com.github.rtyley") }
     }
+
+    // 机械动力
+    maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
+    maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
+
 }

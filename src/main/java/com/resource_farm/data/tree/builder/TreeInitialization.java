@@ -5,6 +5,7 @@ import com.resource_farm.utils.RegistriesUtils;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.common.util.Lazy;
 
 public class TreeInitialization {
 
@@ -14,21 +15,25 @@ public class TreeInitialization {
             String itemId = resourceTree.getResourceTreeConfig().correspondingItem();
             String translateKey = resourceTree.getResourceTreeConfig().translateKey();
 
-            if (itemId != null) {
-                Item item = RegistriesUtils.getItem(itemId);
-                if (item != Items.BARRIER) {
-                    resourceTree.setTreeItem(item);
-                    if (translateKey == null) {
-                        resourceTree.setTranslateKey(item.getDescriptionId());
-                        return;
+            resourceTree.setTreeItem(Lazy.of(() -> {
+                if (itemId != null) {
+                    return RegistriesUtils.getItem(itemId);
+                }
+                return Items.BARRIER;
+            }));
+
+            resourceTree.setTranslateKey(Lazy.of(() -> {
+                if (translateKey == null) {
+                    if (itemId != null) {
+                        Item item = RegistriesUtils.getItem(itemId);
+                        if (item != Items.BARRIER) {
+                            return item.getDescriptionId();
+                        }
+                        return "§ktranslate";
                     }
                 }
-            }
-            if (translateKey != null) {
-                resourceTree.setTranslateKey(translateKey);
-                return;
-            }
-            resourceTree.setTranslateKey("§ktranslate");
+                return translateKey;
+            }));
         });
     }
 }

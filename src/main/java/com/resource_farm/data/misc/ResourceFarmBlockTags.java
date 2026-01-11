@@ -27,7 +27,7 @@ public class ResourceFarmBlockTags {
         return TagKey.create(Registries.BLOCK, ResourceFarm.id(path));
     }
 
-    private static TagKey<Block> createBlockTag(ResourceLocation location) {
+    public static TagKey<Block> createBlockTag(ResourceLocation location) {
         return TagKey.create(Registries.BLOCK, location);
     }
 }

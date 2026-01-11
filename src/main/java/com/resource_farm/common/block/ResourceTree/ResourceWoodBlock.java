@@ -12,6 +12,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
+import net.neoforged.neoforge.common.util.Lazy;
 
 import com.tterrag.registrate.util.entry.BlockEntry;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public class ResourceWoodBlock extends ColoringBlock {
 
     private final String treeId;
-    private final String translateKey;
+    private final Lazy<String> translateKey;
     private final ResourceTreeType treeType;
 
     public ResourceWoodBlock(String treeId,
@@ -42,7 +43,7 @@ public class ResourceWoodBlock extends ColoringBlock {
 
     @Override
     public @Nullable BlockState getToolModifiedState(@NotNull BlockState state, @NotNull UseOnContext context, @NotNull ItemAbility ability, boolean simulate) {
-        if (ResourceFarmConfigHolder.resourceFarmConfigHolder.tree.blockGeneration.generateStrippedWood) {
+        if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedWood) {
             if (ability == ItemAbilities.AXE_STRIP) {
                 BlockEntry<?> strippedWood = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getStrippedWood();
                 if (strippedWood != null) {
@@ -55,6 +56,6 @@ public class ResourceWoodBlock extends ColoringBlock {
 
     @Override
     public @NotNull MutableComponent getName() {
-        return Component.translatable(treeType.woodTranslateKey(), Component.translatable(translateKey));
+        return Component.translatable(treeType.woodTranslateKey(), Component.translatable(translateKey.get()));
     }
 }

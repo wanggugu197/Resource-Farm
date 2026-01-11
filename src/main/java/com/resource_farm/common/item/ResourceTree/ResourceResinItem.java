@@ -8,13 +8,14 @@ import com.resource_farm.data.ResourceFarmBlocks;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.util.Lazy;
 
 import org.jetbrains.annotations.NotNull;
 
 public class ResourceResinItem extends ColoringItem {
 
     private final String treeId;
-    private final String translateKey;
+    private final Lazy<String> translateKey;
     private final ResourceTreeType treeType;
 
     protected ResourceResinItem(String treeId,
@@ -34,6 +35,6 @@ public class ResourceResinItem extends ColoringItem {
 
     @Override
     public @NotNull MutableComponent getName(@NotNull ItemStack stack) {
-        return Component.translatable(treeType.resinTranslateKey(), Component.translatable(translateKey));
+        return Component.translatable(treeType.resinTranslateKey(), Component.translatable(translateKey.get()));
     }
 }

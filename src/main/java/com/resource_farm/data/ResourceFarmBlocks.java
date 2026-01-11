@@ -15,6 +15,7 @@ import static com.resource_farm.data.tree.builder.TreeInitialization.initializat
 public class ResourceFarmBlocks {
 
     public static void init() {
+        ResourceTreeAccessManagement.registerTree();
         initializationTreeMap();
         // 注册方块/物品
         if (!isDataGen()) {
@@ -24,8 +25,4 @@ public class ResourceFarmBlocks {
 
     public static final Object2ObjectOpenHashMap<String, ResourceTree> ResourceTreeMap = new Object2ObjectOpenHashMap<>();
     public static final List<String> ResourceTreeKeyList = new ArrayList<>();
-
-    static {
-        ResourceTreeAccessManagement.registerTree();
-    }
 }

@@ -5,6 +5,7 @@ import com.resource_farm.common.Manager.ResourceFarmComposTablesManager;
 import com.resource_farm.common.Manager.ResourceFarmLootTablesManager;
 import com.resource_farm.common.Manager.ResourceFarmRecipesManager;
 import com.resource_farm.common.pack.ResourceFarmDynamicDataPack;
+import com.resource_farm.common.pack.crossover.CrossoverCreateDynamicDataPack;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;
@@ -38,10 +39,12 @@ public abstract class ReloadableServerResourcesMixin {
                              FeatureFlagSet featureFlags, Commands.CommandSelection commands,
                              int functionCompilationLevel, Executor backgroundExecutor, Executor gameExecutor,
                              CallbackInfoReturnable<CompletableFuture<ReloadableServerResources>> cir) {
+        long globalStartTime = System.currentTimeMillis();
+        ResourceFarm.LOGGER.info("=== Resource Farm 数据加载开始 ===");
+
         RegistryAccess.Frozen frozen = access.compositeAccess();
 
-        long startTime = System.currentTimeMillis();
-
+        long step2StartTime = System.currentTimeMillis();
         ResourceFarmRecipesManager.recipeAddition(new RecipeOutput() {
 
             @Override
@@ -55,9 +58,35 @@ public abstract class ReloadableServerResourcesMixin {
                 ResourceFarmDynamicDataPack.addRecipe(id, recipe, advancement, frozen);
             }
         });
-        ResourceFarmComposTablesManager.buildComposTablesData(frozen);
-        ResourceFarmLootTablesManager.generateComposTablesLoot(ResourceFarmDynamicDataPack::addLootTable, frozen);
+        ResourceFarm.LOGGER.info("MC原版配方添加完成，耗时 {}ms", System.currentTimeMillis() - step2StartTime);
 
-        ResourceFarm.LOGGER.info("Resource Farm Data loading took {}ms", System.currentTimeMillis() - startTime);
+        if (ResourceFarm.isModLoaded("create")) {
+            long step3StartTime = System.currentTimeMillis();
+            ResourceFarmRecipesManager.createRecipeAddition(new RecipeOutput() {
+
+                @Override
+                public Advancement.@NotNull Builder advancement() {
+                    return Advancement.Builder.recipeAdvancement();
+                }
+
+                @Override
+                public void accept(@NotNull ResourceLocation id, @NotNull Recipe<?> recipe,
+                                   @Nullable AdvancementHolder advancement, ICondition @NotNull... conditions) {
+                    CrossoverCreateDynamicDataPack.addCreateRecipe(id, recipe, frozen);
+                }
+            });
+            ResourceFarm.LOGGER.info("机械动力配方添加完成，耗时 {}ms", System.currentTimeMillis() - step3StartTime);
+        }
+
+        long step4StartTime = System.currentTimeMillis();
+        ResourceFarmComposTablesManager.buildComposTablesData(frozen);
+        ResourceFarm.LOGGER.info("构建堆肥桶表数据完成，耗时 {}ms", System.currentTimeMillis() - step4StartTime);
+
+        long step5StartTime = System.currentTimeMillis();
+        ResourceFarmLootTablesManager.generateComposTablesLoot(ResourceFarmDynamicDataPack::addLootTable, frozen);
+        ResourceFarm.LOGGER.info("生成战利品数据完成，耗时 {}ms", System.currentTimeMillis() - step5StartTime);
+
+        ResourceFarm.LOGGER.info("Resource Farm Data loading took {}ms", System.currentTimeMillis() - globalStartTime);
+        ResourceFarm.LOGGER.info("=== Resource Farm 数据加载结束 ===");
     }
 }

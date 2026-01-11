@@ -10,16 +10,24 @@ dependencies {
     compileOnly(forge.bundles.jei)
     compileOnly(forge.bundles.rei)
     compileOnly(forge.emi)
+    localRuntime(forge.bundles.jei)
+    localRuntime(forge.emi)
 
     // WAILA-likes
     compileOnly(forge.theoneprobe)
     compileOnly(forge.jade)
+    localRuntime(forge.jade)
 
     // KJS
     compileOnly(forge.bundles.kjs)
-
-    localRuntime(forge.jade)
-    localRuntime(forge.emi)
-
     localRuntime(forge.bundles.kjs)
+
+    // Create
+    compileOnly(forge.create) { transitive = false }
+    compileOnly(forge.createmod)
+    compileOnly(forge.flywheelapi)
+    runtimeOnly(forge.create)
+    runtimeOnly(forge.createmod)
+    runtimeOnly(forge.flywheel)
+
 }

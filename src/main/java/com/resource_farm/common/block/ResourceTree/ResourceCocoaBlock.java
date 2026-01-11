@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.util.Lazy;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +36,7 @@ import org.jetbrains.annotations.Nullable;
 public class ResourceCocoaBlock extends CocoaBlock implements TintableBlock, LightEmittingBlock {
 
     private final String treeId;
-    private final String translateKey;
+    private final Lazy<String> translateKey;
     private final ResourceTreeType treeType;
 
     private static final int GROWTH_CHANCE_DENOMINATOR = 10;
@@ -157,9 +158,9 @@ public class ResourceCocoaBlock extends CocoaBlock implements TintableBlock, Lig
         Item heldItem = stack.getItem();
         double successChance;
 
-        if (heldItem == fertilizeSetting.mainRipeningItem()) {
+        if (fertilizeSetting.mainRipeningItem() != null && heldItem == fertilizeSetting.mainRipeningItem().get()) {
             successChance = fertilizeSetting.mainChance();
-        } else if (heldItem == fertilizeSetting.secondaryRipeningItem()) {
+        } else if (fertilizeSetting.secondaryRipeningItem() != null && heldItem == fertilizeSetting.secondaryRipeningItem().get()) {
             successChance = fertilizeSetting.secondaryChance();
         } else {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
@@ -194,6 +195,6 @@ public class ResourceCocoaBlock extends CocoaBlock implements TintableBlock, Lig
 
     @Override
     public @NotNull MutableComponent getName() {
-        return Component.translatable(treeType.fruitTranslateKey(), Component.translatable(translateKey));
+        return Component.translatable(treeType.fruitTranslateKey(), Component.translatable(translateKey.get()));
     }
 }

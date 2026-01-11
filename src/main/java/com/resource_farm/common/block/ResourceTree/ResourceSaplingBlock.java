@@ -21,14 +21,17 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.common.util.Lazy;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +42,7 @@ import javax.annotation.Nullable;
 public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock, LightEmittingBlock {
 
     private final String treeId;
-    private final String translateKey;
+    private final Lazy<String> translateKey;
     private final ResourceTreeType treeType;
 
     protected final ResourceTreeGrower resourceTreeGrower;
@@ -47,8 +50,7 @@ public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock,
     private final FertilizeSettings fertilizeSetting;
     public final int growthFrequency;
 
-    @Nullable
-    private final Block customPlaceBlock;
+    private final Lazy<Block> customPlaceBlock;
     @Nullable
     private final TagKey<Block> customPlaceBlockTag;
 
@@ -61,7 +63,7 @@ public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock,
                                 Properties properties,
                                 FertilizeSettings fertilizeSetting,
                                 int growthFrequency,
-                                @Nullable Block customPlaceBlock,
+                                Lazy<Block> customPlaceBlock,
                                 @Nullable TagKey<Block> customPlaceBlockTag,
                                 int lightLevel,
                                 ColoringSettings coloringSettings) {
@@ -80,7 +82,7 @@ public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock,
 
     public static ResourceSaplingBlock create(String treeId, ResourceTreeGrower treeGrower, Properties properties,
                                               FertilizeSettings fertilizeSetting, int growthFrequency,
-                                              Block customPlaceBlock, TagKey<Block> customPlaceBlockTag,
+                                              Lazy<Block> customPlaceBlock, TagKey<Block> customPlaceBlockTag,
                                               int lightLevel, ColoringSettings coloringSettings) {
         return new ResourceSaplingBlock(treeId, treeGrower, properties, fertilizeSetting, growthFrequency, customPlaceBlock,
                 customPlaceBlockTag, lightLevel, coloringSettings);
@@ -119,7 +121,7 @@ public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock,
     @Override
     protected boolean mayPlaceOn(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
         if (customPlaceBlock == null && customPlaceBlockTag == null) return super.mayPlaceOn(state, level, pos);
-        return (customPlaceBlock != null && state.is(customPlaceBlock)) ||
+        return (customPlaceBlock != null && state.is(customPlaceBlock.get())) ||
                 (customPlaceBlockTag != null && state.is(customPlaceBlockTag));
     }
 
@@ -148,9 +150,9 @@ public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock,
         Item heldItem = stack.getItem();
         double successChance;
 
-        if (heldItem == fertilizeSetting.mainRipeningItem()) {
+        if (heldItem == fertilizeSetting.mainRipeningItem().get()) {
             successChance = fertilizeSetting.mainChance();
-        } else if (heldItem == fertilizeSetting.secondaryRipeningItem()) {
+        } else if (heldItem == fertilizeSetting.secondaryRipeningItem().get()) {
             successChance = fertilizeSetting.secondaryChance();
         } else {
             return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
@@ -172,15 +174,16 @@ public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock,
 
     @Override
     public @NotNull MutableComponent getName() {
-        return Component.translatable(treeType.saplingTranslateKey(), Component.translatable(translateKey));
+        return Component.translatable(treeType.saplingTranslateKey(), Component.translatable(translateKey.get()));
     }
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, Item.@NotNull TooltipContext context,
                                 @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag tooltipFlag) {
-        if (customPlaceBlock != null) {
+        if (customPlaceBlock.get() != Blocks.BARRIER) {
             tooltipComponents
-                    .add(Component.translatable("tooltip.resource_farm.sapling.placed_on_block", customPlaceBlock.getName().withStyle(ChatFormatting.YELLOW)));
+                    .add(Component.translatable("tooltip.resource_farm.sapling.placed_on_block",
+                            customPlaceBlock.get().getName().withStyle(ChatFormatting.YELLOW)));
         }
         if (customPlaceBlockTag != null) {
             ResourceLocation tagRL = customPlaceBlockTag.location();
@@ -189,11 +192,11 @@ public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock,
         }
 
         if (fertilizeSetting != null) {
-            Item mainItem = fertilizeSetting.mainRipeningItem();
-            Item secondaryItem = fertilizeSetting.secondaryRipeningItem();
-            if (mainItem != null) {
+            Item mainItem = fertilizeSetting.mainRipeningItem().get();
+            Item secondaryItem = fertilizeSetting.secondaryRipeningItem().get();
+            if (mainItem != Items.BARRIER) {
                 Component mainItemName = mainItem.getName(ItemStack.EMPTY).copy().withStyle(ChatFormatting.GREEN);
-                if (secondaryItem != null && secondaryItem != mainItem) {
+                if (secondaryItem != Items.BARRIER && secondaryItem != mainItem) {
                     Component secondaryItemName = secondaryItem.getName(ItemStack.EMPTY).copy().withStyle(ChatFormatting.GREEN);
                     tooltipComponents.add(Component.translatable("tooltip.resource_farm.sapling.fertilize_2", mainItemName, secondaryItemName));
                 } else {
