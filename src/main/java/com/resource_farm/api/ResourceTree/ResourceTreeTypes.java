@@ -47,6 +47,8 @@ public class ResourceTreeTypes {
                 ResourceFarm.id("item/resin/base_resin"),
                 ResourceFarm.id("item/fruit/base_fruit"),
                 ResourceFarm.id("item/fruit/base_fruit_overlay"),
+                ResourceFarm.id("item/crossover/clump"),
+                ResourceFarm.id("item/crossover/clump_overlay"),
                 "block.resource_farm.tree.sapling",
                 "block.resource_farm.tree.leaves",
                 "block.resource_farm.tree.log",
@@ -54,8 +56,9 @@ public class ResourceTreeTypes {
                 "block.resource_farm.tree.wood",
                 "block.resource_farm.tree.stripped_wood",
                 "block.resource_farm.tree.planks",
-                "block.resource_farm.tree.resin",
-                "block.resource_farm.tree.fruit");
+                "item.resource_farm.tree.resin",
+                "item.resource_farm.tree.fruit",
+                "item.resource_farm.tree.clump");
     }
 
     public static ResourceTreeType createPropagule(String name) {
@@ -74,6 +77,8 @@ public class ResourceTreeTypes {
                 ResourceFarm.id("item/resin/base_resin"),
                 ResourceFarm.id("item/fruit/base_fruit"),
                 ResourceFarm.id("item/fruit/base_fruit_overlay"),
+                ResourceFarm.id("item/crossover/clump"),
+                ResourceFarm.id("item/crossover/clump_overlay"),
                 "block.resource_farm.tree.propagule",
                 "block.resource_farm.tree.leaves",
                 "block.resource_farm.tree.log",
@@ -81,7 +86,8 @@ public class ResourceTreeTypes {
                 "block.resource_farm.tree.wood",
                 "block.resource_farm.tree.stripped_wood",
                 "block.resource_farm.tree.planks",
-                "block.resource_farm.tree.resin",
-                "block.resource_farm.tree.fruit");
+                "item.resource_farm.tree.resin",
+                "item.resource_farm.tree.fruit",
+                "item.resource_farm.tree.clump");
     }
 }

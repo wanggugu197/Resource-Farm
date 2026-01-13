@@ -13,8 +13,15 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 
+import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.entry.ItemEntry;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -70,6 +77,7 @@ public class TreeRecipe {
             { "CAC", "ABA", " AC" },
             { "CAC", "ABA", "CAC" },
     };
+    private static final Object[] SAPLING_RECIPE_BASE = RFArrayUtils.concatenateArrays("ABC", "DIE", "FGH");
     // === 配置缓存 ===
     private static final boolean GENERATE_STRIPPED_LOG = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedLog;
     private static final boolean GENERATE_WOOD = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateWood;
@@ -86,51 +94,33 @@ public class TreeRecipe {
             if (resourceTree.getResourceTreeConfig().automaticBasicRecipe())
                 SimpleTreeItemAndSaplingRecipeBuild(consumer, name, resourceTree);
 
+            List<ItemLike> logs = new ArrayList<>();
+            logs.add(resourceTree.getLog());
+            if (GENERATE_STRIPPED_LOG) logs.add(resourceTree.getStrippedLog());
+            if (GENERATE_WOOD) logs.add(resourceTree.getWood());
+            if (GENERATE_STRIPPED_WOOD) logs.add(resourceTree.getStrippedWood());
+            Ingredient ingredientLogs = Ingredient.of(logs.toArray(new ItemLike[0]));
+
             // 处理配方 烟熏/熔炼获得树脂
             if (ResourceFarmConfigHolder.TreeConfigHolder.tree.recipeGeneration.generateResinRecipes) {
+                ItemEntry<?> resin = resourceTree.getResin();
                 VanillaRecipeHelper.addSmokingRecipe(consumer, name + "_smoke_resin_from_logs",
-                        resourceTree.getLog(), resourceTree.getResin().asStack(4), 0.5f);
-
-                if (GENERATE_STRIPPED_LOG) {
-                    VanillaRecipeHelper.addSmokingRecipe(consumer, name + "_smoke_resin_from_stripped_log",
-                            resourceTree.getStrippedLog(), resourceTree.getResin().asStack(4), 0.5f);
-                }
-
-                if (GENERATE_WOOD) {
-                    VanillaRecipeHelper.addSmokingRecipe(consumer, name + "_smoke_resin_from_wood",
-                            resourceTree.getWood(), resourceTree.getResin().asStack(4), 0.5f);
-                }
-
-                if (GENERATE_STRIPPED_WOOD) {
-                    VanillaRecipeHelper.addSmokingRecipe(consumer, name + "_smoke_resin_from_stripped_wood",
-                            resourceTree.getStrippedWood(), resourceTree.getResin().asStack(4), 0.5f);
-                }
+                        ingredientLogs, resin.asStack(4), 0.5f);
 
                 if (GENERATE_PLANKS) {
                     VanillaRecipeHelper.addSmeltingRecipe(consumer, name + "_smelt_resin_from_planks",
-                            resourceTree.getPlanks(), resourceTree.getResin(), 0.1f);
+                            resourceTree.getPlanks(), resin, 0.1f);
                     VanillaRecipeHelper.addSmokingRecipe(consumer, name + "_smoke_resin_from_planks",
-                            resourceTree.getPlanks(), resourceTree.getResin(), 0.1f);
+                            resourceTree.getPlanks(), resin, 0.1f);
                 }
             }
 
             // 通用配方
             if (ResourceFarmConfigHolder.TreeConfigHolder.tree.recipeGeneration.generateBasicWoodConversionRecipes) {
                 if (GENERATE_PLANKS) {
+                    BlockEntry<?> panks = resourceTree.getPlanks();
                     VanillaRecipeHelper.addShapelessRecipe(consumer, name + "_craft_planks_from_log",
-                            resourceTree.getPlanks().asStack(4), resourceTree.getLog());
-                    if (GENERATE_STRIPPED_LOG) {
-                        VanillaRecipeHelper.addShapelessRecipe(consumer, name + "_craft_planks_from_stripped_log",
-                                resourceTree.getPlanks().asStack(4), resourceTree.getStrippedLog());
-                    }
-                    if (GENERATE_WOOD) {
-                        VanillaRecipeHelper.addShapelessRecipe(consumer, name + "_craft_planks_from_wood",
-                                resourceTree.getPlanks().asStack(4), resourceTree.getWood());
-                    }
-                    if (GENERATE_STRIPPED_WOOD) {
-                        VanillaRecipeHelper.addShapelessRecipe(consumer, name + "_craft_planks_from_stripped_wood",
-                                resourceTree.getPlanks().asStack(4), resourceTree.getStrippedWood());
-                    }
+                            panks.asStack(4), ingredientLogs);
                 }
                 if (GENERATE_WOOD) {
                     VanillaRecipeHelper.addShapedRecipe(consumer, name + "_craft_wood_from_log",
@@ -162,8 +152,9 @@ public class TreeRecipe {
         // 制作树苗/物品
         if (resourceTree.getTreeItem().get() != Items.BARRIER) {
             if (GENERATE_TREE_ITEM_RECIPES) {
-                VanillaRecipeHelper.addShapedRecipe(consumer, treeId + "_craft_tree_item",
-                        new ItemStack(resourceTree.getTreeItem().get(), resourceTree.getResourceTreeConfig().productOutput()),
+                Item treeItem = resourceTree.getTreeItem().get();
+                VanillaRecipeHelper.addShapedRecipe(consumer, treeId + "_craft_" + BuiltInRegistries.ITEM.getKey(treeItem).getPath(),
+                        new ItemStack(treeItem, resourceTree.getResourceTreeConfig().productOutput()),
                         " A ", "ABA", " A ",
                         'A', resourceTree.getResin(), 'B', resourceTree.getFruit());
                 treeCommonRecipeCount.addTo(treeId, 1);
@@ -220,7 +211,7 @@ public class TreeRecipe {
 
         VanillaRecipeHelper.addShapedRecipe(consumer, "ascension_" + treeId + "_craft_sapling",
                 new ItemStack(resourceTree.getSapling()),
-                RFArrayUtils.concatenateArrays("ABC", "DIE", "FGH", RFArrayUtils.insertCharBeforeElement(RFArrayUtils.concatenateArrays(
+                RFArrayUtils.concatenateArrays(SAPLING_RECIPE_BASE, RFArrayUtils.insertCharBeforeElement(RFArrayUtils.concatenateArrays(
                         newTreeItems, ItemTags.SAPLINGS))));
     }
 

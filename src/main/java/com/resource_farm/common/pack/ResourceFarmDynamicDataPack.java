@@ -59,6 +59,8 @@ public class ResourceFarmDynamicDataPack implements PackResources {
     private static final FileToIdConverter LOOT_TABLE_CONVERTER = FileToIdConverter.json("loot_table");
     private static final FileToIdConverter ADVANCEMENT_CONVERTER = FileToIdConverter.json("advancement");
 
+    public static final boolean DUMP_DATA = ResourceFarmConfigHolder.FarmConfigHolder.dev.dumpData;
+
     private final PackLocationInfo info;
 
     static {
@@ -105,7 +107,7 @@ public class ResourceFarmDynamicDataPack implements PackResources {
             byte[] recipeBytes = jsonToBytes(recipeJson);
 
             Path parent = ResourceFarm.getGameDir().resolve("resource_farm/dumped/data");
-            if (ResourceFarmConfigHolder.FarmConfigHolder.dev.dumpData) {
+            if (DUMP_DATA) {
                 writeJson(targetRecipeLoc, null, parent, recipeBytes);
             }
             addToData(targetRecipeLoc, recipeBytes);
@@ -116,7 +118,7 @@ public class ResourceFarmDynamicDataPack implements PackResources {
                         .encodeStart(provider.createSerializationContext(JsonOps.INSTANCE), advancement.value())
                         .getOrThrow();
                 byte[] advancementBytes = jsonToBytes(advancementJson);
-                if (ResourceFarmConfigHolder.FarmConfigHolder.dev.dumpData) {
+                if (DUMP_DATA) {
                     writeJson(targetAdvancementLoc, null, parent, advancementBytes);
                 }
                 addToData(targetAdvancementLoc, advancementBytes);
@@ -139,7 +141,7 @@ public class ResourceFarmDynamicDataPack implements PackResources {
             byte[] lootTableBytes = jsonToBytes(lootTableJson);
 
             Path parent = ResourceFarm.getGameDir().resolve("resource_farm/dumped/data");
-            if (ResourceFarmConfigHolder.FarmConfigHolder.dev.dumpData) {
+            if (DUMP_DATA) {
                 writeJson(targetLootLoc, null, parent, lootTableBytes);
             }
             addToData(targetLootLoc, lootTableBytes);
@@ -165,7 +167,7 @@ public class ResourceFarmDynamicDataPack implements PackResources {
                     .getOrThrow();
             byte[] dataMapBytes = jsonToBytes(dataMapJson);
             Path parent = ResourceFarm.getGameDir().resolve("resource_farm/dumped/data");
-            if (ResourceFarmConfigHolder.FarmConfigHolder.dev.dumpData) {
+            if (DUMP_DATA) {
                 writeJson(dataMapId, null, parent, dataMapBytes);
             }
             addToData(dataMapId, dataMapBytes);

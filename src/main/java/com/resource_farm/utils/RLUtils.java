@@ -28,4 +28,12 @@ public class RLUtils {
     public static ResourceLocation nf(String path) {
         return RLUtils.get("neoforge", path);
     }
+
+    public static ResourceLocation cr(String path) {
+        return RLUtils.get("create", path);
+    }
+
+    public static ResourceLocation mek(String path) {
+        return RLUtils.get("mekanism", path);
+    }
 }

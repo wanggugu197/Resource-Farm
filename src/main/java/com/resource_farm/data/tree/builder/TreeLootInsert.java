@@ -31,6 +31,12 @@ public class TreeLootInsert {
 
         Holder<Enchantment> fortune = access.registryOrThrow(Registries.ENCHANTMENT)
                 .getHolderOrThrow(Enchantments.FORTUNE);
+
+        final boolean STRIPPED_LOG_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedLog;
+        final boolean WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateWood;
+        final boolean STRIPPED_WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedWood;
+        final boolean PLANKS_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generatePlanks;
+
         ResourceFarmBlocks.ResourceTreeMap.forEach((a, resourceTree) -> {
             if (resourceTree == null) return;
             BlockEntry<?> saplingEntry = resourceTree.getSapling();
@@ -57,7 +63,7 @@ public class TreeLootInsert {
                 lootTables.accept(logId, LootTableUtils.createSelf(logEntry.get().asItem()).build(), access);
                 ((BlockBehaviourAccessor) logEntry.get()).setDrops(ResourceKey.create(Registries.LOOT_TABLE, logId));
             }
-            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedLog) {
+            if (STRIPPED_LOG_ENABLED) {
                 BlockEntry<?> strippedLogEntry = resourceTree.getStrippedLog();
                 if (strippedLogEntry != null) {
                     ResourceLocation strippedLogId = getId(strippedLogEntry);
@@ -65,7 +71,7 @@ public class TreeLootInsert {
                     ((BlockBehaviourAccessor) strippedLogEntry.get()).setDrops(ResourceKey.create(Registries.LOOT_TABLE, strippedLogId));
                 }
             }
-            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateWood) {
+            if (WOOD_ENABLED) {
                 BlockEntry<?> woodEntry = resourceTree.getWood();
                 if (woodEntry != null) {
                     ResourceLocation woodId = getId(woodEntry);
@@ -73,7 +79,7 @@ public class TreeLootInsert {
                     ((BlockBehaviourAccessor) woodEntry.get()).setDrops(ResourceKey.create(Registries.LOOT_TABLE, woodId));
                 }
             }
-            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedWood) {
+            if (STRIPPED_WOOD_ENABLED) {
                 BlockEntry<?> strippedWoodEntry = resourceTree.getStrippedWood();
                 if (strippedWoodEntry != null) {
                     ResourceLocation strippedWoodId = getId(strippedWoodEntry);
@@ -81,7 +87,7 @@ public class TreeLootInsert {
                     ((BlockBehaviourAccessor) strippedWoodEntry.get()).setDrops(ResourceKey.create(Registries.LOOT_TABLE, strippedWoodId));
                 }
             }
-            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generatePlanks) {
+            if (PLANKS_ENABLED) {
                 BlockEntry<?> planksEntry = resourceTree.getPlanks();
                 if (planksEntry != null) {
                     ResourceLocation planksId = getId(planksEntry);

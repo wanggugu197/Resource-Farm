@@ -2,6 +2,9 @@ package com.resource_farm.utils;
 
 import com.resource_farm.ResourceFarm;
 
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.*;
@@ -13,6 +16,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * 简化配方注册的工具类
@@ -106,6 +112,12 @@ public class VanillaRecipeHelper {
                 Ingredient.of(input), output, experience);
     }
 
+    public static void addSmokingRecipe(RecipeOutput provider, @NotNull String regName,
+                                        Ingredient input, ItemStack output, float experience) {
+        addSmokingRecipe(provider, ResourceFarm.id(regName),
+                input, output, experience);
+    }
+
     public static void addSmokingRecipe(RecipeOutput provider, @NotNull ResourceLocation regName,
                                         Ingredient input, ItemStack output, float experience) {
         SimpleCookingRecipeBuilder.smoking(
@@ -136,6 +148,14 @@ public class VanillaRecipeHelper {
                 .save(provider, regName);
     }
 
+    /** 无条件解锁的TriggerInstance */
+    private static final InventoryChangeTrigger.TriggerInstance UNCONDITIONAL_TRIGGER_INSTANCE = new InventoryChangeTrigger.TriggerInstance(Optional.empty(),
+            InventoryChangeTrigger.TriggerInstance.Slots.ANY, List.of());
+
+    /** 封装无条件解锁的Criterion */
+    private static final Criterion<InventoryChangeTrigger.TriggerInstance> UNCONDITIONAL_CRITERION = CriteriaTriggers.INVENTORY_CHANGED
+            .createCriterion(UNCONDITIONAL_TRIGGER_INSTANCE);
+
     // ===================== 成型合成配方封装 =====================
     public static void addShapedRecipe(RecipeOutput provider, @NotNull String regName,
                                        @NotNull ItemStack result, @NotNull Object... recipe) {
@@ -157,13 +177,13 @@ public class VanillaRecipeHelper {
                 Object content = recipe[++i];
                 switch (content) {
                     case ItemLike itemLike -> builder.define(sign, itemLike);
-                    case TagKey<?> key when key.isFor(Registries.ITEM) -> builder.define(sign, (TagKey<Item>) key);
                     case Ingredient ingredient -> builder.define(sign, ingredient);
+                    case TagKey<?> key when key.isFor(Registries.ITEM) -> builder.define(sign, (TagKey<Item>) key);
                     default -> throw new IllegalArgumentException("不支持的配方原料类型: " + content.getClass().getName());
                 }
             }
         }
-        builder.unlockedBy("has_recipe", RecipeUnlockedTrigger.unlocked(regName));
+        builder.unlockedBy("unlocked", UNCONDITIONAL_CRITERION);
         builder.save(provider, regName);
     }
 
@@ -183,12 +203,12 @@ public class VanillaRecipeHelper {
         for (Object content : recipe) {
             switch (content) {
                 case ItemLike itemLike -> builder.requires(itemLike);
-                case TagKey<?> key when key.isFor(Registries.ITEM) -> builder.requires((TagKey<Item>) key);
                 case Ingredient ingredient -> builder.requires(ingredient);
+                case TagKey<?> key when key.isFor(Registries.ITEM) -> builder.requires((TagKey<Item>) key);
                 default -> throw new IllegalArgumentException("不支持的配方原料类型: " + content.getClass().getName());
             }
         }
-        builder.unlockedBy("has_recipe", RecipeUnlockedTrigger.unlocked(regName));
+        builder.unlockedBy("unlocked", UNCONDITIONAL_CRITERION);
         builder.save(provider, regName);
     }
 }

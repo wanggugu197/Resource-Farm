@@ -7,6 +7,7 @@ import com.resource_farm.api.item.TintableItem;
 import com.resource_farm.common.block.ResourceTree.*;
 import com.resource_farm.common.block.grower.ResourceTreeGrowerType;
 import com.resource_farm.common.item.ColoringBlockItem;
+import com.resource_farm.common.item.ResourceTree.ResourceClumpItem;
 import com.resource_farm.common.item.ResourceTree.ResourceFruitItem;
 import com.resource_farm.common.item.ResourceTree.ResourceResinItem;
 import com.resource_farm.config.ResourceFarmConfigHolder;
@@ -176,6 +177,15 @@ public class TreeBuilder {
                             .color(() -> TintableItem::tintColor)
                             .tab(TREE_TAB.getKey())
                             .register());
+
+            if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateClump()) {
+                resourceTree.setClump(
+                        REGISTRATE.object(name + "_clump")
+                                .item((props) -> ResourceClumpItem.create(treeId, props, ColoringSettings.reversed(coloringSettings)))
+                                .color(() -> TintableItem::tintColor)
+                                .tab(TREE_TAB.getKey())
+                                .register());
+            }
 
         });
     }

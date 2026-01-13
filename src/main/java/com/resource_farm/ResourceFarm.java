@@ -63,6 +63,14 @@ public class ResourceFarm {
         return ModList.get().isLoaded(modId);
     }
 
+    public static boolean isCreateLoaded() {
+        return isModLoaded("create");
+    }
+
+    public static boolean isMekLoaded() {
+        return isModLoaded("mekanism");
+    }
+
     public static ResourceLocation id(String path) {
         if (path.isBlank()) {
             return TEMPLATE_LOCATION;

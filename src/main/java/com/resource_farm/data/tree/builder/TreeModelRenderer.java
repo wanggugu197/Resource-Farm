@@ -35,6 +35,7 @@ public class TreeModelRenderer {
     private static final boolean WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateWood;
     private static final boolean STRIPPED_WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedWood;
     private static final boolean PLANKS_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generatePlanks;
+    private static final boolean CLUMP_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateClump();
 
     // 父模型
     private static final ResourceLocation PARENT_ALL = ResourceFarmModels.STATIC_ALL_PARENT;
@@ -71,6 +72,7 @@ public class TreeModelRenderer {
 
         private final ResourceLocation resinId;
         private final ResourceLocation fruitId;
+        private final ResourceLocation clumpId;
 
         public ResourceTreeBundle(String treeId, ResourceTree resourceTree) {
             this.treeId = treeId;
@@ -90,6 +92,7 @@ public class TreeModelRenderer {
 
             this.resinId = resourceTree.getResin().getId();
             this.fruitId = resourceTree.getFruit().getId();
+            this.clumpId = resourceTree.getClump().getId();
         }
 
         public boolean isValid() {
@@ -113,6 +116,10 @@ public class TreeModelRenderer {
 
         public boolean isPlanksEnabled() {
             return PLANKS_ENABLED && planksId != null;
+        }
+
+        public boolean isClumpEnabled() {
+            return CLUMP_ENABLED && clumpId != null;
         }
     }
 
@@ -428,6 +435,13 @@ public class TreeModelRenderer {
         createAndRegisterDualLayerItemModel(fruitId, treeType.fruit(), treeType.fruitOverlay());
     }
 
+    private static void registerClump(ResourceTreeBundle bundle) {
+        if (!bundle.isClumpEnabled()) return;
+        var clump = bundle.getClumpId();
+        var treeType = bundle.getTreeType();
+        createAndRegisterDualLayerItemModel(clump, treeType.clump(), treeType.clumpOverlay());
+    }
+
     private static void buildAndRegisterTreeBlockBundle(ResourceTreeBundle bundle) {
         if (bundle == null || !bundle.isValid()) {
             return;
@@ -441,6 +455,7 @@ public class TreeModelRenderer {
         registerPlanks(bundle);
         registerResin(bundle);
         registerFruit(bundle);
+        registerClump(bundle);
     }
 
     public static void clearCache() {

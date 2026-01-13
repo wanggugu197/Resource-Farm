@@ -1,6 +1,7 @@
 package com.resource_farm.data.tree;
 
 import com.resource_farm.common.block.ResourceTree.*;
+import com.resource_farm.common.item.ResourceTree.ResourceClumpItem;
 import com.resource_farm.common.item.ResourceTree.ResourceFruitItem;
 import com.resource_farm.common.item.ResourceTree.ResourceResinItem;
 
@@ -44,6 +45,8 @@ public class ResourceTree {
     private ItemEntry<ResourceResinItem> resin;
     @Setter
     private ItemEntry<ResourceFruitItem> fruit;
+    @Setter
+    private ItemEntry<ResourceClumpItem> clump;
 
     public ResourceTree(ResourceTreeConfig resourceTreeConfig) {
         this.resourceTreeConfig = resourceTreeConfig;

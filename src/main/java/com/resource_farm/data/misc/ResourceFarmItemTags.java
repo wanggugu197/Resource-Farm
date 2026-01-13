@@ -18,6 +18,7 @@ public class ResourceFarmItemTags {
         provider.addTag(RESOURCE_PLANKS);
         provider.addTag(RESOURCE_RESIN);
         provider.addTag(RESOURCE_FRUIT);
+        provider.addTag(RESOURCE_CLUMP);
     }
 
     public static final TagKey<Item> RESOURCE_SAPLING = createItemTag("resource_sapling");
@@ -26,6 +27,7 @@ public class ResourceFarmItemTags {
     public static final TagKey<Item> RESOURCE_PLANKS = createItemTag("resource_planks");
     public static final TagKey<Item> RESOURCE_RESIN = createItemTag("resource_resin");
     public static final TagKey<Item> RESOURCE_FRUIT = createItemTag("resource_fruit");
+    public static final TagKey<Item> RESOURCE_CLUMP = createItemTag("resource_clump");
 
     private static TagKey<Item> createItemTag(String path) {
         return TagKey.create(Registries.ITEM, ResourceFarm.id(path));

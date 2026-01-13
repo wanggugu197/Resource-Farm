@@ -10,8 +10,6 @@ import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 
-import com.tterrag.registrate.util.entry.BlockEntry;
-
 public class ResourceFarmComposTablesManager {
 
     private static final DataMapType<Item, Compostable> COMPOSTABLE_DATA_MAP_TYPE = NeoForgeDataMaps.COMPOSTABLES;
@@ -23,14 +21,8 @@ public class ResourceFarmComposTablesManager {
         Compostable leavesCompost = new Compostable(0.6F);
         ResourceFarmBlocks.ResourceTreeMap.forEach((a, resourceTree) -> {
             if (resourceTree == null) return;
-            BlockEntry<?> saplingEntry = resourceTree.getSapling();
-            if (saplingEntry != null) {
-                compostDataMapBuilder.add(saplingEntry.getId(), saplingCompost, false);
-            }
-            BlockEntry<?> leavesEntry = resourceTree.getLeaves();
-            if (leavesEntry != null) {
-                compostDataMapBuilder.add(leavesEntry.getId(), leavesCompost, false);
-            }
+            compostDataMapBuilder.add(resourceTree.getSapling().getId(), saplingCompost, false);
+            compostDataMapBuilder.add(resourceTree.getLeaves().getId(), leavesCompost, false);
         });
 
         ResourceFarmDynamicDataPack.addDataMap(COMPOSTABLE_DATA_MAP_TYPE, compostDataMapBuilder, frozen);

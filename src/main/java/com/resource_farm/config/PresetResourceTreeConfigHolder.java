@@ -60,6 +60,23 @@ public class PresetResourceTreeConfigHolder {
                 "是否生成木板方块？ Whether to generate Planks blocks? Default: true"
         })
         public boolean generatePlanks = true;
+
+        @Configurable
+        @Configurable.Comment({
+                "是否自动生成碎块？ Whether to auto generate Clump? Default: true"
+        })
+        public boolean autoGenerateClump = true;
+
+        @Configurable
+        @Configurable.Comment({
+                "是否强制生成碎块？ Whether to force generate Clump? Default: false"
+        })
+        public boolean forceGenerateClump = false;
+
+        public boolean generateClump() {
+            return forceGenerateClump ||
+                    (autoGenerateClump && ResourceFarm.isMekLoaded());
+        }
     }
 
     /** 配方生成配置类 */
@@ -91,7 +108,7 @@ public class PresetResourceTreeConfigHolder {
 
         @Configurable
         @Configurable.Comment({
-                "是否生成机械动力漂洗树叶增产配方？ Whether to generate Create Splashing Leaves increase production recipes? 87.5%↑ Default: true"
+                "是否生成机械动力漂洗树叶增产配方？ Whether to generate Create Splashing Leaves increase production recipes? 275%↑ Default: true"
         })
         public boolean generateCreateSplashingLeavesRecipe = true;
 
@@ -100,6 +117,24 @@ public class PresetResourceTreeConfigHolder {
                 "是否生成机械动力混合搅拌树脂增产配方？ Whether to generate Create Mixing Resin increase production recipes? 25%↑ Default: true"
         })
         public boolean generateCreateMixingGetResinRecipes = true;
+
+        @Configurable
+        @Configurable.Comment({
+                "是否生成通用机械化学精密锯木机木板增产配方？ Whether to generate Mek Sawing Planks increase production recipes? 50%↑ Default: true"
+        })
+        public boolean generateMekSawingGetPlanksRecipes = true;
+
+        @Configurable
+        @Configurable.Comment({
+                "是否生成通用机械化学压射粉碎树脂增产配方？ Whether to generate Mek Injecting Resin increase production recipes? 87.5%↑ Default: true"
+        })
+        public boolean generateMekClumpGetResinRecipes = true;
+
+        @Configurable
+        @Configurable.Comment({
+                "是否生成通用机械富集仓果实增产配方？ Whether to generate Mek Enriching Fruit increase production recipes? 500%↑ Default: true"
+        })
+        public boolean generateMekEnrichingGetFruitRecipes = true;
     }
 
     @Configurable
@@ -146,5 +181,11 @@ public class PresetResourceTreeConfigHolder {
                 "联动 机械动力？ Crossover Create? Default: true"
         })
         public boolean crossoverCreate = true;
+
+        @Configurable
+        @Configurable.Comment({
+                "联动 通用机械？ Crossover Mek? Default: true"
+        })
+        public boolean crossoverMek = true;
     }
 }

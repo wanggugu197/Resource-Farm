@@ -37,9 +37,8 @@ jade                = { module = "maven.modrinth:jade", version.ref = "jade" }
 
 create              = { module = "com.simibubi.create:create-1.21.1", version.ref = "create_version" }
 createmod           = { module = "net.createmod.ponder:ponder-neoforge", version.ref = "ponder_version" }
-flywheelapi        = { module = "dev.engine-room.flywheel:flywheel-neoforge-api-1.21.1", version.ref = "flywheel_version" }
+flywheelapi         = { module = "dev.engine-room.flywheel:flywheel-neoforge-api-1.21.1", version.ref = "flywheel_version" }
 flywheel            = { module = "dev.engine-room.flywheel:flywheel-neoforge-1.21.1", version.ref = "flywheel_version" }
-
 
 [bundles]
 jei = ["jei-common-api", "jei-neoforge-api", "jei-neoforge-impl"]

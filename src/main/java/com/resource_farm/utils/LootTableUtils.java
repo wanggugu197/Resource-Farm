@@ -51,17 +51,11 @@ public class LootTableUtils {
      * 「掉落自身方块」的战利品表
      */
     public static @Nonnull LootTable.Builder createSelf(ItemLike block) {
-        LootItem.Builder<?> selfItemEntry = LootItem.lootTableItem(block)
-                .apply(ApplyExplosionDecay.explosionDecay())
-                .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)));
-
-        LootPool.Builder selfPool = LootPool.lootPool()
-                .setRolls(ConstantValue.exactly(1.0F))
-                .setBonusRolls(ConstantValue.exactly(0.0F))
-                .add(selfItemEntry);
-
         return LootTable.lootTable()
-                .withPool(selfPool)
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(block)
+                                .apply(ApplyExplosionDecay.explosionDecay())
+                                .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))))
                 .setParamSet(LootContextParamSets.BLOCK);
     }
 
@@ -114,24 +108,8 @@ public class LootTableUtils {
                                                                         ItemLike spring,
                                                                         List<ItemWeightCountHolder> leafDropHolders,
                                                                         Holder<Enchantment> fortune) {
-        // 构建「剪刀掉落自身」的池
-        LootPool.Builder selfDropPool = LootPool.lootPool()
-                .setRolls(exactly(1))
-                .add(LootItem.lootTableItem(block)
-                        .when(HAS_SHEARS)
-                        .apply(setCount(exactly(1))));
-
-        // 构建「树苗掉落」的池
-        LootPool.Builder springDropPool = LootPool.lootPool()
-                .setRolls(exactly(1))
-                .add(LootItem.lootTableItem(spring)
-                        .when(HAS_SHEARS.invert())
-                        .when(BonusLevelTableCondition.bonusLevelFlatChance(fortune, 0.05F, 0.0625F, 0.0833F, 0.1F))
-                        .apply(setCount(exactly(1))));
-
         // 构建「额外物品的」的多物品权重池
         LootPool.Builder normalDropPool = LootPool.lootPool()
-                .setRolls(exactly(1))
                 .when(HAS_SHEARS.invert())
                 .apply(addOreBonusCount(fortune));
         // 遍历添加每个掉落物品条目（按权重分配概率）
@@ -142,8 +120,15 @@ public class LootTableUtils {
         }
 
         return LootTable.lootTable()
-                .withPool(selfDropPool) // 自身掉落池（剪刀生效）
-                .withPool(springDropPool) // 树苗掉落池（非剪刀生效）
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(block)
+                                .when(HAS_SHEARS)
+                                .apply(setCount(exactly(1))))) // 自身掉落池（剪刀生效）
+                .withPool(LootPool.lootPool()
+                        .add(LootItem.lootTableItem(spring)
+                                .when(HAS_SHEARS.invert())
+                                .when(BonusLevelTableCondition.bonusLevelFlatChance(fortune, 0.05F, 0.0625F, 0.0833F, 0.1F))
+                                .apply(setCount(exactly(1))))) // 树苗掉落池（非剪刀生效）
                 .withPool(normalDropPool) // 普通掉落池（非剪刀生效）
                 .setParamSet(LootContextParamSets.BLOCK); // 触发上下文：方块被破坏
     }

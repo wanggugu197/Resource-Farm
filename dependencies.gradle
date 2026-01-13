@@ -26,8 +26,19 @@ dependencies {
     compileOnly(forge.create) { transitive = false }
     compileOnly(forge.createmod)
     compileOnly(forge.flywheelapi)
-    runtimeOnly(forge.create)
-    runtimeOnly(forge.createmod)
-    runtimeOnly(forge.flywheel)
+    if (enable_create_local_debug.toBoolean()) {
+        localRuntime(forge.create) { transitive = false }
+        localRuntime(forge.createmod)
+        localRuntime(forge.flywheel)
+    }
 
+    // Mekanism
+    compileOnly ("mekanism:Mekanism:${mekanism_version}")
+    compileOnly ("mekanism:Mekanism:${mekanism_version}:generators")// Mekanism: Generators
+    if (enable_mekanism_local_debug.toBoolean()) {
+        runtimeOnly("mekanism:Mekanism:${mekanism_version}")// Mekanism
+        runtimeOnly("mekanism:Mekanism:${mekanism_version}:additions")// Mekanism: Additions
+        runtimeOnly("mekanism:Mekanism:${mekanism_version}:generators")// Mekanism: Generators
+        runtimeOnly("mekanism:Mekanism:${mekanism_version}:tools")// Mekanism: Tools
+    }
 }

@@ -1,6 +1,7 @@
 package com.resource_farm.data.tree.RegisterAndSpecialRecipe;
 
 import com.resource_farm.api.IntObjectHolder;
+import com.resource_farm.api.block.FertilizeSettings;
 import com.resource_farm.data.lang.LangHandler;
 import com.resource_farm.data.tree.builder.TreeRecipe;
 import com.resource_farm.data.tree.builder.TreeRegister;
@@ -153,8 +154,12 @@ public class TreesCommonRegister {
         LangHandler.addLang("resource_farm.resource_tree.echo", "回响", "Echo");
         TreeRegister.createSimpleResourceTree("minecraft:echo_shard", "resource_farm.resource_tree.echo", true, 1, OAK, NETHER_QUARTZ, 0X125E6E);
 
-        TreeRegister.createSimpleResourceTree("minecraft:dragon_egg", null, true, 1, BIRCH, REDSTONE, 0X0E0A12);
-        TreeRegister.createSimpleResourceTree("minecraft:nether_star", null, true, 1, BIRCH, EMERALD, 12, 0XFFFFFF);
+        TreeRegister.createResourceTree("minecraft:nether_star", null, true, 1,
+                OAK, EMERALD, FertilizeSettings.of("minecraft:blaze_powder", 0.3), 100,
+                "minecraft:beacon", null, 12, 0XFFFFFF);
+        TreeRegister.createResourceTree("minecraft:dragon_egg", null, true, 1,
+                BIRCH, REDSTONE, FertilizeSettings.of("minecraft:chorus_fruit", 0.3), 100,
+                "minecraft:dragon_egg", null, 8, 0X0E0A12);
     }
 
     public static void agricultureSpecialRecipe(RecipeOutput consumer) {

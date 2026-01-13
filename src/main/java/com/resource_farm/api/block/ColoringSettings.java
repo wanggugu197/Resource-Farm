@@ -1,5 +1,8 @@
 package com.resource_farm.api.block;
 
+import it.unimi.dsi.fastutil.booleans.BooleanArrays;
+import it.unimi.dsi.fastutil.ints.IntArrays;
+
 import java.util.Arrays;
 
 public record ColoringSettings(
@@ -36,5 +39,10 @@ public record ColoringSettings(
         else newColors = new int[] { 0x61964F };
 
         return ColoringSettings.of(newTintLayers, newColors);
+    }
+
+    public static ColoringSettings reversed(ColoringSettings original) {
+        if (original == null) return of(new boolean[0], new int[0]);
+        return of(BooleanArrays.reverse(original.tintLayers().clone()), IntArrays.reverse(original.colors().clone()));
     }
 }

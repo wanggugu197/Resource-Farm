@@ -34,6 +34,12 @@ public class ResourceFarmRecipesManager {
         ResourceTreeAccessManagement.registerCreateTreeRecipe(consumer);
     }
 
+    public static void mekanismRecipeAddition(RecipeOutput originalConsumer) {
+        RecipeOutput consumer = wrapRecipeOutput(originalConsumer);
+
+        ResourceTreeAccessManagement.registerMekanismTreeRecipe(consumer);
+    }
+
     private static RecipeOutput wrapRecipeOutput(RecipeOutput originalConsumer) {
         return new RecipeOutput() {
 

@@ -17,6 +17,8 @@ public record ResourceTreeType(
                                ResourceLocation resinOverlay,
                                ResourceLocation fruit,
                                ResourceLocation fruitOverlay,
+                               ResourceLocation clump,
+                               ResourceLocation clumpOverlay,
                                String saplingTranslateKey,
                                String leavesTranslateKey,
                                String logTranslateKey,
@@ -25,7 +27,8 @@ public record ResourceTreeType(
                                String strippedWoodTranslateKey,
                                String planksTranslateKey,
                                String resinTranslateKey,
-                               String fruitTranslateKey) {
+                               String fruitTranslateKey,
+                               String clumpTranslateKey) {
 
     public static ResourceTreeType of(String type,
                                       ResourceLocation sapling,
@@ -41,6 +44,8 @@ public record ResourceTreeType(
                                       ResourceLocation resinOverlay,
                                       ResourceLocation fruit,
                                       ResourceLocation fruitOverlay,
+                                      ResourceLocation clump,
+                                      ResourceLocation clumpOverlay,
                                       String saplingTranslateKey,
                                       String leavesTranslateKey,
                                       String logTranslateKey,
@@ -49,7 +54,8 @@ public record ResourceTreeType(
                                       String strippedWoodTranslateKey,
                                       String planksTranslateKey,
                                       String resinTranslateKey,
-                                      String fruitTranslateKey) {
+                                      String fruitTranslateKey,
+                                      String clumpTranslateKey) {
         return new ResourceTreeType(type,
                 sapling, saplingOverlay,
                 leaves, leavesOverlay,
@@ -58,6 +64,7 @@ public record ResourceTreeType(
                 planks,
                 resin, resinOverlay,
                 fruit, fruitOverlay,
+                clump, clumpOverlay,
                 saplingTranslateKey,
                 leavesTranslateKey,
                 logTranslateKey,
@@ -66,6 +73,7 @@ public record ResourceTreeType(
                 strippedWoodTranslateKey,
                 planksTranslateKey,
                 resinTranslateKey,
-                fruitTranslateKey);
+                fruitTranslateKey,
+                clumpTranslateKey);
     }
 }

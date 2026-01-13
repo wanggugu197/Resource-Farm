@@ -48,8 +48,10 @@ public final class LangHandler {
         addLang("block.resource_farm.tree.stripped_wood", "去皮%s木", "Stripped %s Wood");
         addLang("block.resource_farm.tree.planks", "%s木板", "%s Planks");
         addLang("block.resource_farm.tree.propagule", "%s胎生苗", "%s Propagule");
-        addLang("block.resource_farm.tree.resin", "%s树脂", "%s Resin");
-        addLang("block.resource_farm.tree.fruit", "%s果实", "%s Fruit");
+
+        addLang("item.resource_farm.tree.resin", "%s树脂", "%s Resin");
+        addLang("item.resource_farm.tree.fruit", "%s果实", "%s Fruit");;
+        addLang("item.resource_farm.tree.clump", "%s碎块", "%s Clump");
 
         // 描述
         addLang("tooltip.resource_farm.sapling.placed_on_block", "§7可放于§e⌈%s§e⌋§7方块§r", "§7Placeable on §e⌈%s§e⌋§7 block§r");
@@ -70,6 +72,7 @@ public final class LangHandler {
         addLang("tag.item.resource_farm.resource_planks", "资源木板", "Resource Planks");
         addLang("tag.item.resource_farm.resource_resin", "资源树脂", "Resource Resin");
         addLang("tag.item.resource_farm.resource_fruit", "资源果实", "Resource Fruit");
+        addLang("tag.item.resource_farm.resource_clump", "资源碎块", "Resource Clump");
     }
 
     public static void enInitialize(LanguageProvider provider) {

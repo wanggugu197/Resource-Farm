@@ -25,7 +25,7 @@ public class TreeInitialization {
             resourceTree.setTranslateKey(Lazy.of(() -> {
                 if (translateKey == null) {
                     if (itemId != null) {
-                        Item item = RegistriesUtils.getItem(itemId);
+                        Item item = resourceTree.getTreeItem().get();
                         if (item != Items.BARRIER) {
                             return item.getDescriptionId();
                         }

@@ -1,7 +1,6 @@
 package com.resource_farm.common.pack.crossover;
 
 import com.resource_farm.ResourceFarm;
-import com.resource_farm.config.ResourceFarmConfigHolder;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
@@ -38,7 +37,7 @@ import java.nio.file.Path;
 
 import static com.resource_farm.common.pack.ResourceFarmDynamicDataPack.*;
 
-public class CrossoverCreateDynamicDataPack {
+public class CreateDynamicDataPack {
 
     /** 统一Create配方注册入口 */
     public static void addCreateRecipe(ResourceLocation recipeId, Object recipeObj, HolderLookup.Provider provider) {
@@ -103,7 +102,7 @@ public class CrossoverCreateDynamicDataPack {
 
             byte[] recipeBytes = jsonToBytes(recipeJson);
             Path parent = ResourceFarm.getGameDir().resolve("resource_farm/dumped/data");
-            if (ResourceFarmConfigHolder.FarmConfigHolder.dev.dumpData) {
+            if (DUMP_DATA) {
                 writeJson(targetRecipeLoc, null, parent, recipeBytes);
             }
             addToData(targetRecipeLoc, recipeBytes);
@@ -133,7 +132,7 @@ public class CrossoverCreateDynamicDataPack {
 
             byte[] recipeBytes = jsonToBytes(recipeJson);
             Path parent = ResourceFarm.getGameDir().resolve("resource_farm/dumped/data");
-            if (ResourceFarmConfigHolder.FarmConfigHolder.dev.dumpData) {
+            if (DUMP_DATA) {
                 writeJson(targetRecipeLoc, null, parent, recipeBytes);
             }
             addToData(targetRecipeLoc, recipeBytes);
@@ -165,7 +164,7 @@ public class CrossoverCreateDynamicDataPack {
 
             byte[] recipeBytes = jsonToBytes(recipeJson);
             Path parent = ResourceFarm.getGameDir().resolve("resource_farm/dumped/data");
-            if (ResourceFarmConfigHolder.FarmConfigHolder.dev.dumpData) {
+            if (DUMP_DATA) {
                 writeJson(targetRecipeLoc, null, parent, recipeBytes);
             }
             addToData(targetRecipeLoc, recipeBytes);
