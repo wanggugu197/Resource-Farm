@@ -197,8 +197,8 @@ public class CrossoverMekanismRegister {
         createTreeItemAndSaplingRecipeBuild(consumer, "mekanism_pellet_polonium", 8);
         createTreeItemAndSaplingRecipeBuild(consumer, "mekanism_pellet_antimatter", 8);
 
-        createTreeItemAndSaplingRecipeBuild(consumer, "mekanism_dust_lithium", 32);
-        createTreeItemAndSaplingRecipeBuild(consumer, "mekanism_dust_lithium", 32);
+        createTreeItemAndSaplingRecipeBuild(consumer, "mekanism_hdpe_pellet", 32);
+        createTreeItemAndSaplingRecipeBuild(consumer, "mekanism_salt", 32);
         createTreeItemAndSaplingRecipeBuild(consumer, "mekanism_dust_lithium", 32);
 
         createTreeChemicalAndSaplingRecipeBuild(consumer, "hydrogen", MekanismChemicals.HYDROGEN);

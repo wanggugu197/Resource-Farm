@@ -4,6 +4,7 @@ import com.resource_farm.ResourceFarm;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import com.google.gson.JsonElement;
@@ -40,7 +41,7 @@ import static com.resource_farm.common.pack.ResourceFarmDynamicDataPack.*;
 public class CreateDynamicDataPack {
 
     /** 统一Create配方注册入口 */
-    public static void addCreateRecipe(ResourceLocation recipeId, Object recipeObj, HolderLookup.Provider provider) {
+    public static void addCreateRecipe(ResourceLocation recipeId, Recipe<?> recipeObj, HolderLookup.Provider provider) {
         if (recipeObj == null) {
             ResourceFarm.LOGGER.error("Failed to register Create recipe: {} - recipe object is null", recipeId);
             return;
