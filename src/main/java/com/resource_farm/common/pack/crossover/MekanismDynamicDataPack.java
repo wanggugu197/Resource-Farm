@@ -11,6 +11,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
+import mekanism.api.recipes.MekanismRecipe;
 import mekanism.api.recipes.basic.*;
 import mekanism.common.recipe.impl.NutritionalLiquifierIRecipe;
 
@@ -23,7 +24,7 @@ public class MekanismDynamicDataPack {
     private static final String MEKANISM_RECIPE_TYPE_PREFIX = "mekanism:";
 
     /** 统一 Mekanism 配方注册入口 */
-    public static void addMekanismRecipe(ResourceLocation recipeId, Object recipeObj, HolderLookup.Provider provider) {
+    public static void addMekanismRecipe(ResourceLocation recipeId, MekanismRecipe<?> recipeObj, HolderLookup.Provider provider) {
         if (recipeObj == null) {
             ResourceFarm.LOGGER.error("Failed to register Mekanism recipe: {} - recipe object is null", recipeId);
             return;
