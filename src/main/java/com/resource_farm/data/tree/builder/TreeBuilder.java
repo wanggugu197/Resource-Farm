@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.PushReaction;
 
-import static com.resource_farm.api.registry.ResourceFarmRegistration.REGISTRATE;
+import static com.resource_farm.common.registry.ResourceFarmRegistration.REGISTRATE;
 import static com.resource_farm.data.misc.ResourceFarmCreativeModeTabs.TREE_TAB;
 
 /**

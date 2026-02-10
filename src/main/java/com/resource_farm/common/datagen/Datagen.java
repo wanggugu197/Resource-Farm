@@ -7,7 +7,7 @@ import com.resource_farm.data.lang.LangHandler;
 import com.tterrag.registrate.providers.ProviderType;
 
 import static com.resource_farm.ResourceFarm.isDataGen;
-import static com.resource_farm.api.registry.ResourceFarmRegistration.REGISTRATE;
+import static com.resource_farm.common.registry.ResourceFarmRegistration.REGISTRATE;
 
 public final class Datagen {
 

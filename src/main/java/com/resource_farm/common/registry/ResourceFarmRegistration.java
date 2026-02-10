@@ -1,4 +1,4 @@
-package com.resource_farm.api.registry;
+package com.resource_farm.common.registry;
 
 import com.resource_farm.ResourceFarm;
 

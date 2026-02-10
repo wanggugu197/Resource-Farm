@@ -8,7 +8,7 @@ import net.minecraft.world.item.Items;
 
 import com.tterrag.registrate.util.entry.RegistryEntry;
 
-import static com.resource_farm.api.registry.ResourceFarmRegistration.REGISTRATE;
+import static com.resource_farm.common.registry.ResourceFarmRegistration.REGISTRATE;
 
 public class ResourceFarmCreativeModeTabs {
 

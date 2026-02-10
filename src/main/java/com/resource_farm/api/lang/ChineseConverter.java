@@ -1,4 +1,4 @@
-package com.resource_farm.utils;
+package com.resource_farm.api.lang;
 
 import it.unimi.dsi.fastutil.chars.Char2CharOpenHashMap;
 
