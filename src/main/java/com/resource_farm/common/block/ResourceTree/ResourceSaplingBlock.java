@@ -120,8 +120,8 @@ public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock,
 
     @Override
     protected boolean mayPlaceOn(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos) {
-        if (customPlaceBlock == null && customPlaceBlockTag == null) return super.mayPlaceOn(state, level, pos);
-        return (customPlaceBlock != null && state.is(customPlaceBlock.get())) ||
+        if (customPlaceBlock.get() == Blocks.BARRIER && customPlaceBlockTag == null) return super.mayPlaceOn(state, level, pos);
+        return (customPlaceBlock.get() != Blocks.BARRIER && state.is(customPlaceBlock.get())) ||
                 (customPlaceBlockTag != null && state.is(customPlaceBlockTag));
     }
 

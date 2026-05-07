@@ -24,7 +24,7 @@ public record ResourceTreeConfig(
                                  ResourceOreType oreType,                       // 矿石样式
                                  FertilizeSettings fertilizeSetting,    // 施肥设置
                                  int growthFrequency,                           // 生长频率
-                                 @Nullable Lazy<Block> customPlaceBlock,              // 可放置方块
+                                 Lazy<Block> customPlaceBlock,              // 可放置方块
                                  @Nullable TagKey<Block> customPlaceBlockTag,   // 可放置方块Tag
                                  int lightLevel,                                // 亮度
                                  ColoringSettings coloringSettings              // 颜色
