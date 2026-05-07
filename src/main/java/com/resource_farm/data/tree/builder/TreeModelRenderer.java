@@ -92,7 +92,7 @@ public class TreeModelRenderer {
 
             this.resinId = resourceTree.getResin().getId();
             this.fruitId = resourceTree.getFruit().getId();
-            this.clumpId = resourceTree.getClump().getId();
+            this.clumpId = CLUMP_ENABLED ? resourceTree.getClump().getId() : null;
         }
 
         public boolean isValid() {
@@ -477,7 +477,10 @@ public class TreeModelRenderer {
                 if (blockBundle.isValid()) {
                     buildAndRegisterTreeBlockBundle(blockBundle);
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception e) {
+                var treeId = treeConfig.id();
+                ResourceFarm.LOGGER.error("构建树模型失败，treeId={}，resourceTree={}，开始跳过该树的后续构建", treeId, resourceTree, e);
+            }
         });
 
         BATCH_REGISTRAR.commit();

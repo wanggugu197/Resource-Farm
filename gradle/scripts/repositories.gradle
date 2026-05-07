@@ -30,10 +30,13 @@ repositories {
             includeGroup("software.bernie.geckolib")
         }
     }
-
-    exclusiveContent { // Configuration
-        forRepository { maven { url = "https://repo.repsy.io/mvn/toma/public/" } }
-        filter { includeGroup('dev.toma.configuration') }
+    maven {
+        name 'Configuration'
+        url 'https://api.repsy.io/mvn/toma/public/'
+    }
+    maven {
+        name 'Configuration backup maven'
+        url 'https://repo.repsy.io/mvn/toma/public/'
     }
     exclusiveContent { // FTB mods
         forRepository { maven { url = "https://maven.ftb.dev/releases/" } }

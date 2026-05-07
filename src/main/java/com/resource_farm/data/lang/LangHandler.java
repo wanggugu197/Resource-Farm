@@ -1,9 +1,9 @@
 package com.resource_farm.data.lang;
 
 import com.resource_farm.api.lang.CNEN;
+import com.resource_farm.api.lang.ChineseConverter;
 import com.resource_farm.api.lang.SimplifiedChineseLanguageProvider;
 import com.resource_farm.api.lang.TraditionalChineseLanguageProvider;
-import com.resource_farm.api.lang.ChineseConverter;
 
 import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.common.data.LanguageProvider;
