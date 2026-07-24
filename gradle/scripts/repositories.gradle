@@ -1,104 +1,128 @@
+// Maven 仓库配置 - 定义项目依赖的来源
 repositories {
-    mavenLocal()
-    flatDir {
-        dir "libs"
-    }
-    mavenCentral()
+    mavenLocal()           // 本地 Maven 仓库
+    flatDir { dir "libs" } // 本地 libs 目录（存放手动下载的 jar）
+    mavenCentral()         // Maven 中央仓库
 
-    maven { // JEI
-        name = "Jared's Maven"
-        url = "https://maven.blamejared.com/"
+    // FTB 系列模组
+    maven {
+        url "https://maven.ftb.dev/releases"
+        content { includeGroup "dev.ftb.mods" }
     }
-
-    maven { // JEI mirror, AE2
-        name = "ModMaven"
-        url = "https://modmaven.dev/"
+    // CurseForge 模组仓库
+    maven {
+        url "https://www.cursemaven.com"
+        content { includeGroup "curse.maven" }
     }
-
-    exclusiveContent { // KubeJS and Rhino
+    // JEI
+    maven {
+        url "https://maven.blamejared.com"
+        content { includeGroup "mezz.jei" }
+    }
+    // Curios API
+    maven {
+        url = uri("https://maven.theillusivec4.top/")
+        content { includeGroup 'top.theillusivec4.curios' }
+    }
+    // TrashSlot
+    maven {
+        url = "https://maven.twelveiterations.com/repository/maven-public/"
+        content { includeGroup "net.blay09.mods" }
+    }
+    // TerraformersMC - EMI
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+        content { includeGroup "dev.emi" }
+    }
+    // shedaniel - REI、Architectury、Cloth Config
+    maven {
+        url = "https://maven.shedaniel.me/"
+        content {
+            includeGroup "dev.architectury"
+            includeGroup "me.shedaniel"
+            includeGroup "me.shedaniel.cloth"
+        }
+    }
+    // Wisp Forest - Accessories
+    maven {
+        url = 'https://maven.wispforest.io/releases'
+        content { includeGroup "io.wispforest" }
+    }
+    // Modrinth
+    exclusiveContent {
+        forRepository { maven { url = "https://api.modrinth.com/maven/" } }
+        filter { includeGroup("maven.modrinth") }
+    }
+    // KubeJS
+    exclusiveContent {
         forRepository { maven { url = "https://maven.latvian.dev/releases" } }
         filter {
             includeGroup("dev.latvian.mods")
             includeGroup("dev.latvian.apps")
         }
     }
-
-    maven {
-        name = 'GeckoLib'
-        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-        content {
-            includeGroup("software.bernie.geckolib")
-        }
+    // GeckoLib
+    maven {url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'}
+    // Configuration API
+    exclusiveContent {
+        forRepository { maven { url = "https://repo.repsy.io/mvn/toma/public/" } }
+        filter { includeGroup('dev.toma.configuration') }
     }
-    maven {
-        name 'Configuration'
-        url 'https://api.repsy.io/mvn/toma/public/'
-    }
-    maven {
-        name 'Configuration backup maven'
-        url 'https://repo.repsy.io/mvn/toma/public/'
-    }
-    exclusiveContent { // FTB mods
-        forRepository { maven { url = "https://maven.ftb.dev/releases/" } }
-        filter { includeGroup("dev.ftb.mods") }
-    }
-    exclusiveContent { // TOP
+    // The One Probe
+    exclusiveContent {
         forRepository { maven { url = "https://maven.k-4u.nl/" } }
         filter { includeGroup('mcjty.theoneprobe') }
     }
-    exclusiveContent { // JourneyMap API
+    // JourneyMap
+    exclusiveContent {
         forRepository { maven { url = "https://jm.gserv.me/repository/maven-public/" } }
         filter { includeGroup("info.journeymap") }
     }
-    exclusiveContent { // Modrinth Maven
-        forRepository { maven { url = "https://api.modrinth.com/maven/" } }
-        filter { includeGroup("maven.modrinth") }
-    }
-    exclusiveContent { // Curseforge Maven
-        forRepository { maven { url = "https://cursemaven.com/" } }
-        filter { includeGroup("curse.maven") }
-    }
-    exclusiveContent { // terraformers - EMI
-        forRepository { maven { url = "https://maven.terraformersmc.com/releases/" } }
-        filter { includeGroup("dev.emi") }
-    }
-    exclusiveContent { // shedaniel - REI, architectury, cloth-config
-        forRepository { maven { url = "https://maven.shedaniel.me/" } }
-        filter {
-            includeGroupAndSubgroups("me.shedaniel")
-            includeGroup("dev.architectury")
-        }
-    }
-    exclusiveContent { // tterrag - registrate
-        forRepository { maven { url = "https://mvn.devos.one/snapshots/" } }
-        filter { includeGroup("com.tterrag.registrate") }
-    }
-    exclusiveContent { // Curios
-        forRepository { maven { url = "https://maven.theillusivec4.top/" } }
-        filter { includeGroup('top.theillusivec4.curios')}
-    }
-    exclusiveContent { // KotlinForForge
+    // KotlinForForge
+    exclusiveContent {
         forRepository { maven { url = "https://thedarkcolour.github.io/KotlinForForge/" } }
         filter { includeGroup("thedarkcolour") }
     }
-    exclusiveContent { // Argonauts, Heracles
+    // Team Resourceful
+    exclusiveContent {
         forRepository { maven { url = "https://maven.teamresourceful.com/repository/maven-public/" } }
         filter {
             includeGroupAndSubgroups("com.teamresourceful")
             includeGroupAndSubgroups("earth.terrarium")
         }
     }
-    exclusiveContent { // CC: Tweaked
+    // CC: Tweaked
+    exclusiveContent {
         forRepository { maven { url = "https://maven.squiddev.cc" } }
         filter { includeGroup("cc.tweaked") }
     }
-    exclusiveContent { // This one lib that KJS 1.21 uses for whatever reason?
+    // JitPack
+    exclusiveContent {
         forRepository { maven { url = "https://jitpack.io/" } }
         filter { includeGroup("com.github.rtyley") }
     }
-
-    // 机械动力
-    maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
-    maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
-
+    // GT Odyssey
+    maven { url = 'https://maven.gtodyssey.com/releases' }
+    // LDLib2
+    maven { url = "https://maven.firstdark.dev/snapshots" }
+    // Anvil Lib
+    maven {
+        url = "https://server.cjsah.net:1002/maven/"
+        content {
+            includeGroup "dev.anvilcraft.lib"
+            includeGroup "dev.dubhe"
+        }
+    }
+    // occultism
+    maven {
+        url "https://dl.cloudsmith.io/public/klikli-dev/mods/maven/"
+        content {
+            includeGroup "com.klikli_dev"
+        }
+    }
+    // EnderIO
+    maven { url 'https://maven.rover656.dev/releases' }
+    maven {url 'https://maven.blakesmods.com'}
+    maven {url 'https://maven.breakinblocks.com/releases'}
 }
