@@ -6,7 +6,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.*;
@@ -28,24 +27,27 @@ import java.util.Optional;
 /**
  * 简化配方注册的工具类（Minecraft 26.1+）。
  * <p>
- * 动态数据包注入发生在 {@code ReloadableServerResources#loadResources} 早期：
+ * 动态配方在<strong>标签 bind 之后</strong>生成（见 {@code updateComponentsAndStaticRegistryTags} RETURN）。
  * <ul>
- * <li>禁止构造 {@link net.minecraft.world.item.ItemStack}（Data Components 可能未绑定 → NPE）</li>
- * <li>禁止 {@code HolderGetter#getOrThrow(TagKey)}（标签可能尚未解析 → Missing tag）</li>
+ * <li>结果用 {@link ItemStackTemplate}，避免过早触碰 Item 默认组件</li>
+ * <li>标签原料用 {@link #tagIngredient(TagKey)} 从已绑定的 {@link HolderSet.Named} 解析</li>
  * </ul>
- * 结果用 {@link ItemStackTemplate}；标签原料用 {@link #tagIngredient(TagKey)} 延迟解析。
  */
 public class VanillaRecipeHelper {
 
     /**
-     * 创建<strong>不立即解析</strong>的标签原料。
+     * 创建标签原料（要求物品 Tag 已 bind）。
      * <p>
-     * {@link ShapedRecipeBuilder#define(Character, TagKey)} 内部会调用
-     * {@code items.getOrThrow(tag)}，在 loadResources 早期会抛 Missing tag。
-     * 这里用 {@link HolderSet#emptyNamed} 只携带 TagKey，序列化进 JSON 后由游戏在标签就绪时再绑定。
+     * 在 {@code MappedRegistry} 标签未绑定时访问会抛 {@code Tags not bound} /
+     * {@code UnsupportedOperationException}，故调用方必须在
+     * {@code PendingTags#apply} 之后执行配方生成。
      */
     public static Ingredient tagIngredient(TagKey<Item> tag) {
-        return Ingredient.of(HolderSet.emptyNamed(BuiltInRegistries.ITEM, tag));
+        // 标签已 bind：取 Named HolderSet，内容含动态注入的资源树苗等
+        return BuiltInRegistries.ITEM.get(tag)
+                .map(Ingredient::of)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Item tag not bound or empty during recipe build: " + tag.location() + " (generate recipes only after PendingTags.apply)"));
     }
 
     /** 安全的结果模板：不触碰 Item 默认组件绑定 */

@@ -5,13 +5,15 @@
   "compatibilityLevel": "JAVA_25",
   "mixins": [
     "BlockBehaviourAccessor",
+    "RecipeManagerAccessor",
+    "RecipeManagerMixin",
+    "ReloadableServerRegistriesMixin",
     "ReloadableServerResourcesMixin",
+    "ServerAdvancementManagerAccessor",
     "TagLoaderMixin",
     "TagManagerMixin"
   ],
-  "client": [
-    "client.ModelManagerMixin"
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   },

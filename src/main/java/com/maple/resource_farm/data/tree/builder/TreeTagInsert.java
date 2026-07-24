@@ -10,19 +10,25 @@ import com.maple.resource_farm.utils.RLUtils;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagLoader;
 
+import com.gto.registrylib.util.entry.BlockEntry;
+import com.gto.registrylib.util.entry.ItemEntry;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static com.maple.resource_farm.common.Manager.ResourceFarmTagManager.makeBlockTagEntry;
-import static com.maple.resource_farm.common.Manager.ResourceFarmTagManager.makeItemTagEntry;
+import static com.maple.resource_farm.common.Manager.ResourceFarmTagManager.addMember;
 
+/**
+ * 资源树 Tag 成员收集。
+ * <p>
+ * 输出为 {@code tagId → [elementId, ...]}，由 {@link com.maple.resource_farm.common.Manager.ResourceFarmTagManager}
+ * 在 {@code TagLoader#build} 之后解析为 {@link net.minecraft.core.Holder} 并合并进结果 Map。
+ */
 public class TreeTagInsert {
 
-    // === BlockTags 缓存 ===
+    // === BlockTags ===
     private static final Identifier BLOCK_TAG_SAPLINGS = BlockTags.SAPLINGS.location();
     private static final Identifier BLOCK_TAG_LEAVES = BlockTags.LEAVES.location();
     private static final Identifier BLOCK_TAG_MINEABLE_WITH_HOE = BlockTags.MINEABLE_WITH_HOE.location();
@@ -37,56 +43,7 @@ public class TreeTagInsert {
     private static final Identifier BLOCK_TAG_RESOURCE_LOG = ResourceFarmBlockTags.RESOURCE_LOG.location();
     private static final Identifier BLOCK_TAG_RESOURCE_PLANKS = ResourceFarmBlockTags.RESOURCE_PLANKS.location();
 
-    public static void generateBlockTags(Object2ObjectOpenHashMap<Identifier, List<TagLoader.EntryWithSource>> tempBlockTagMap) {
-        final boolean STRIPPED_LOG_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedLog;
-        final boolean WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateWood;
-        final boolean STRIPPED_WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedWood;
-        final boolean PLANKS_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generatePlanks;
-        // 遍历ResourceTree，条目收集
-        ResourceFarmBlocks.ResourceTreeKeyList.forEach(treeId -> {
-            ResourceTree resourceTree = ResourceFarmBlocks.ResourceTreeMap.get(treeId);
-            if (resourceTree == null) return;
-
-            TagLoader.EntryWithSource saplingBlockEntry = makeBlockTagEntry(resourceTree.getSapling());
-            tempBlockTagMap.computeIfAbsent(BLOCK_TAG_SAPLINGS, k -> new ArrayList<>()).add(saplingBlockEntry);
-            tempBlockTagMap.computeIfAbsent(BLOCK_TAG_RESOURCE_SAPLING, k -> new ArrayList<>()).add(saplingBlockEntry);
-
-            TagLoader.EntryWithSource leavesBlockEntry = makeBlockTagEntry(resourceTree.getLeaves());
-            tempBlockTagMap.computeIfAbsent(BLOCK_TAG_LEAVES, k -> new ArrayList<>()).add(leavesBlockEntry);
-            tempBlockTagMap.computeIfAbsent(BLOCK_TAG_RESOURCE_LEAVES, k -> new ArrayList<>()).add(leavesBlockEntry);
-            tempBlockTagMap.computeIfAbsent(BLOCK_TAG_MINEABLE_WITH_HOE, k -> new ArrayList<>()).add(leavesBlockEntry);
-
-            TagLoader.EntryWithSource logBlockEntry = makeBlockTagEntry(resourceTree.getLog());
-            tempBlockTagMap.computeIfAbsent(BLOCK_TAG_LOGS, k -> new ArrayList<>()).add(logBlockEntry);
-            tempBlockTagMap.computeIfAbsent(BLOCK_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(logBlockEntry);
-
-            if (STRIPPED_LOG_ENABLED) {
-                TagLoader.EntryWithSource strippedLogBlockEntry = makeBlockTagEntry(resourceTree.getStrippedLog());
-                tempBlockTagMap.computeIfAbsent(BLOCK_TAG_LOGS, k -> new ArrayList<>()).add(strippedLogBlockEntry);
-                tempBlockTagMap.computeIfAbsent(BLOCK_TAG_STRIPPED_LOGS, k -> new ArrayList<>()).add(strippedLogBlockEntry);
-                tempBlockTagMap.computeIfAbsent(BLOCK_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(strippedLogBlockEntry);
-            }
-            if (WOOD_ENABLED) {
-                TagLoader.EntryWithSource woodBlockEntry = makeBlockTagEntry(resourceTree.getWood());
-                tempBlockTagMap.computeIfAbsent(BLOCK_TAG_LOGS, k -> new ArrayList<>()).add(woodBlockEntry);
-                tempBlockTagMap.computeIfAbsent(BLOCK_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(woodBlockEntry);
-            }
-            if (STRIPPED_WOOD_ENABLED) {
-                TagLoader.EntryWithSource strippedWoodBlockEntry = makeBlockTagEntry(resourceTree.getStrippedWood());
-                tempBlockTagMap.computeIfAbsent(BLOCK_TAG_LOGS, k -> new ArrayList<>()).add(strippedWoodBlockEntry);
-                tempBlockTagMap.computeIfAbsent(BLOCK_TAG_STRIPPED_WOODS, k -> new ArrayList<>()).add(strippedWoodBlockEntry);
-                tempBlockTagMap.computeIfAbsent(BLOCK_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(strippedWoodBlockEntry);
-            }
-            if (PLANKS_ENABLED) {
-                TagLoader.EntryWithSource planksBlockEntry = makeBlockTagEntry(resourceTree.getPlanks());
-                tempBlockTagMap.computeIfAbsent(BLOCK_TAG_PLANKS, k -> new ArrayList<>()).add(planksBlockEntry);
-                tempBlockTagMap.computeIfAbsent(BLOCK_TAG_RESOURCE_PLANKS, k -> new ArrayList<>()).add(planksBlockEntry);
-                tempBlockTagMap.computeIfAbsent(BLOCK_TAG_MINEABLE_WITH_AXE, k -> new ArrayList<>()).add(planksBlockEntry);
-            }
-        });
-    }
-
-    // === ItemTags 缓存 ===
+    // === ItemTags ===
     private static final Identifier ITEM_TAG_SAPLINGS = ItemTags.SAPLINGS.location();
     private static final Identifier ITEM_TAG_LEAVES = ItemTags.LEAVES.location();
     private static final Identifier ITEM_TAG_LOGS_THAT_BURN = ItemTags.LOGS_THAT_BURN.location();
@@ -102,62 +59,119 @@ public class TreeTagInsert {
     private static final Identifier ITEM_TAG_RESOURCE_FRUIT = ResourceFarmItemTags.RESOURCE_FRUIT.location();
     private static final Identifier ITEM_TAG_RESOURCE_CLUMP = ResourceFarmItemTags.RESOURCE_CLUMP.location();
 
-    public static void generateItemTags(Object2ObjectOpenHashMap<Identifier, List<TagLoader.EntryWithSource>> tempItemTagMap) {
+    public static Map<Identifier, List<Identifier>> collectBlockTagMembers() {
+        Object2ObjectOpenHashMap<Identifier, List<Identifier>> map = new Object2ObjectOpenHashMap<>();
+        final boolean STRIPPED_LOG_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedLog;
+        final boolean WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateWood;
+        final boolean STRIPPED_WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedWood;
+        final boolean PLANKS_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generatePlanks;
+
+        ResourceFarmBlocks.ResourceTreeKeyList.forEach(treeId -> {
+            ResourceTree resourceTree = ResourceFarmBlocks.ResourceTreeMap.get(treeId);
+            if (resourceTree == null) return;
+
+            Identifier sapling = id(resourceTree.getSapling());
+            addMember(map, BLOCK_TAG_SAPLINGS, sapling);
+            addMember(map, BLOCK_TAG_RESOURCE_SAPLING, sapling);
+
+            Identifier leaves = id(resourceTree.getLeaves());
+            addMember(map, BLOCK_TAG_LEAVES, leaves);
+            addMember(map, BLOCK_TAG_RESOURCE_LEAVES, leaves);
+            addMember(map, BLOCK_TAG_MINEABLE_WITH_HOE, leaves);
+
+            Identifier log = id(resourceTree.getLog());
+            addMember(map, BLOCK_TAG_LOGS, log);
+            addMember(map, BLOCK_TAG_RESOURCE_LOG, log);
+
+            if (STRIPPED_LOG_ENABLED) {
+                Identifier strippedLog = id(resourceTree.getStrippedLog());
+                addMember(map, BLOCK_TAG_LOGS, strippedLog);
+                addMember(map, BLOCK_TAG_STRIPPED_LOGS, strippedLog);
+                addMember(map, BLOCK_TAG_RESOURCE_LOG, strippedLog);
+            }
+            if (WOOD_ENABLED) {
+                Identifier wood = id(resourceTree.getWood());
+                addMember(map, BLOCK_TAG_LOGS, wood);
+                addMember(map, BLOCK_TAG_RESOURCE_LOG, wood);
+            }
+            if (STRIPPED_WOOD_ENABLED) {
+                Identifier strippedWood = id(resourceTree.getStrippedWood());
+                addMember(map, BLOCK_TAG_LOGS, strippedWood);
+                addMember(map, BLOCK_TAG_STRIPPED_WOODS, strippedWood);
+                addMember(map, BLOCK_TAG_RESOURCE_LOG, strippedWood);
+            }
+            if (PLANKS_ENABLED) {
+                Identifier planks = id(resourceTree.getPlanks());
+                addMember(map, BLOCK_TAG_PLANKS, planks);
+                addMember(map, BLOCK_TAG_RESOURCE_PLANKS, planks);
+                addMember(map, BLOCK_TAG_MINEABLE_WITH_AXE, planks);
+            }
+        });
+        return map;
+    }
+
+    public static Map<Identifier, List<Identifier>> collectItemTagMembers() {
+        Object2ObjectOpenHashMap<Identifier, List<Identifier>> map = new Object2ObjectOpenHashMap<>();
         final boolean STRIPPED_LOG_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedLog;
         final boolean WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateWood;
         final boolean STRIPPED_WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedWood;
         final boolean PLANKS_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generatePlanks;
         final boolean CLUMP_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateClump();
-        // 遍历ResourceTree，条目收集
+
         ResourceFarmBlocks.ResourceTreeKeyList.forEach(treeId -> {
             ResourceTree resourceTree = ResourceFarmBlocks.ResourceTreeMap.get(treeId);
             if (resourceTree == null) return;
 
-            TagLoader.EntryWithSource saplingItemEntry = makeItemTagEntry(resourceTree.getSapling());
-            tempItemTagMap.computeIfAbsent(ITEM_TAG_SAPLINGS, k -> new ArrayList<>()).add(saplingItemEntry);
-            tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_SAPLING, k -> new ArrayList<>()).add(saplingItemEntry);
+            // BlockItem 与方块同 id
+            Identifier sapling = id(resourceTree.getSapling());
+            addMember(map, ITEM_TAG_SAPLINGS, sapling);
+            addMember(map, ITEM_TAG_RESOURCE_SAPLING, sapling);
 
-            TagLoader.EntryWithSource leavesItemEntry = makeItemTagEntry(resourceTree.getLeaves());
-            tempItemTagMap.computeIfAbsent(ITEM_TAG_LEAVES, k -> new ArrayList<>()).add(leavesItemEntry);
-            tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_LEAVES, k -> new ArrayList<>()).add(leavesItemEntry);
+            Identifier leaves = id(resourceTree.getLeaves());
+            addMember(map, ITEM_TAG_LEAVES, leaves);
+            addMember(map, ITEM_TAG_RESOURCE_LEAVES, leaves);
 
-            TagLoader.EntryWithSource logItemEntry = makeItemTagEntry(resourceTree.getLog());
-            tempItemTagMap.computeIfAbsent(ITEM_TAG_LOGS_THAT_BURN, k -> new ArrayList<>()).add(logItemEntry);
-            tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(logItemEntry);
+            Identifier log = id(resourceTree.getLog());
+            addMember(map, ITEM_TAG_LOGS_THAT_BURN, log);
+            addMember(map, ITEM_TAG_RESOURCE_LOG, log);
 
             if (STRIPPED_LOG_ENABLED) {
-                TagLoader.EntryWithSource strippedLogItemEntry = makeItemTagEntry(resourceTree.getStrippedLog());
-                tempItemTagMap.computeIfAbsent(ITEM_TAG_LOGS_THAT_BURN, k -> new ArrayList<>()).add(strippedLogItemEntry);
-                tempItemTagMap.computeIfAbsent(ITEM_TAG_STRIPPED_LOGS, k -> new ArrayList<>()).add(strippedLogItemEntry);
-                tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(strippedLogItemEntry);
+                Identifier strippedLog = id(resourceTree.getStrippedLog());
+                addMember(map, ITEM_TAG_LOGS_THAT_BURN, strippedLog);
+                addMember(map, ITEM_TAG_STRIPPED_LOGS, strippedLog);
+                addMember(map, ITEM_TAG_RESOURCE_LOG, strippedLog);
             }
             if (WOOD_ENABLED) {
-                TagLoader.EntryWithSource woodItemEntry = makeItemTagEntry(resourceTree.getWood());
-                tempItemTagMap.computeIfAbsent(ITEM_TAG_LOGS_THAT_BURN, k -> new ArrayList<>()).add(woodItemEntry);
-                tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(woodItemEntry);
+                Identifier wood = id(resourceTree.getWood());
+                addMember(map, ITEM_TAG_LOGS_THAT_BURN, wood);
+                addMember(map, ITEM_TAG_RESOURCE_LOG, wood);
             }
             if (STRIPPED_WOOD_ENABLED) {
-                TagLoader.EntryWithSource strippedWoodItemEntry = makeItemTagEntry(resourceTree.getStrippedWood());
-                tempItemTagMap.computeIfAbsent(ITEM_TAG_LOGS_THAT_BURN, k -> new ArrayList<>()).add(strippedWoodItemEntry);
-                tempItemTagMap.computeIfAbsent(ITEM_TAG_STRIPPED_WOODS, k -> new ArrayList<>()).add(strippedWoodItemEntry);
-                tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_LOG, k -> new ArrayList<>()).add(strippedWoodItemEntry);
-
+                Identifier strippedWood = id(resourceTree.getStrippedWood());
+                addMember(map, ITEM_TAG_LOGS_THAT_BURN, strippedWood);
+                addMember(map, ITEM_TAG_STRIPPED_WOODS, strippedWood);
+                addMember(map, ITEM_TAG_RESOURCE_LOG, strippedWood);
             }
             if (PLANKS_ENABLED) {
-                TagLoader.EntryWithSource planksItemEntry = makeItemTagEntry(resourceTree.getPlanks());
-                tempItemTagMap.computeIfAbsent(ITEM_TAG_PLANKS, k -> new ArrayList<>()).add(planksItemEntry);
-                tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_PLANKS, k -> new ArrayList<>()).add(planksItemEntry);
+                Identifier planks = id(resourceTree.getPlanks());
+                addMember(map, ITEM_TAG_PLANKS, planks);
+                addMember(map, ITEM_TAG_RESOURCE_PLANKS, planks);
             }
-            TagLoader.EntryWithSource resinItemEntry = makeItemTagEntry(resourceTree.getResin());
-            tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_RESIN, k -> new ArrayList<>()).add(resinItemEntry);
 
-            TagLoader.EntryWithSource fruitItemEntry = makeItemTagEntry(resourceTree.getFruit());
-            tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_FRUIT, k -> new ArrayList<>()).add(fruitItemEntry);
-
+            addMember(map, ITEM_TAG_RESOURCE_RESIN, id(resourceTree.getResin()));
+            addMember(map, ITEM_TAG_RESOURCE_FRUIT, id(resourceTree.getFruit()));
             if (CLUMP_ENABLED) {
-                TagLoader.EntryWithSource clumpItemEntry = makeItemTagEntry(resourceTree.getClump());
-                tempItemTagMap.computeIfAbsent(ITEM_TAG_RESOURCE_CLUMP, k -> new ArrayList<>()).add(clumpItemEntry);
+                addMember(map, ITEM_TAG_RESOURCE_CLUMP, id(resourceTree.getClump()));
             }
         });
+        return map;
+    }
+
+    private static Identifier id(BlockEntry<?> entry) {
+        return entry == null ? null : entry.identifier();
+    }
+
+    private static Identifier id(ItemEntry<?> entry) {
+        return entry == null ? null : entry.identifier();
     }
 }

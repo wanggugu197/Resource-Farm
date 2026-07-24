@@ -16,25 +16,32 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * 26.1 移除了 TagManager；标签加载改由 TagLoader 静态方法完成。
- * 通过 ThreadLocal + NEW 注入，把对应 Registry 写入 TagLoader。
+ * 26.1 无独立 TagManager：标签由 {@link TagLoader} 静态方法驱动。
+ * <p>
+ * 在 {@code loadPendingTags} / {@code loadTagsForRegistry} 构造 {@link TagLoader} 时，
+ * 通过 ThreadLocal 把对应 {@link Registry} 写入实例，供 {@link TagLoaderMixin} 在
+ * {@code build} 后做 Holder 级注入。
+ *
+ * <h3>调用时机（MC 源码）</h3>
+ * <ul>
+ * <li>STATIC 注册表（BLOCK/ITEM）：{@code WorldLoader} →
+ * {@code TagLoader.loadTagsForExistingRegistries} → {@code loadPendingTags}</li>
+ * <li>可写注册表（如 loot）：{@code ReloadableServerRegistries} →
+ * {@code TagLoader.loadTagsForRegistry}</li>
+ * </ul>
  */
 @Mixin(TagLoader.class)
 public class TagManagerMixin {
 
     private static final ThreadLocal<Registry<?>> CURRENT_REGISTRY = new ThreadLocal<>();
 
-    @Inject(
-            method = "loadPendingTags",
-            at = @At("HEAD"))
+    @Inject(method = "loadPendingTags", at = @At("HEAD"))
     private static <T> void resource_farm$captureFrozenRegistry(
                                                                 ResourceManager manager, Registry<T> registry, CallbackInfoReturnable<?> cir) {
         CURRENT_REGISTRY.set(registry);
     }
 
-    @Inject(
-            method = "loadPendingTags",
-            at = @At("RETURN"))
+    @Inject(method = "loadPendingTags", at = @At("RETURN"))
     private static <T> void resource_farm$clearFrozenRegistry(
                                                               ResourceManager manager, Registry<T> registry, CallbackInfoReturnable<?> cir) {
         CURRENT_REGISTRY.remove();

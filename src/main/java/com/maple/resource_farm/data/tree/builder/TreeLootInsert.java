@@ -18,10 +18,10 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import com.gto.registrylib.util.entry.BlockEntry;
 import com.gto.registrylib.util.entry.ItemEntry;
-import org.apache.logging.log4j.util.TriConsumer;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 public class TreeLootInsert {
 
@@ -30,7 +30,10 @@ public class TreeLootInsert {
                 Optional.of(ResourceKey.create(Registries.LOOT_TABLE, lootTableId)));
     }
 
-    public static void generateBlockLoot(TriConsumer<Identifier, LootTable, RegistryAccess.Frozen> lootTables,
+    /**
+     * @param lootTables 接收 (lootTableId, table)；对象直注，无 JSON
+     */
+    public static void generateBlockLoot(BiConsumer<Identifier, LootTable> lootTables,
                                          final RegistryAccess.Frozen access) {
         Holder<Enchantment> fortune = access.lookupOrThrow(Registries.ENCHANTMENT)
                 .getOrThrow(Enchantments.FORTUNE);
@@ -45,7 +48,7 @@ public class TreeLootInsert {
             BlockEntry<?> saplingEntry = resourceTree.getSapling();
             if (saplingEntry != null) {
                 Identifier saplingId = getId(saplingEntry);
-                lootTables.accept(saplingId, LootTableUtils.createSelf(saplingEntry.get().asItem()).build(), access);
+                lootTables.accept(saplingId, LootTableUtils.createSelf(saplingEntry.get().asItem()).build());
                 setBlockDrops(saplingEntry, saplingId);
 
                 BlockEntry<?> leavesEntry = resourceTree.getLeaves();
@@ -56,21 +59,21 @@ public class TreeLootInsert {
                     lootTables.accept(leavesId, LootTableUtils.createLeavesStyleLootTable(leavesEntry.get().asItem(), saplingEntry.get().asItem(),
                             List.of(ItemWeightCountHolder.of(resinEntry.get().asItem(), 1, UniformGenerator.between(-1, 1)),
                                     ItemWeightCountHolder.of(fruitEntry.get().asItem(), 4, UniformGenerator.between(-1, 1))),
-                            fortune).build(), access);
+                            fortune).build());
                     setBlockDrops(leavesEntry, leavesId);
                 }
             }
             BlockEntry<?> logEntry = resourceTree.getLog();
             if (logEntry != null) {
                 Identifier logId = getId(logEntry);
-                lootTables.accept(logId, LootTableUtils.createSelf(logEntry.get().asItem()).build(), access);
+                lootTables.accept(logId, LootTableUtils.createSelf(logEntry.get().asItem()).build());
                 setBlockDrops(logEntry, logId);
             }
             if (STRIPPED_LOG_ENABLED) {
                 BlockEntry<?> strippedLogEntry = resourceTree.getStrippedLog();
                 if (strippedLogEntry != null) {
                     Identifier strippedLogId = getId(strippedLogEntry);
-                    lootTables.accept(strippedLogId, LootTableUtils.createSelf(strippedLogEntry.get().asItem()).build(), access);
+                    lootTables.accept(strippedLogId, LootTableUtils.createSelf(strippedLogEntry.get().asItem()).build());
                     setBlockDrops(strippedLogEntry, strippedLogId);
                 }
             }
@@ -78,7 +81,7 @@ public class TreeLootInsert {
                 BlockEntry<?> woodEntry = resourceTree.getWood();
                 if (woodEntry != null) {
                     Identifier woodId = getId(woodEntry);
-                    lootTables.accept(woodId, LootTableUtils.createSelf(woodEntry.get().asItem()).build(), access);
+                    lootTables.accept(woodId, LootTableUtils.createSelf(woodEntry.get().asItem()).build());
                     setBlockDrops(woodEntry, woodId);
                 }
             }
@@ -86,7 +89,7 @@ public class TreeLootInsert {
                 BlockEntry<?> strippedWoodEntry = resourceTree.getStrippedWood();
                 if (strippedWoodEntry != null) {
                     Identifier strippedWoodId = getId(strippedWoodEntry);
-                    lootTables.accept(strippedWoodId, LootTableUtils.createSelf(strippedWoodEntry.get().asItem()).build(), access);
+                    lootTables.accept(strippedWoodId, LootTableUtils.createSelf(strippedWoodEntry.get().asItem()).build());
                     setBlockDrops(strippedWoodEntry, strippedWoodId);
                 }
             }
@@ -94,7 +97,7 @@ public class TreeLootInsert {
                 BlockEntry<?> planksEntry = resourceTree.getPlanks();
                 if (planksEntry != null) {
                     Identifier planksId = getId(planksEntry);
-                    lootTables.accept(planksId, LootTableUtils.createSelf(planksEntry.get().asItem()).build(), access);
+                    lootTables.accept(planksId, LootTableUtils.createSelf(planksEntry.get().asItem()).build());
                     setBlockDrops(planksEntry, planksId);
                 }
             }

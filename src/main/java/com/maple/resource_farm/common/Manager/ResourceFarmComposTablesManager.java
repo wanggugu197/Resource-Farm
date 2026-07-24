@@ -1,31 +1,23 @@
 package com.maple.resource_farm.common.Manager;
 
-import com.maple.resource_farm.common.pack.ResourceFarmDynamicDataPack;
+import com.maple.resource_farm.common.inject.ResourceFarmDynamicInjections;
 import com.maple.resource_farm.data.ResourceFarmBlocks;
 
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.common.data.DataMapProvider;
-import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
-import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 
+/**
+ * 构建堆肥桶 DataMap 条目到内存暂存区（直注，无 JSON）。
+ */
 public class ResourceFarmComposTablesManager {
 
-    private static final DataMapType<Item, Compostable> COMPOSTABLE_DATA_MAP_TYPE = NeoForgeDataMaps.COMPOSTABLES;
-
-    public static void buildComposTablesData(RegistryAccess.Frozen frozen) {
-        DataMapProvider.Builder<Compostable, Item> compostDataMapBuilder = new DataMapProvider.Builder<>(COMPOSTABLE_DATA_MAP_TYPE);
-        compostDataMapBuilder.replace(false);
+    public static void buildComposTablesData() {
         Compostable saplingCompost = new Compostable(0.8F);
         Compostable leavesCompost = new Compostable(0.6F);
         ResourceFarmBlocks.ResourceTreeMap.forEach((a, resourceTree) -> {
             if (resourceTree == null) return;
             // BlockItem 与方块同 id
-            compostDataMapBuilder.add(resourceTree.getSapling().identifier(), saplingCompost, false);
-            compostDataMapBuilder.add(resourceTree.getLeaves().identifier(), leavesCompost, false);
+            ResourceFarmDynamicInjections.addCompostable(resourceTree.getSapling().identifier(), saplingCompost);
+            ResourceFarmDynamicInjections.addCompostable(resourceTree.getLeaves().identifier(), leavesCompost);
         });
-
-        ResourceFarmDynamicDataPack.addDataMap(COMPOSTABLE_DATA_MAP_TYPE, compostDataMapBuilder, frozen);
     }
 }

@@ -1,17 +1,16 @@
 package com.maple.resource_farm.common.Manager;
 
+import com.maple.resource_farm.common.inject.ResourceFarmDynamicInjections;
 import com.maple.resource_farm.data.tree.builder.TreeLootInsert;
 
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.Identifier;
-import net.minecraft.world.level.storage.loot.LootTable;
 
-import org.apache.logging.log4j.util.TriConsumer;
-
+/**
+ * 生成战利品表到内存暂存区（直注，无 JSON）。
+ */
 public class ResourceFarmLootTablesManager {
 
-    public static void generateComposTablesLoot(TriConsumer<Identifier, LootTable, RegistryAccess.Frozen> lootTables,
-                                                final RegistryAccess.Frozen access) {
-        TreeLootInsert.generateBlockLoot(lootTables, access);
+    public static void generateLoot(final RegistryAccess.Frozen access) {
+        TreeLootInsert.generateBlockLoot(ResourceFarmDynamicInjections::addLootTable, access);
     }
 }

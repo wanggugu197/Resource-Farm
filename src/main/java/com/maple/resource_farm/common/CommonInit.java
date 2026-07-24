@@ -1,52 +1,62 @@
 package com.maple.resource_farm.common;
 
-import com.maple.resource_farm.common.pack.ResourceFarmDynamicDataPack;
-import com.maple.resource_farm.common.pack.ResourceFarmDynamicResourcePack;
-import com.maple.resource_farm.common.pack.ResourceFarmPackSource;
+import com.maple.resource_farm.common.Manager.ResourceFarmDynamicDataEvents;
 import com.maple.resource_farm.data.ResourceFarmBlocks;
 import com.maple.resource_farm.data.lang.LangHandler;
 import com.maple.resource_farm.data.misc.ResourceFarmCreativeModeTabs;
+import com.maple.resource_farm.data.tree.builder.TreeModelRenderer;
 
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.repository.Pack;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.fml.event.lifecycle.FMLConstructModEvent;
-import net.neoforged.neoforge.event.AddPackFindersEvent;
+import net.neoforged.neoforge.common.NeoForge;
 
+import com.mapleutillib.api.pack.addon.AddonFinder;
+
+import static com.maple.resource_farm.common.registry.ResourceFarmRegistration.REGISTRY;
+
+/**
+ * 通用初始化。
+ * <p>
+ * 动态<strong>资源包</strong>（客户端模型）走 MapleUtilLib：
+ * {@code REGISTRY.packs().register → packIcon → whenClient}。
+ * 包发现 / ModelManager 重建由 lib 负责，本模组不再写 AddPackFinders / ModelManager mixin。
+ * <p>
+ * 动态<strong>服务端数据</strong>（配方 / 战利品 / 堆肥）仍用
+ * {@link com.maple.resource_farm.common.inject.ResourceFarmDynamicInjections}
+ * 内存直注（Tag bind 时序），不经 {@code whenServer} 数据包 JSON。
+ */
 public class CommonInit {
 
-    private static IEventBus modBus;
-
     public static void init(final IEventBus modBus) {
-        CommonInit.modBus = modBus;
-        modBus.register(CommonInit.class);
+        NeoForge.EVENT_BUS.register(ResourceFarmDynamicDataEvents.class);
         ResourceFarmCreativeModeTabs.init();
         ResourceFarmBlocks.init();
         LangHandler.init();
-        modBus.addListener(CommonInit::commonSetup);
-        modBus.addListener(CommonInit::modConstruct);
+
+        initDynamicPacks(modBus);
     }
 
-    private static void modConstruct(FMLConstructModEvent event) {}
+    /**
+     * MapleUtilLib 动态包：与最新 API 对齐。
+     *
+     * <pre>{@code
+     * REGISTRY.packs()
+     *     .register(modBus)
+     *     .packIcon("icon.png")
+     *     .addNamespace(...)   // addon
+     *     .whenClient(...)
+     *     // .whenServer((data, regs) -> ...)  // RF 暂不用
+     * }</pre>
+     */
+    private static void initDynamicPacks(IEventBus modBus) {
+        var packs = REGISTRY.packs()
+                .register(modBus)
+                .packIcon("icon.png") // 与 neoforge.mods.toml logoFile 一致；默认即此值
+                .whenClient(TreeModelRenderer::reinitModels);
 
-    private static void commonSetup(FMLCommonSetupEvent event) {}
-
-    @SubscribeEvent
-    public static void registerPackFinders(AddPackFindersEvent event) {
-        if (event.getPackType() == PackType.CLIENT_RESOURCES) {
-            ResourceFarmDynamicResourcePack.clearClient();
-            event.addRepositorySource(new ResourceFarmPackSource("resource_farm:dynamic_assets",
-                    event.getPackType(),
-                    Pack.Position.BOTTOM,
-                    ResourceFarmDynamicResourcePack::new));
-        } else if (event.getPackType() == PackType.SERVER_DATA) {
-            ResourceFarmDynamicDataPack.clearServer();
-            event.addRepositorySource(new ResourceFarmPackSource("resource_farm:dynamic_data",
-                    event.getPackType(),
-                    Pack.Position.BOTTOM,
-                    ResourceFarmDynamicDataPack::new));
+        try {
+            AddonFinder.getAddons().keySet().forEach(packs::addNamespace);
+        } catch (Throwable ignored) {
+            // addon 扫描失败不影响主流程
         }
     }
 }
