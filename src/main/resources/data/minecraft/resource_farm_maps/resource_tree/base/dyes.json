@@ -1,0 +1,15 @@
+{
+  "group": "base",
+  "translate_key": "resource_farm.resource_tree.dyes",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "tree_style": "spruce",
+  "grower": "spruce",
+  "ore_style": "nether_quartz",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xAAE23A"
+}

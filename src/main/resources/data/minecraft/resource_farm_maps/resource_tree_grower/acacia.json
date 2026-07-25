@@ -1,0 +1,9 @@
+{
+  "secondary_chance": 0,
+  "mega_tree": null,
+  "secondary_mega_tree": null,
+  "tree": "minecraft:worldgen/configured_feature/acacia",
+  "secondary_tree": null,
+  "flowers": null,
+  "secondary_flowers": null
+}

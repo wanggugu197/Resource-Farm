@@ -29,8 +29,8 @@ public class ReloadableServerRegistriesMixin {
     private static void resource_farm$injectLootTables(
                                                        LayeredRegistryAccess<RegistryLayer> contextLayers,
                                                        HolderLookup.Provider contextLookupWithUpdatedTags,
-                                                       List<WritableRegistry<?>> newlyLoadedRegistries,
+                                                       List<WritableRegistry<?>> newRegistries,
                                                        CallbackInfoReturnable<?> cir) {
-        ResourceFarmDynamicInjections.injectLootTables(newlyLoadedRegistries);
+        ResourceFarmDynamicInjections.injectLootTables(newRegistries);
     }
 }

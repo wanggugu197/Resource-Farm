@@ -1,0 +1,5 @@
+{
+  "base": "resource_farm:block/ore/gold",
+  "center": "resource_farm:block/ore/center",
+  "secondary": "resource_farm:block/ore/gold"
+}

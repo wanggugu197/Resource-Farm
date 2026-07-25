@@ -1,0 +1,15 @@
+{
+  "group": "agriculture",
+  "translate_key": "resource_farm.resource_tree.cultivation",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "tree_style": "spruce",
+  "grower": "spruce",
+  "ore_style": "lapis",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0x9BFF3F"
+}

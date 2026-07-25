@@ -1,0 +1,17 @@
+{
+  "item": "minecraft:amethyst_shard",
+  "translate_key": "block.mymod.amethyst_shard_tree",
+  "product_output": 4,
+  "tree_style": "mymod:minimal_starwood",
+  "ore_style": "mymod:minimal_gold",
+  "fertilize": {
+    "main_item": "minecraft:glowstone_dust",
+    "main_chance": 0.2,
+    "secondary_item": "minecraft:bone_meal",
+    "secondary_chance": 0.05
+  },
+  "growth_frequency": 40,
+  "custom_place_block_tag": "minecraft:crystal_sound_blocks",
+  "light_level": 6,
+  "color": "#B985FF"
+}

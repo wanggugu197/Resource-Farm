@@ -1,7 +1,7 @@
 package com.maple.resource_farm.common.Manager;
 
+import com.maple.resource_farm.ResourceTree.ResourceTreeAccessManagement;
 import com.maple.resource_farm.common.inject.ResourceFarmDynamicInjections;
-import com.maple.resource_farm.data.ResourceFarmBlocks;
 
 import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
 
@@ -13,7 +13,7 @@ public class ResourceFarmComposTablesManager {
     public static void buildComposTablesData() {
         Compostable saplingCompost = new Compostable(0.8F);
         Compostable leavesCompost = new Compostable(0.6F);
-        ResourceFarmBlocks.ResourceTreeMap.forEach((a, resourceTree) -> {
+        ResourceTreeAccessManagement.ResourceTreeMap.forEach((a, resourceTree) -> {
             if (resourceTree == null) return;
             // BlockItem 与方块同 id
             ResourceFarmDynamicInjections.addCompostable(resourceTree.getSapling().identifier(), saplingCompost);

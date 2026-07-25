@@ -1,236 +1,394 @@
-# 如何通过Config注册资源树
-| 核心字段                  | 作用	                              | 取值示例	                                   | 默认值    |
-|-----------------------|----------------------------------|-----------------------------------------|--------|
-| item	                 | 资源树关联的物品 ID（与 translateKey 二选一）	 | "minecraft:nether_star"	                | null   |
-| translateKey	         | 翻译键（与 item 二选一） 同时输入优先使用翻译键显示	   | "block.resource_farm.nether_star_tree"	 | null   |
-| automaticBasicRecipe	 | 是否自动生成树木物品和树苗的配方	                | true/false	                             | true   |
-| productOutput         | 资源树基础合成产量	                       | 8/16	                                   | 1      |
-| treeStyle             | 树样式（对应 ResourceTreeTypes）	       | "oak"/"spruce"/"birch"	                 | "oak"  |
-| oreStyle	             | 矿石样式（对应 ResourceOreTypes）	       | "iron"/"diamond"/"netherite"	           | "iron" |
-| fertilizeSetting	     | 催熟配置（嵌套对象，参考 FertilizeSettings）	 | 见示例	                                    | 默认催熟配置 |
-| growthFrequency       | 生成频率（每个随机刻，会有 其分之一 概率长大）	        | 5/10	                                   | 10     |
-| customPlaceBlock	     | 自定义放置方块 ID	                      | "minecraft:netherrack"	                 | null   |
-| customPlaceBlockTag   | 自定义放置方块标签	                       | "minecraft:nether_blocks"	              | null   |
-| lightLevel            | 资源树亮度（0-15，Minecraft 亮度范围）	      | 10/15	                                  | 0      |
-| colors                | 资源树颜色（16 进制整数，如 0xFF0000 = 红色）	  | 0xFF5500/0x00FFFF	                      | 0      |
+# Resource Farm：用数据包构建资源树
 
-### 示例 1：完整配置（下界之星）—— 所有字段自定义
-```
-{
-  // 核心字段：item（优先用于生成ID）
-  "item": "minecraft:nether_star",
-  // 翻译键（备用ID生成，也用于游戏内翻译）
-  "translateKey": "block.resource_farm.nether_star_tree",
-  // 树样式：自定义为绯红森林样式（若存在该枚举值，否则兜底为oak）
-  "treeStyle": "crimson",
-  // 矿石样式：自定义为下界之星专属（无则兜底为iron）
-  "oreStyle": "nether_star",
-  // 催熟配置：自定义主/次要催熟物品+成功率
-  "fertilizeSetting": {
-    "mainItem": "minecraft:glow_berries", // 主催熟物品：发光浆果
-    "mainChance": 0.5,                    // 主成功率：50%
-    "secondaryItem": "minecraft:nether_wart", // 次要催熟物品：下界疣
-    "secondaryChance": 0.2                 // 次要成功率：20%
-  },
-  // 生成频率：每个随机刻有1/100概率长大
-  "growthFrequency": 100
-  // 自定义放置方块：下界岩
-  "customPlaceBlock": "minecraft:netherrack",
-  // 自定义放置方块Tag：下界方块标签（示例）
-  "customPlaceBlockTag": "minecraft:nether_blocks",
-  // 发光亮度：10（中等亮度）
-  "lightLevel": 10,
-  // 颜色：品红色（0xFF800080）
-  "colors": "0xFF800080"
-}
-```
-注释：完整配置演示，所有字段自定义，无默认值兜底，适合需要精准控制的资源树。
-
-### 示例 2：部分字段缺失（海洋之心）—— 依赖默认值
-```
-{
-  "item": "minecraft:heart_of_the_sea",
-  "translateKey": "block.resource_farm.heart_of_the_sea_tree",
-  // 缺失treeStyle → 默认oak
-  // 缺失oreStyle → 默认iron
-  // 缺失fertilizeSetting → 默认骨粉35%成功率
-  // 缺失customPlaceBlock → null
-  // 缺失customPlaceBlockTag → null
-  "lightLevel": 8, // 仅自定义亮度
-  "colors": "0xFF0000FF" // 仅自定义蓝色（海洋主题）
-}
-```
-注释：演示 “必填字段（item/translateKey）填，其余缺省” 的场景，缺失字段自动用默认值，简化配置。
-
-### 示例 3：自定义 Tag + 枚举（紫水晶）—— 用 Tag 替代 Block
-```
-{
-  "item": "minecraft:amethyst_shard",
-  "productOutput": 16
-  "treeStyle": "azalea", // 杜鹃树样式（若枚举存在）
-  "oreStyle": "amethyst", // 紫水晶矿石样式
-  // 不填customPlaceBlock，改用Tag指定可放置方块
-  "customPlaceBlockTag": "minecraft:stone_ore_replaceables",
-  "lightLevel": 7,
-  "colors": "0xFF9966CC" // 紫水晶色
-}
-```
-注释：演示 “用 customPlaceBlockTag 替代 customPlaceBlock” 的场景，适合批量指定可放置方块（如所有可替换的石头）。
-
-### 示例 4：无效值场景（锻造模板）—— 展示兜底行为
-```
-{
-  "item": "minecraft:smithing_template",
-  "treeStyle": "invalid_tree_style", // 无效树样式 → 兜底为oak
-  "oreStyle": "invalid_ore_style",   // 无效矿石样式 → 兜底为iron
-  "customPlaceBlock": "minecraft:sculk_shrieker", // 尖啸体
-  "lightLevel": 20, // 超出亮度范围（0-15）→ 仍按20传入（游戏内会自动限制）
-  "colors": "-1" // 负数颜色值 → 按实际数值传入（ColoringSettings会处理）
-}
-```
-注释：故意填无效值，演示代码的兜底逻辑：无效枚举→默认值、无效方块 ID→null、数值超限→原样传入。
-
-### 示例 5：仅填 translateKey（末影珍珠）—— 无 item 场景
-```
-{
-  // 无item，仅填translateKey（用于生成ID）
-  "translateKey": "block.resource_farm.ender_pearl_tree",
-  "treeStyle": "dark_oak",
-  "oreStyle": "ender",
-  "fertilizeSetting": {
-    "type": "default" // 直接用默认催熟配置
-  },
-  "customPlaceBlock": "minecraft:end_stone",
-  "lightLevel": 15, // 最大亮度
-  "colors": "0xFF000000" // 黑色（末影主题）
-}
-```
-注释：演示 “item 为 null，仅用 translateKey” 的场景，代码会用 translateKey 生成 ID（截取最后一个。后的部分）。
-
-### 示例 6：仅填 item（纸）—— 极简核心配置
-```
-{
-  // 仅填item，其余全缺省
-  "item": "minecraft:paper"
-  // 缺失translateKey → 用item生成ID（paper）
-  // 缺失treeStyle → oak
-  // 缺失oreStyle → iron
-  // 缺失fertilizeSetting → 默认骨粉配置
-  // 缺失customPlaceBlock/customPlaceBlockTag → null
-  // 缺失lightLevel → 0
-  // 缺失colors → 0
-}
-```
-注释：最简化配置，仅填必填的 item，其余全靠默认值，适合快速注册基础资源树。
-
-### 示例 7：自定义催熟配置（不死图腾）—— 特殊催熟规则
-```
-{
-  "item": "minecraft:totem_of_undying",
-  "translateKey": "block.resource_farm.totem_tree",
-  // 自定义催熟配置：仅主物品，无次要物品
-  "fertilizeSetting": {
-    "mainItem": "minecraft:gold_ingot", // 主催熟物品：金锭
-    "mainChance": 0.8                   // 成功率80%
-  },
-  "customPlaceBlock": "minecraft:gold_blocks",  // 无效方块ID → 解析为null
-  "lightLevel": 9,
-  "colors": "0xFFFFD700" // 金色（不死图腾主题）
-}
-```
-注释：演示 “仅主催熟物品” 的配置，secondaryItem 缺省时，FertilizeSettings 会自动设为 null+0% 成功率。
-
-### 示例 8：高亮度 + 自定义颜色（蜜脾）
-```
-{
-  "item": "minecraft:honeycomb",
-  "treeStyle": "birch",
-  "oreStyle": "gold",
-  "lightLevel": 12, // 高亮度（接近最大值）
-  "colors": "0xFFFFB6C1" // 蜜脾粉色
-}
-```
-注释：重点演示 lightLevel 和 colors 的自定义，适合有发光 / 配色需求的资源树。
-
-### 示例 9：无效方块 ID（沉重核心）—— 展示 null 处理
-```
-{
-  "item": "minecraft:heavy_core",
-  "translateKey": "block.resource_farm.heavy_core_tree",
-  // 故意填无效方块ID → RegistriesUtils.getBlock返回null
-  "customPlaceBlock": "minecraft:heavy_core_block", // 无此方块
-  "lightLevel": 3,
-  "colors": "0xFF808080" // 灰色（金属主题）
-}
-```
-注释：演示无效 customPlaceBlock 的场景，代码会检测到 null 并打印日志，不影响注册（customPlaceBlock 设为 null）。
-
-### 示例 10：催熟配置为 NULL（回响碎片）—— 禁用催熟
-```
-{
-  "item": "minecraft:echo_shard",
-  "treeStyle": "warped",
-  "oreStyle": "netherite",
-  // 催熟配置设为null → 禁用催熟（成功率0%）
-  "fertilizeSetting": {
-    "type": "null"
-  },
-  "customPlaceBlockTag": "minecraft:nether_ores",
-  "lightLevel": 5,
-  "colors": "0xFF000000" // 黑色（深暗主题）
-}
-```
-注释：演示通过 fertilizeSetting 的 type="null" 禁用催熟，适合无需催熟的资源树。
-
-### 示例 11：特殊方块配置（镶金黑石）
-```
-{
-  "item": "minecraft:gilded_blackstone",
-  "translateKey": "block.resource_farm.gilded_blackstone_tree",
-  "customPlaceBlock": "minecraft:gilded_blackstone", // 有效方块ID
-  "lightLevel": 4,
-  "colors": "0xFF8B4513" // 金棕色（镶金黑石主题）
-}
-```
-注释：演示有效 customPlaceBlock 的配置，代码会正确解析为镶金黑石方块，用于资源树的放置规则。
-
-### 示例 12：核心字段都缺失（重生锚）—— 触发跳过逻辑
-```
-{
-  // 缺失item和translateKey → 代码检测到后打印warn并跳过该配置
-  "treeStyle": "crimson",
-  "oreStyle": "netherite",
-  "lightLevel": 10
-}
-```
-注释：故意不填 item 和 translateKey，代码会判定为无效配置，打印警告并跳过注册，不影响其他配置。
+树木、树皮样式与矿石叠加样式均通过 **数据包 JSON** 在启动时加载（扫描各模组 jar 内的 `data/`），不再使用 `config/` 下的注册/移除配置文件。
 
 ---
 
-# 如何通过Config移除资源树
-在注册资源树时，系统会根据输入的 `item` 和 `translateKey` 两个参数**自动生成 treeId**，移除资源树的核心就是将生成的 treeId 填入对应 `.json` 文件。
+## 1. 总览
 
-### treeId 生成规则（核心）
-treeId 的生成逻辑分两种核心场景，优先级为：`item` 参数优先于 `translateKey` 参数。
+| 内容 | 路径模式 | 作用 |
+|------|----------|------|
+| **资源树定义** | `data/<namespace>/resource_farm_maps/resource_tree/**/*.json` | 注册一棵资源树（写入游戏内树木表） |
+| **移除树木** | `data/<namespace>/resource_farm_maps/resource_tree_remove/**/*.json` | 在注册完成后移除指定树木 |
+| **树基底样式** | `data/<namespace>/resource_farm_maps/tree_base_type/<path>.json` | 木头/树叶等基底模型与叠加纹理 |
+| **矿叠加样式** | `data/<namespace>/resource_farm_maps/tree_extra_type/<path>.json` | 矿石/裂纹等叠加纹理 |
 
-#### 场景 1：输入了 `item` 参数
-根据 `item` 对应的 `namespace`（命名空间）是否为 `minecraft`，生成规则不同：
-- 若 `namespace` = `minecraft`： `treeId = [path] + "_tree"`
-- 若 `namespace` ≠ `minecraft`： `treeId = [namespace] + "_" + [path] + "_tree"`
+- 条目 ID = `namespace` + 文件相对路径（去掉 `.json`）  
+  - 例：`data/minecraft/resource_farm_maps/tree_base_type/oak.json` → 样式 ID `minecraft:oak`  
+  - 例：`data/mymod/resource_farm_maps/resource_tree/custom/paper.json` → 定义 ID `mymod:custom/paper`  
+- 树的**游戏内方块 ID**仍由 `item` / `translate_key` 推导，例如 `minecraft:dirt` → `dirt_tree`。  
+- 模组内置预设见：`src/main/resources/data/minecraft/resource_farm_maps/`。  
+- 本目录示例见：[`datapack_sample/`](datapack_sample/)。
 
-#### 场景 2：未输入 `item` 参数
-此时会基于 `translateKey` 生成：`treeId = (translateKey 最后一个 "." 后面的部分) + "_tree"`
+### 加载顺序
 
-#### 移除资源树的操作步骤
-将上述规则生成的 **treeId** 准确填入对应的 `.json` 配置文件中，即可完成该资源树的移除。
+1. 扫描全部已加载模组 jar 中的样式与树定义  
+2. 按 YAML 预设组开关过滤 `group`  
+3. 写入树木注册表  
+4. 应用 `resource_tree_remove`  
+5. 再注册方块 / 物品  
 
-1. 示例1（输入item，namespace为minecraft）：
-    - item参数：`minecraft:stick`（namespace = minecraft，path = stick）
-    - 生成的treeId：`stick_tree`
-2. 示例2（输入item，namespace不为minecraft）：
-   - item参数：`create:andesite_alloy`（namespace = create，path = andesite_alloy）
-   - 生成的treeId：`create_andesite_alloy_tree`
-3. 示例2（未输入item，仅translateKey）：
-    - translateKey：`gui.example.resource_tree`
-    - 取最后一个"."后的部分：`resource_tree`
-    - 生成的treeId：`resource_tree_tree`
+因此：**其它模组或内置数据包**放进 jar 的 `data/` 即可；世界文件夹里的“后加数据包”不会参与这次启动期扫描（与配方式热重载不同）。
+
+---
+
+## 2. 注册一棵资源树
+
+**路径：** `data/<namespace>/resource_farm_maps/resource_tree/<任意子路径>.json`
+
+### 字段说明
+
+| 字段 | 类型 | 默认 | 说明 |
+|------|------|------|------|
+| `item` | 字符串 | — | 关联物品 ID（与 `translate_key` **至少填一个**） |
+| `translate_key` | 字符串 | — | 显示用翻译键；无 `item` 时也用于生成树 ID |
+| `group` | 字符串 | 无 | 预设组：`base` / `mineral` / `biology` / `agriculture`。无 group 或其它值 = **始终加载**（适合附加包） |
+| `automatic_basic_recipe` | bool | `true` | 是否自动生成基础产物/树苗配方 |
+| `product_output` | int | `1` | 基础合成产量 |
+| `tree_style` | 字符串 | `oak` | 树基底样式 ID（可写短名 `oak` → `minecraft:oak`） |
+| `ore_style` | 字符串 | `iron` | 矿叠加样式 ID（短名同理） |
+| `grower` | 字符串 | `oak` | 生长器 ID，决定使用哪套原版/自定义 configured feature |
+| `fertilize` | 对象 | 骨粉默认 | 催熟，见下文 |
+| `growth_frequency` | int | `10` | 随机刻生长：约 1/N 概率 |
+| `custom_place_block` | 字符串 | — | 可种植的方块 ID |
+| `custom_place_block_tag` | 字符串 | — | 可种植的方块 Tag |
+| `light_level` | int | `0` | 发光 0–15（写入模型 light_emission） |
+| `color` | int 或字符串 | `0` | 染色，如 `0x9E7255`、`#9E7255` 或十进制 |
+
+### 示例 A：最简（仅物品）
+
+```json
+{
+  "item": "minecraft:paper",
+  "color": "0xF5F5DC"
+}
+```
+
+这个文件会注册 `paper_tree`。未写字段会自动使用：
+
+| 字段 | 实际使用值 |
+|------|------------|
+| `tree_style` | `oak` |
+| `ore_style` | `iron` |
+| `grower` | `oak` |
+| `fertilize` | 骨粉，主/次成功率 `0.35` |
+| `automatic_basic_recipe` | `true` |
+| `product_output` | `1` |
+| `growth_frequency` | `10` |
+| `light_level` | `0` |
+
+适合先确认加载链路正常，再逐步加外观、催熟、种植条件等配置。
+
+### 示例 B：完整（下界之星主题）
+
+```json
+{
+  "item": "minecraft:nether_star",
+  "translate_key": "block.resource_farm.nether_star_tree",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "tree_style": "oak",
+  "ore_style": "emerald",
+  "grower": "oak",
+  "fertilize": {
+    "main_item": "minecraft:blaze_powder",
+    "main_chance": 0.3
+  },
+  "growth_frequency": 100,
+  "custom_place_block": "minecraft:beacon",
+  "light_level": 12,
+  "color": "0xFFFFFF"
+}
+```
+
+### 示例 C：无原版物品（仅翻译键）
+
+```json
+{
+  "group": "base",
+  "translate_key": "resource_farm.resource_tree.wood",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "tree_style": "dark_oak",
+  "ore_style": "nether_quartz",
+  "color": "0xB08F55"
+}
+```
+
+需在语言文件中提供 `resource_farm.resource_tree.wood` 等键（本模组已为内置预设注册一批）。
+
+### 示例 D：自定义种植 Tag 与较慢生长
+
+```json
+{
+  "item": "minecraft:amethyst_shard",
+  "translate_key": "block.mymod.amethyst_shard_tree",
+  "product_output": 4,
+  "tree_style": "mymod:minimal_starwood",
+  "ore_style": "mymod:minimal_gold",
+  "fertilize": {
+    "main_item": "minecraft:glowstone_dust",
+    "main_chance": 0.2,
+    "secondary_item": "minecraft:bone_meal",
+    "secondary_chance": 0.05
+  },
+  "growth_frequency": 40,
+  "custom_place_block_tag": "minecraft:crystal_sound_blocks",
+  "light_level": 6,
+  "color": "#B985FF"
+}
+```
+
+- `custom_place_block_tag` 适合允许一组方块承载树苗；如果只允许一个方块，用 `custom_place_block`。
+- `growth_frequency` 数值越大，随机刻成功越慢；`40` 大约是默认 `10` 的四分之一频率。
+- `tree_style` / `ore_style` 使用的是示例目录里的部分字段样式文件，见第 5、6 节。
+
+### 预设组 `group` 与配置开关
+
+文件：`config/resource_farm/resource_farm_preset_tree.yml`（或模组 Configuration 生成的同名配置）
+
+| `group` 值 | 对应开关 |
+|------------|----------|
+| `base` | `presetTreeGeneration.minecraftBase` |
+| `mineral` | `minecraftMineral` |
+| `biology` | `minecraftBiology` |
+| `agriculture` | `minecraftAgriculture` |
+
+- `enablePresetTreeGroups = false` 时，上述四个 group **全部跳过**。  
+- **不写 `group`** 的定义视为附加内容，**不受**预设开关影响（推荐附加模组使用）。
+
+---
+
+## 3. 催熟 `fertilize`
+
+### 快捷类型（优先，忽略其它字段）
+
+```json
+{ "type": "default" }
+```
+
+→ 骨粉，主/次成功率 0.35。
+
+```json
+{ "type": "null" }
+```
+
+→ 不可催熟。
+
+### 自定义物品
+
+```json
+{
+  "main_item": "minecraft:blaze_powder",
+  "main_chance": 0.3,
+  "secondary_item": "minecraft:bone_meal",
+  "secondary_chance": 0.1
+}
+```
+
+| 字段 | 说明 |
+|------|------|
+| `main_item` / `secondary_item` | 物品 ID |
+| `main_chance` / `secondary_chance` | 0.0–1.0 |
+
+---
+
+## 4. 移除树木
+
+**路径：** `data/<namespace>/resource_farm_maps/resource_tree_remove/<任意>.json`
+
+在**全部树注册完成之后**执行。内容任选其一：
+
+```json
+"dirt_tree"
+```
+
+```json
+{ "id": "dirt" }
+```
+
+```json
+{ "tree_id": "dirt_tree" }
+```
+
+- 可写 `dirt` 或 `dirt_tree`（会自动补 `_tree`）。  
+- 也可不写内容、仅用文件名：`resource_tree_remove/dirt.json` → 按文件名 `dirt` 移除。
+
+树 ID 规则回顾：
+
+- `item` = `minecraft:dirt` → id `dirt` → 注册键 **`dirt_tree`**  
+- `item` = `mod:foo_bar` → `mod_foo_bar_tree`  
+- 仅 `translate_key` = `a.b.wood` → 取最后一段 `wood` → **`wood_tree`**
+
+---
+
+## 5. 自定义树基底样式 `tree_base_type`
+
+**路径：** `data/<namespace>/resource_farm_maps/tree_base_type/<path>.json`  
+**引用：** 树定义里 `"tree_style": "oak"` 或 `"mymod:custom_wood"`
+
+内置样式（`minecraft` 命名空间）：`oak`, `dark_oak`, `birch`, `spruce`, `jungle`, `acacia`, `cherry`, `mangrove`, `pale_oak`。
+
+JSON 结构（嵌套，字段较多）：
+
+```json
+{
+  "type": "oak",
+  "models": {
+    "sapling_base": "minecraft:block/oak_sapling",
+    "leaves_base": "minecraft:block/oak_leaves",
+    "log_base": "minecraft:block/oak_log",
+    "log_horizontal_base": "minecraft:block/oak_log_horizontal",
+    "stripped_log_base": "minecraft:block/stripped_oak_log",
+    "stripped_log_horizontal_base": "minecraft:block/stripped_oak_log_horizontal",
+    "wood_base": "minecraft:block/oak_wood",
+    "stripped_wood_base": "minecraft:block/stripped_oak_wood",
+    "planks_base": "minecraft:block/oak_planks"
+  },
+  "overlays": {
+    "sapling_overlay": "resource_farm:block/tree/sapling/oak_sapling_overlay",
+    "leaves_overlay": "resource_farm:block/tree/leaves/oak_leaves_overlay",
+    "resin": "resource_farm:item/resin/base_resin",
+    "resin_overlay": "resource_farm:item/resin/base_resin",
+    "fruit": "resource_farm:item/fruit/base_fruit",
+    "fruit_overlay": "resource_farm:item/fruit/base_fruit_overlay",
+    "clump": "resource_farm:item/crossover/clump",
+    "clump_overlay": "resource_farm:item/crossover/clump_overlay"
+  },
+  "translate_keys": {
+    "sapling": "block.resource_farm.tree.sapling",
+    "leaves": "block.resource_farm.tree.leaves",
+    "log": "block.resource_farm.tree.log",
+    "stripped_log": "block.resource_farm.tree.stripped_log",
+    "wood": "block.resource_farm.tree.wood",
+    "stripped_wood": "block.resource_farm.tree.stripped_wood",
+    "planks": "block.resource_farm.tree.planks",
+    "resin": "item.resource_farm.tree.resin",
+    "fruit": "item.resource_farm.tree.fruit",
+    "clump": "item.resource_farm.tree.clump"
+  }
+}
+```
+
+- `models.*`：方块基底模型 ID（multipart 底层）。  
+- `overlays.*`：着色层 / 物品叠图纹理路径。  
+- `type`：生长器等逻辑用的种类名（如 `oak`）。  
+- 无效 `tree_style` 会回退到默认橡木样式。
+- `type`、`models`、`overlays`、`translate_keys` 以及它们的子字段都可以省略；省略时使用橡木/内置贴图/默认翻译键兜底。
+
+完整内置文件可直接复制改路径：  
+`src/main/resources/data/minecraft/resource_farm_maps/tree_base_type/`。
+
+### 最小树基底样式示例
+
+```json
+{
+  "type": "oak",
+  "models": {
+    "log_base": "minecraft:block/dark_oak_log",
+    "log_horizontal_base": "minecraft:block/dark_oak_log_horizontal",
+    "planks_base": "minecraft:block/dark_oak_planks"
+  },
+  "overlays": {
+    "leaves_overlay": "resource_farm:block/tree/leaves/dark_oak_leaves_overlay"
+  }
+}
+```
+
+这个示例只改原木、横向原木、木板和树叶叠加层。其它字段，例如树苗模型、树脂/果实/碎块贴图、翻译键，都会回退到默认橡木配置。示例文件见 [`minimal_starwood.json`](datapack_sample/data/mymod/resource_farm_maps/tree_base_type/minimal_starwood.json)。
+
+### 示例文件
+
+见 [`datapack_sample/data/mymod/resource_farm_maps/tree_base_type/starwood.json`](datapack_sample/data/mymod/resource_farm_maps/tree_base_type/starwood.json)：
+
+- 文件 → 样式 ID **`mymod:starwood`**
+- 在树定义中引用：`"tree_style": "mymod:starwood"`
+- 示例树：[`nether_star_themed.json`](datapack_sample/data/mymod/resource_farm_maps/resource_tree/nether_star_themed.json)（同时引用自定义 `mymod:star_ore`）
+
+可把内置 `oak.json` / `dark_oak.json` 整份复制后只改 `models` 路径与 `type`，即可做出新木头外观。
+
+---
+
+## 6. 自定义矿叠加样式 `tree_extra_type`
+
+**路径：** `data/<namespace>/resource_farm_maps/tree_extra_type/<path>.json`  
+**引用：** `"ore_style": "iron"` 或 `"mymod:my_ore"`
+
+```json
+{
+  "base": "resource_farm:block/ore/iron",
+  "center": "resource_farm:block/ore/center"
+}
+```
+
+| 字段 | 说明 |
+|------|------|
+| `base` | 主叠加纹理；缺省为 `resource_farm:block/ore/iron` |
+| `center` | 中心层（如原木截面）；缺省为 `resource_farm:block/ore/center` |
+
+最小示例：
+
+```json
+{
+  "base": "resource_farm:block/ore/gold"
+}
+```
+
+此时中心层自动使用默认 `resource_farm:block/ore/center`。示例文件见 [`minimal_gold.json`](datapack_sample/data/mymod/resource_farm_maps/tree_extra_type/minimal_gold.json)。
+
+内置：`copper`, `diamond`, `emerald`, `gold`, `iron`, `lapis`, `nether_gold`, `nether_quartz`, `redstone`, `crack`。
+
+---
+
+## 7. 附加模组 / 数据包作者怎么做
+
+1. 在你的模组资源中建立：
+
+```text
+src/main/resources/data/<你的modid>/resource_farm_maps/
+  resource_tree/
+    my_item.json
+  tree_base_type/          # 可选：自定义木头外观
+  tree_extra_type/         # 可选：自定义矿叠加
+  resource_tree_remove/    # 可选：覆盖移除内置树
+```
+
+2. **不要**写 `group: base|mineral|...`，除非你希望受玩家预设开关控制。  
+3. 引用本模组已有样式时可直接写 `"tree_style": "oak"`、`"ore_style": "diamond"`。  
+4. 需要新外观时，先加 `tree_base_type` / `tree_extra_type`，再在树定义里用完整 ID：`"tree_style": "mymod:my_wood"`。  
+5. 保证 jar 打进 `data/` 资源；启动游戏后看日志：
+
+```text
+[ResourceFarm] resource_farm_maps: ... base, ... extra, ... grower, ... tree json, ... remove
+[ResourceFarm] Resource tree registration: applied N tree(s) (skipped M by preset), removed R.
+```
+
+---
+
+## 8. 与旧版 Config JSON 的差异
+
+| 旧（已废弃） | 新（数据包） |
+|--------------|--------------|
+| `config/resource_farm/resource_tree_register_configs.json` | `data/.../resource_farm_maps/resource_tree/*.json` |
+| `resource_tree_remove_configs.json` | `resource_tree_remove/*.json` |
+| 驼峰 `treeStyle` / `colors` | 蛇形 `tree_style` / `color` |
+| `fertilizeSetting` | `fertilize`（支持 `type`） |
+| 单文件数组 | **一树一文件** |
+
+旧 config 文件**不再读取**。请迁移到数据包格式。
+
+---
+
+## 9. 示例文件索引
+
+| 文件 | 说明 |
+|------|------|
+| [datapack_sample/...](datapack_sample/) | 可拷贝的示例布局（含 `tree_base_type` / `tree_extra_type`） |
+| 树基底样式示例 | [`tree_base_type/starwood.json`](datapack_sample/data/mymod/resource_farm_maps/tree_base_type/starwood.json) |
+| 部分字段树基底示例 | [`tree_base_type/minimal_starwood.json`](datapack_sample/data/mymod/resource_farm_maps/tree_base_type/minimal_starwood.json) |
+| 矿叠加样式示例 | [`tree_extra_type/star_ore.json`](datapack_sample/data/mymod/resource_farm_maps/tree_extra_type/star_ore.json) |
+| 最小矿叠加示例 | [`tree_extra_type/minimal_gold.json`](datapack_sample/data/mymod/resource_farm_maps/tree_extra_type/minimal_gold.json) |
+| 自定义种植 Tag 示例 | [`resource_tree/custom_soil_and_tag.json`](datapack_sample/data/mymod/resource_farm_maps/resource_tree/custom_soil_and_tag.json) |
+| 模组内置预设 | `src/main/resources/data/minecraft/resource_farm_maps/` |
+
+英文版：[TreesConfigInstructions_us.md](TreesConfigInstructions_us.md)

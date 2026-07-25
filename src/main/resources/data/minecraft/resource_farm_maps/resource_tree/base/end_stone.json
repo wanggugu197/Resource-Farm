@@ -1,0 +1,15 @@
+{
+  "group": "base",
+  "item": "minecraft:end_stone",
+  "automatic_basic_recipe": true,
+  "product_output": 16,
+  "tree_style": "cherry",
+  "grower": "cherry",
+  "ore_style": "iron",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xF2F5AE"
+}

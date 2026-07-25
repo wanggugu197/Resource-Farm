@@ -6,6 +6,9 @@ dependencies {
     implementation(forge.registrylib)
     implementation(forge.mapleutillib)
 
+    compileOnly(forge.ldlib2)
+    localRuntime(forge.ldlib2)
+
     // Recipe Viewers
     compileOnly(forge.bundles.jei)
     localRuntime(forge.bundles.jei)

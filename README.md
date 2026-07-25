@@ -85,14 +85,14 @@ For a simple product tree, the usual path is:
 ### 2. Plant & grow
 
 - Place the sapling on valid ground (dirt-like by default, or a **custom block / block tag** if configured).
-- Trees grow on **random ticks**; `growthFrequency` controls how rare growth is (higher = slower).
+- Trees grow on **random ticks**; datapack field `growth_frequency` controls how rare growth is (higher = slower).
 - **Fertilizer**: by default bone meal-style items with a success chance; special trees may demand blaze powder, chorus fruit, etc.
 
 ### 3. Harvest the orchard
 
 - **Leaves** → resin, fruit, saplings (and leaf blocks themselves).
 - **Logs / wood** → smoke or smelt into **resin**; craft into **planks** and wood forms like vanilla.
-- **Resin + fruit** → craft the tree’s **main product** (e.g. raw iron, diamonds, honeycombs…), with `productOutput` controlling batch size.
+- **Resin + fruit** → craft the tree’s **main product** (e.g. raw iron, diamonds, honeycombs…), with `product_output` controlling batch size.
 
 ### 4. Expand the farm
 
@@ -121,7 +121,7 @@ Living loot, farmed: breeding products, aquatic drops, bees/honey, rabbits, arma
 Crops and wonders: cultivation staples, berries, kelp, nether wart, prismarine, chorus, echo shards, and slow-grow legends like **nether star** (beacon soil, blaze powder boost) and **dragon egg**.
 
 > All of these can be switched off in  
-> `config/resource_farm/resource_farm_preset_tree.yaml`.
+> `config/resource_farm/resource_farm_preset_tree` (extension depends on the Configuration library output).
 
 ---
 
@@ -129,7 +129,7 @@ Crops and wonders: cultivation staples, berries, kelp, nether wart, prismarine, 
 
 Configs live under `config/resource_farm/`.
 
-### Main config — `resource_farm.yaml`
+### Main config — `resource_farm`
 
 Developer helpers:
 
@@ -138,7 +138,7 @@ Developer helpers:
 | `dev.dumpData` | `false` | Dump registered data for debugging |
 | `dev.dumpAssets` | `false` | Dump generated assets for debugging |
 
-### Preset & generation — `resource_farm_preset_tree.yaml`
+### Preset & generation — `resource_farm_preset_tree`
 
 **Block generation**
 
@@ -157,59 +157,76 @@ Developer helpers:
 - Master switch: `enablePresetTreeGroups`  
 - Per group: `minecraftBase`, `minecraftMineral`, `minecraftBiology`, `minecraftAgriculture`
 
-### Custom trees via JSON
+### Custom trees via datapacks
 
-You can **register** and **remove** trees without writing Java:
+Trees, wood styles, ore overlays, and optional grower presets are built from **datapack JSON** inside mod jars (`data/`), scanned at startup—no Java required for addons. These files are part of startup registration, so package them in a mod jar or built-in resources; late world datapacks are not applied to tree registration.
 
-| File | Purpose |
-|------|---------|
-| `config/resource_farm/resource_tree_register_configs.json` | Add trees at startup |
-| `config/resource_farm/resource_tree_remove_configs.json` | Strip trees you don’t want |
+| Path under `data/<namespace>/resource_farm_maps/` | Purpose |
+|---------------------------------------------------|---------|
+| `resource_tree/**/*.json` | Register one tree per file |
+| `resource_tree_remove/**/*.json` | Remove a tree after registration |
+| `tree_base_type/<id>.json` | Wood / leaves base models + overlays |
+| `tree_extra_type/<id>.json` | Ore overlay textures |
+| `resource_tree_grower/<id>.json` | Optional shared grower definitions |
 
-Examples and field-by-field docs:
+Full field docs and migration notes:
 
-- [TreesConfigInstructions (English)](./example/TreesConfigInstructions_us.md)
-- [TreesConfigInstructions (中文)](./example/TreesConfigInstructions_cn.md)
-- Sample JSON: [`example/resource_tree_register_configs.json`](./example/resource_tree_register_configs.json)
+- [Datapack guide (English)](example/TreesConfigInstructions_us.md)
+- [数据包说明（中文）](example/TreesConfigInstructions_cn.md)
+- Copy-paste sample: [`example/datapack_sample/`](example/datapack_sample/)
 
-#### Quick field reference
+#### Quick tree definition
 
-| Field | Role | Default-ish |
-|-------|------|-------------|
-| `item` **or** `translateKey` | Identity of the tree (one required) | — |
-| `automaticBasicRecipe` | Auto resin+fruit → product & sapling recipes | `true` |
-| `productOutput` | How many products per craft | `1` |
-| `treeStyle` | Wood silhouette (`oak`, `birch`, …) | `oak` |
-| `oreStyle` | Overlay style (`iron`, `diamond`, …) | `iron` |
-| `fertilizeSetting` | Main/secondary fertilizer items & chances | Bone meal ~35% |
-| `growthFrequency` | 1/N chance per random tick | `10` |
-| `customPlaceBlock` / `customPlaceBlockTag` | Where the sapling may be planted | Vanilla-like |
-| `lightLevel` | Model self-glow `0–15` | `0` |
-| `colors` | ARGB/hex tint (e.g. `"0xFF99FFFF"`) | `0` |
-
-Minimal tree:
+`data/mymod/resource_farm_maps/resource_tree/paper.json`:
 
 ```json
-[
-  { "item": "minecraft:paper" }
-]
+{
+  "item": "minecraft:paper",
+  "color": "0xF5F5DC"
+}
 ```
 
-Themed tree (sketch):
+This minimal file still registers `paper_tree`: omitted fields fall back to `tree_style: oak`, `ore_style: iron`, `grower: oak`, default bone meal fertilizer, `product_output: 1`, `growth_frequency: 10`, and `light_level: 0`.
+
+More explicit item-backed tree:
 
 ```json
-[
-  {
-    "item": "minecraft:amethyst_shard",
-    "treeStyle": "dark_oak",
-    "oreStyle": "emerald",
-    "productOutput": 16,
-    "lightLevel": 7,
-    "colors": "0xFF9966CC",
-    "customPlaceBlockTag": "minecraft:stone_ore_replaceables"
-  }
-]
+{
+  "item": "minecraft:paper",
+  "tree_style": "birch",
+  "ore_style": "iron",
+  "grower": "birch",
+  "product_output": 16,
+  "fertilize": {
+    "type": "default"
+  },
+  "color": "0xF5F5DC"
+}
 ```
+
+Themed tree with custom style ids and planting rules:
+
+```json
+{
+  "item": "minecraft:amethyst_shard",
+  "translate_key": "block.mymod.amethyst_shard_tree",
+  "tree_style": "mymod:minimal_starwood",
+  "ore_style": "mymod:minimal_gold",
+  "product_output": 4,
+  "fertilize": {
+    "main_item": "minecraft:glowstone_dust",
+    "main_chance": 0.2,
+    "secondary_item": "minecraft:bone_meal",
+    "secondary_chance": 0.05
+  },
+  "growth_frequency": 40,
+  "custom_place_block_tag": "minecraft:crystal_sound_blocks",
+  "light_level": 6,
+  "color": "#B985FF"
+}
+```
+
+Style JSON can also be partial. Missing `tree_base_type` fields fall back to oak models, built-in Resource Farm overlays, and default translation keys. Missing `tree_extra_type.base` / `center` fall back to the iron overlay and Resource Farm center texture. Preset groups (`group`: `base` / `mineral` / `biology` / `agriculture`) can be toggled in config; definitions **without** `group` always load (recommended for addons).
 
 ---
 
@@ -221,7 +238,7 @@ Themed tree (sketch):
 |------|----------------|
 | Logs / wood → **smoking** | Resin (solid yield) |
 | Planks → **smelting / smoking** | Resin (smaller yield) |
-| Resin + fruit (shaped) | Main **product** × `productOutput` |
+| Resin + fruit (shaped) | Main **product** × `product_output` |
 | Product + saplings tag | More **resource saplings** |
 | Logs → planks / wood | Vanilla-like wood pipeline |
 | Special presets | Extra outputs (e.g. charcoal from coal tree, honey bottles from honeycomb tree, multi-log “wood” tree) |
@@ -238,18 +255,20 @@ Secondary notes for mod/pack authors who dig into the codebase.
 
 | Area | Responsibility |
 |------|----------------|
-| `TreeRegister` / `TreeBuilder` | Dynamic registration of blocks & items per tree config |
+| `ResourceFarmMaps` | Startup scan and decode of `resource_farm_maps` datapack JSON |
+| `ResourceTreeConfig` / `ResourceTreeBaseType` / `ResourceTreeExtraType` / `ResourceTreeGrower` | Runtime data records and codecs for trees, styles, overlays, and grower presets |
+| `TreeInitialization` / `TreeBuilder` | Dynamic registration of blocks & items per tree config |
 | `TreeModelRenderer` | Runtime dynamic assets: multipart block models, tinted overlays, item definitions, element `light_emission` |
 | `TreeRecipe` / `TreesCommonRegister` | Common + special recipes for presets |
 | `TreeLootInsert` | Dynamic loot table injection |
 | `TreeTagInsert` | Tags for leaves, logs, saplings, resin, fruit, clump… |
-| `TreeRegisterConfig` / `TreeRemoveConfig` | JSON-driven add/remove |
-| `ResourceTreeTypes` / `ResourceOreTypes` | Style catalogs for wood base + ore overlay |
 
-### Extending styles
+### Extending with JSON
 
-- Add entries in `ResourceTreeTypes` / `ResourceOreTypes` (textures under `assets/resource_farm/…`).
-- Register trees in Java via `TreeRegister` helpers, or ship JSON configs with your pack.
+- Add `resource_tree/*.json` for new trees.
+- Add `tree_base_type/*.json` / `tree_extra_type/*.json` for reusable visual styles.
+- Add `resource_tree_grower/*.json` only when built-in grower ids (`oak`, `birch`, `spruce`, `jungle`, `acacia`, `dark_oak`, `cherry`, `mangrove`) are not enough.
+- Keep addon trees without `group` unless you deliberately want Resource Farm preset toggles to skip them.
 
 ### Light emission note (26.1+)
 
@@ -278,7 +297,7 @@ Requirements track **Minecraft 26.1.2** and **NeoForge 26.1.x** (see `gradle.pro
 1. **Readable gameplay** — sapling tooltips, creative tabs, clear resin/fruit/product loop.  
 2. **Pack-first flexibility** — toggle presets, strip trees, add JSON trees, tune recipes & blocks.  
 3. **Visual identity** — tree style × ore style × color × optional glow.  
-4. **Data-driven where it counts** — registration, models, loot, recipes, and tags generated from config rather than hundreds of hand-written JSON files.
+4. **Data-driven where it counts** — registration, models, loot, recipes, and tags generated from `resource_farm_maps` datapack JSON rather than hundreds of hand-written files.
 
 ---
 
@@ -287,8 +306,8 @@ Requirements track **Minecraft 26.1.2** and **NeoForge 26.1.x** (see `gradle.pro
 - **CurseForge:** [Resource Farm](https://www.curseforge.com/minecraft/mc-mods/resource-farm)  
 - **Source:** [wanggugu197/Resource-Farm](https://github.com/wanggugu197/Resource-Farm)  
 - **Issues:** [GitHub Issues](https://github.com/wanggugu197/Resource-Farm/issues)  
-- **Config guide (EN):** [example/TreesConfigInstructions_us.md](./example/TreesConfigInstructions_us.md)  
-- **Config guide (ZH):** [example/TreesConfigInstructions_cn.md](./example/TreesConfigInstructions_cn.md)  
+- **Datapack guide (EN):** [example/TreesConfigInstructions_us.md](https://github.com/wanggugu197/Resource-Farm/blob/26.1.2/example/TreesConfigInstructions_us.md)
+- **数据包说明（中文）:** [example/TreesConfigInstructions_cn.md](https://github.com/wanggugu197/Resource-Farm/blob/26.1.2/example/TreesConfigInstructions_cn.md)
 
 ---
 

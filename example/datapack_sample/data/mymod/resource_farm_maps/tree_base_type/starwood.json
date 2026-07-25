@@ -1,0 +1,36 @@
+{
+  "type": "dark_oak",
+  "models": {
+    "sapling_base": "minecraft:block/dark_oak_sapling",
+    "leaves_base": "minecraft:block/dark_oak_leaves",
+    "log_base": "minecraft:block/dark_oak_log",
+    "log_horizontal_base": "minecraft:block/dark_oak_log_horizontal",
+    "stripped_log_base": "minecraft:block/stripped_dark_oak_log",
+    "stripped_log_horizontal_base": "minecraft:block/stripped_dark_oak_log_horizontal",
+    "wood_base": "minecraft:block/dark_oak_wood",
+    "stripped_wood_base": "minecraft:block/stripped_dark_oak_wood",
+    "planks_base": "minecraft:block/dark_oak_planks"
+  },
+  "overlays": {
+    "sapling_overlay": "resource_farm:block/tree/sapling/dark_oak_sapling_overlay",
+    "leaves_overlay": "resource_farm:block/tree/leaves/dark_oak_leaves_overlay",
+    "resin": "resource_farm:item/resin/base_resin",
+    "resin_overlay": "resource_farm:item/resin/base_resin",
+    "fruit": "resource_farm:item/fruit/base_fruit",
+    "fruit_overlay": "resource_farm:item/fruit/base_fruit_overlay",
+    "clump": "resource_farm:item/crossover/clump",
+    "clump_overlay": "resource_farm:item/crossover/clump_overlay"
+  },
+  "translate_keys": {
+    "sapling": "block.resource_farm.tree.sapling",
+    "leaves": "block.resource_farm.tree.leaves",
+    "log": "block.resource_farm.tree.log",
+    "stripped_log": "block.resource_farm.tree.stripped_log",
+    "wood": "block.resource_farm.tree.wood",
+    "stripped_wood": "block.resource_farm.tree.stripped_wood",
+    "planks": "block.resource_farm.tree.planks",
+    "resin": "item.resource_farm.tree.resin",
+    "fruit": "item.resource_farm.tree.fruit",
+    "clump": "item.resource_farm.tree.clump"
+  }
+}

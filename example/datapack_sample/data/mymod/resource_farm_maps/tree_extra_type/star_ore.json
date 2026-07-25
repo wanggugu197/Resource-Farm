@@ -1,0 +1,4 @@
+{
+  "base": "resource_farm:block/ore/emerald",
+  "center": "resource_farm:block/ore/center"
+}

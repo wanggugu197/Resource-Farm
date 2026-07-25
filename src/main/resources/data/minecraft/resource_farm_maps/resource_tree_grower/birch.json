@@ -1,0 +1,9 @@
+{
+  "secondary_chance": 0,
+  "mega_tree": null,
+  "secondary_mega_tree": null,
+  "tree": "minecraft:worldgen/configured_feature/birch",
+  "secondary_tree": null,
+  "flowers": "minecraft:worldgen/configured_feature/birch_bees_005",
+  "secondary_flowers": null
+}

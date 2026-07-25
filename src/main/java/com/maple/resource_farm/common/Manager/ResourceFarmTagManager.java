@@ -1,7 +1,7 @@
 package com.maple.resource_farm.common.Manager;
 
 import com.maple.resource_farm.ResourceFarm;
-import com.maple.resource_farm.data.tree.builder.TreeTagInsert;
+import com.maple.resource_farm.ResourceTree.builder.TreeTagInsert;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;

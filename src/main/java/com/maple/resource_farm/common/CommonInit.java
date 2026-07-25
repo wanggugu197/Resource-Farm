@@ -1,10 +1,10 @@
 package com.maple.resource_farm.common;
 
+import com.maple.resource_farm.ResourceTree.builder.TreeModelRenderer;
 import com.maple.resource_farm.common.Manager.ResourceFarmDynamicDataEvents;
-import com.maple.resource_farm.data.ResourceFarmBlocks;
+import com.maple.resource_farm.data.ResourceFarmRegister;
 import com.maple.resource_farm.data.lang.LangHandler;
 import com.maple.resource_farm.data.misc.ResourceFarmCreativeModeTabs;
-import com.maple.resource_farm.data.tree.builder.TreeModelRenderer;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
@@ -29,7 +29,7 @@ public class CommonInit {
     public static void init(final IEventBus modBus) {
         NeoForge.EVENT_BUS.register(ResourceFarmDynamicDataEvents.class);
         ResourceFarmCreativeModeTabs.init();
-        ResourceFarmBlocks.init();
+        ResourceFarmRegister.init(modBus);
         LangHandler.init();
 
         initDynamicPacks(modBus);

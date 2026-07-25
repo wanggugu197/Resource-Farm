@@ -1,0 +1,9 @@
+{
+  "secondary_chance": 0,
+  "mega_tree": "minecraft:worldgen/configured_feature/mega_jungle_tree",
+  "secondary_mega_tree": null,
+  "tree": "minecraft:worldgen/configured_feature/jungle_tree_no_vine",
+  "secondary_tree": null,
+  "flowers": null,
+  "secondary_flowers": null
+}

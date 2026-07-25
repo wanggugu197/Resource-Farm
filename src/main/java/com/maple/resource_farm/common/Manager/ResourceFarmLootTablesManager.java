@@ -1,7 +1,7 @@
 package com.maple.resource_farm.common.Manager;
 
+import com.maple.resource_farm.ResourceTree.builder.TreeLootInsert;
 import com.maple.resource_farm.common.inject.ResourceFarmDynamicInjections;
-import com.maple.resource_farm.data.tree.builder.TreeLootInsert;
 
 import net.minecraft.core.RegistryAccess;
 

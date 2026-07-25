@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block;
 /**
  * 资源农场方块 Tag 定义。
  * <p>
- * 动态内容的标签成员由 {@link com.maple.resource_farm.data.tree.builder.TreeTagInsert} 注入。
+ * 动态内容的标签成员由 {@link com.maple.resource_farm.ResourceTree.builder.TreeTagInsert} 注入。
  */
 public class ResourceFarmBlockTags {
 

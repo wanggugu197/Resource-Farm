@@ -1,0 +1,11 @@
+{
+  "type": "oak",
+  "models": {
+    "log_base": "minecraft:block/dark_oak_log",
+    "log_horizontal_base": "minecraft:block/dark_oak_log_horizontal",
+    "planks_base": "minecraft:block/dark_oak_planks"
+  },
+  "overlays": {
+    "leaves_overlay": "resource_farm:block/tree/leaves/dark_oak_leaves_overlay"
+  }
+}

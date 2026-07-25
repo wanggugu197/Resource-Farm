@@ -1,0 +1,15 @@
+{
+  "group": "base",
+  "item": "minecraft:glowstone_dust",
+  "automatic_basic_recipe": true,
+  "product_output": 32,
+  "tree_style": "cherry",
+  "grower": "cherry",
+  "ore_style": "copper",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 14,
+  "color": "0xFFE17A"
+}

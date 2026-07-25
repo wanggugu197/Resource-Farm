@@ -1,6 +1,7 @@
 package com.maple.resource_farm.config;
 
 import com.maple.resource_farm.ResourceFarm;
+import com.maple.resource_farm.ResourceTree.config.PresetResourceTreeConfigHolder;
 
 import dev.toma.configuration.Configuration;
 import dev.toma.configuration.config.Config;
@@ -27,14 +28,9 @@ public class ResourceFarmConfigHolder {
                 INTERNAL_INSTANCE = Configuration.registerConfig(ResourceFarmConfigHolder.class, ConfigFormats.YAML);
                 FarmConfigHolder = INTERNAL_INSTANCE.getConfigInstance();
 
-                // 预设树木组配置
+                // 预设树木组配置（控制数据包 group=base/mineral/... 是否加载）
                 PresetResourceTreeConfigHolder.INSTANCE = Configuration.registerConfig(PresetResourceTreeConfigHolder.class, ConfigFormats.YAML);
                 TreeConfigHolder = PresetResourceTreeConfigHolder.INSTANCE.getConfigInstance();
-
-                // 资源树-配置文件注册
-                TreeRegisterConfig.init();
-                // 资源树-配置文件移除
-                TreeRemoveConfig.init();
             }
         }
     }
@@ -55,5 +51,11 @@ public class ResourceFarmConfigHolder {
                 "是否导出所有已注册的资源？ Dump all registered assets? Default: false"
         })
         public boolean dumpAssets = false;
+
+        @Configurable
+        @Configurable.Comment({
+                "是否启用资源树模块？ Whether to enable the resource tree module? Default: true"
+        })
+        public boolean enableResourceTree = true;
     }
 }

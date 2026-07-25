@@ -1,238 +1,388 @@
-## How to register a resource tree through Config
-| Core Fields           | Function                                                                                                             | Value Examples                         | Default Value                |
-|-----------------------|----------------------------------------------------------------------------------------------------------------------|----------------------------------------|------------------------------|
-| item                  | Item ID associated with the resource tree (alternative to translateKey; translateKey takes priority if both are set) | "minecraft:nether_star"                | null                         |
-| translateKey          | Translation key (alternative to item; used for in-game localization and ID generation if item is null)               | "block.resource_farm.nether_star_tree" | null                         |
-| automaticBasicRecipe	 | Whether to automatically generate formulas for tree items and saplings                                               | true/false                             | true                         |
-| productOutput         | Resource tree based synthesis yield                                                                                  | 8/16                                   | 1                            |
-| treeStyle             | Tree style (corresponds to ResourceTreeTypes enum)                                                                   | "oak"/"spruce"/"birch"                 | "oak"                        |
-| oreStyle              | Ore style (corresponds to ResourceOreTypes enum)                                                                     | "iron"/"diamond"/"netherite"           | "iron"                       |
-| fertilizeSetting      | Fertilization configuration (nested object, refer to FertilizeSettings class)                                        | See examples                           | Default fertilization config |
-| growthFrequency       | Growth frequency (1/x chance of growing per random tick)                                                             | 5/10                                   | 10                           |
-| customPlaceBlock      | Custom placement block ID                                                                                            | "minecraft:netherrack"                 | null                         |
-| customPlaceBlockTag   | Custom placement block tag                                                                                           | "minecraft:nether_blocks"              | null                         |
-| lightLevel            | Resource tree light level (0-15, Minecraft's light level range)                                                      | 10/15                                  | 0                            |
-| colors                | Resource tree color (hexadecimal integer, e.g., 0xFF0000 = red)                                                      | 0xFF5500/0x00FFFF                      | 0                            |
+# Resource Farm: Building content with datapacks
 
-
-
-### Example 1: Full Configuration (Nether Star) – All Fields Customized
-```
-{
-  // Core field: item (used for ID generation by priority)
-  "item": "minecraft:nether_star",
-  // Translation key (fallback for ID generation and in-game localization)
-  "translateKey": "block.resource_farm.nether_star_tree",
-  // Tree style: customized to crimson forest style (falls back to oak if enum value doesn't exist)
-  "treeStyle": "crimson",
-  // Ore style: customized for Nether Star (falls back to iron if enum value doesn't exist)
-  "oreStyle": "nether_star",
-  // Fertilization configuration: custom primary/secondary items + success rates
-  "fertilizeSetting": {
-    "mainItem": "minecraft:glow_berries",    // Primary fertilization item: Glow Berries
-    "mainChance": 0.5,                       // Primary success rate: 50%
-    "secondaryItem": "minecraft:nether_wart",// Secondary fertilization item: Nether Wart
-    "secondaryChance": 0.2                   // Secondary success rate: 20%
-  },
-  // Growth frequency: 1/100 chance of growing per random tick
-  "growthFrequency": 100,
-  // Custom placement block: Netherrack
-  "customPlaceBlock": "minecraft:netherrack",
-  // Custom placement block tag: Nether blocks tag (example)
-  "customPlaceBlockTag": "minecraft:nether_blocks",
-  // Light level: 10 (medium brightness)
-  "lightLevel": 10,
-  // Color: Magenta (0xFF800080)
-  "colors": "0xFF800080"
-}
-```
-Note: Demonstrates a full custom configuration with no default value fallbacks, ideal for resource trees requiring precise control.
-
-### Example 2: Partial Fields Missing (Heart of the Sea) – Relying on Defaults
-```
-{
-  "item": "minecraft:heart_of_the_sea",
-  "translateKey": "block.resource_farm.heart_of_the_sea_tree",
-  // Missing treeStyle → defaults to oak
-  // Missing oreStyle → defaults to iron
-  // Missing fertilizeSetting → defaults to Bone Meal (35% success rate)
-  // Missing customPlaceBlock → null
-  // Missing customPlaceBlockTag → null
-  "lightLevel": 8,  // Only customize light level
-  "colors": "0xFF0000FF"  // Only customize color to blue (ocean theme)
-}
-```
-Note: Demonstrates a scenario where required fields (item/translateKey) are filled, and missing fields use defaults to simplify configuration.
-
-### Example 3: Custom Tag + Enum (Amethyst) – Tag Instead of Block
-```
-{
-  "item": "minecraft:amethyst_shard",
-  "treeStyle": "azalea",  // Azalea tree style (if enum exists)
-  "oreStyle": "amethyst", // Amethyst ore style
-  // Omit customPlaceBlock; use tag to specify placement blocks
-  "customPlaceBlockTag": "minecraft:stone_ore_replaceables",
-  "lightLevel": 7,
-  "colors": "0xFF9966CC"  // Amethyst color
-}
-```
-Note: Demonstrates using customPlaceBlockTag instead of customPlaceBlock for bulk placement block specification (e.g., all replaceable stones).
-
-### Example 4: Invalid Value Scenario (Smithing Template) – Fallback Behavior
-```
-{
-  "item": "minecraft:smithing_template",
-  "treeStyle": "invalid_tree_style",  // Invalid tree style → falls back to oak
-  "oreStyle": "invalid_ore_style",    // Invalid ore style → falls back to iron
-  "customPlaceBlock": "minecraft:sculk_shrieker", // Sculk Shrieker (valid block)
-  "lightLevel": 20,  // Exceeds light level range (0-15) → passed as-is (game auto-clamps)
-  "colors": "-1"     // Negative color value → passed as-is (handled by ColoringSettings)
-}
-```
-Note: Intentionally uses invalid values to demonstrate fallback logic: invalid enums → defaults, invalid block IDs → null, value out of range → passed as-is.
-
-### Example 5: TranslateKey Only (Ender Pearl) – No Item
-```
-{
-  // No item; use translateKey only (for ID generation)
-  "translateKey": "block.resource_farm.ender_pearl_tree",
-  "treeStyle": "dark_oak",
-  "oreStyle": "ender",
-  "fertilizeSetting": {
-    "type": "default"  // Use default fertilization configuration directly
-  },
-  "customPlaceBlock": "minecraft:end_stone",
-  "lightLevel": 15,  // Maximum brightness
-  "colors": "0xFF000000"  // Black (Ender theme)
-}
-```
-Note: Demonstrates a scenario where item is null and translateKey is used alone. The code generates an ID by extracting the part after the last dot in the translateKey.
-
-### Example 6: Item Only (Paper) – Minimal Core Configuration
-```
-{
-  // Only fill the item field; all others use defaults
-  "item": "minecraft:paper"
-  // Missing translateKey → generate ID from item (paper)
-  // Missing treeStyle → oak
-  // Missing oreStyle → iron
-  // Missing fertilizeSetting → default Bone Meal configuration
-  // Missing customPlaceBlock/customPlaceBlockTag → null
-  // Missing lightLevel → 0
-  // Missing colors → 0
-}
-```
-Note: Most minimal configuration – only the required item field is filled, and all other fields rely on defaults. Ideal for quickly registering basic resource trees.
-
-### Example 7: Custom Fertilization Configuration (Totem of Undying) – Special Rules
-```
-{
-  "item": "minecraft:totem_of_undying",
-  "translateKey": "block.resource_farm.totem_tree",
-  // Custom fertilization: primary item only, no secondary item
-  "fertilizeSetting": {
-    "mainItem": "minecraft:gold_ingot",  // Primary fertilization item: Gold Ingot
-    "mainChance": 0.8                    // Success rate: 80%
-  },
-  "customPlaceBlock": "minecraft:gold_blocks", // Invalid block ID → parsed as null
-  "lightLevel": 9,
-  "colors": "0xFFFFD700"  // Gold color (Totem of Undying theme)
-}
-```
-Note: Demonstrates a configuration with only a primary fertilization item. If secondaryItem is omitted, FertilizeSettings automatically sets it to null with 0% success rate.
-
-### Example 8: High Brightness + Custom Color (Honeycomb)
-```
-{
-  "item": "minecraft:honeycomb",
-  "treeStyle": "birch",
-  "oreStyle": "gold",
-  "lightLevel": 12,  // High brightness (close to maximum)
-  "colors": "0xFFFFB6C1"  // Honeycomb pink
-}
-```
-Note: Focuses on customizing lightLevel and colors, ideal for resource trees requiring glowing effects or thematic coloring.
-
-### Example 9: Invalid Block ID (Heavy Core) – Null Handling
-```
-{
-  "item": "minecraft:heavy_core",
-  "translateKey": "block.resource_farm.heavy_core_tree",
-  // Intentionally use an invalid block ID → RegistriesUtils.getBlock returns null
-  "customPlaceBlock": "minecraft:heavy_core_block", // Non-existent block
-  "lightLevel": 3,
-  "colors": "0xFF808080"  // Gray (metal theme)
-}
-```
-Note: Demonstrates handling of invalid customPlaceBlock IDs. The code detects null and logs a warning without affecting registration (customPlaceBlock is set to null).
-
-### Example 10: Fertilization Configuration as NULL (Echo Shard) – Disable Fertilization
-```
-{
-  "item": "minecraft:echo_shard",
-  "treeStyle": "warped",
-  "oreStyle": "netherite",
-  // Set fertilization to null → disable fertilization (0% success rate)
-  "fertilizeSetting": {
-    "type": "null"
-  },
-  "customPlaceBlockTag": "minecraft:nether_ores",
-  "lightLevel": 5,
-  "colors": "0xFF000000"  // Black (Deep Dark theme)
-}
-```
-Note: Demonstrates disabling fertilization by setting fertilizeSetting.Type to "null", ideal for resource trees that should not be fertilized.
-
-### Example 11: Special Block Configuration (Gilded Blackstone)
-```
-{
-  "item": "minecraft:gilded_blackstone",
-  "translateKey": "block.resource_farm.gilded_blackstone_tree",
-  "customPlaceBlock": "minecraft:gilded_blackstone", // Valid block ID
-  "lightLevel": 4,
-  "colors": "0xFF8B4513"  // Golden brown (Gilded Blackstone theme)
-}
-```
-Note: Demonstrates a valid customPlaceBlock configuration. The code correctly parses Gilded Blackstone and applies it to the resource tree's placement rules.
-
-### Example 12: Missing Core Fields (Respawn Anchor) – Trigger Skip Logic
-```
-{
-  // Missing both item and translateKey → code logs a warning and skips this configuration
-  "treeStyle": "crimson",
-  "oreStyle": "netherite",
-  "lightLevel": 10
-}
-```
-Note: Intentionally omits both item and translateKey. The code identifies this as an invalid configuration, logs a warning, and skips registration without affecting other configurations.
+Resource trees, wood base styles, and ore overlay styles are all defined with **datapack JSON** loaded at game startup (every loaded mod jar’s `data/` folder is scanned). The old `config/` register/remove JSON files are **no longer used**.
 
 ---
 
-# How to Remove Resource Trees via Config
-When registering resource trees, the system will automatically generate a `treeId` based on the two input parameters: `item` and `translateKey`. The core step to remove a resource tree is to fill the generated `treeId` into the corresponding `.json` file.
+## 1. Overview
 
-### Core Rules for `treeId` Generation
-The logic for `treeId` generation is divided into two core scenarios, with the priority rule: **the `item` parameter takes precedence over the `translateKey` parameter**.
+| Content | Path pattern | Purpose |
+|---------|--------------|---------|
+| **Tree definition** | `data/<namespace>/resource_farm_maps/resource_tree/**/*.json` | Register one resource tree |
+| **Tree removal** | `data/<namespace>/resource_farm_maps/resource_tree_remove/**/*.json` | Remove a tree after registration |
+| **Wood base style** | `data/<namespace>/resource_farm_maps/tree_base_type/<path>.json` | Log/leaves base models + overlays |
+| **Ore overlay style** | `data/<namespace>/resource_farm_maps/tree_extra_type/<path>.json` | Ore/crack overlay textures |
 
-#### Scenario 1: The `item` Parameter Is Provided
-The generation rule depends on whether the `namespace` corresponding to the `item` is `minecraft`:
-- If `namespace` = `minecraft`: `treeId = [path] + "_tree"`
-- If `namespace` ≠ `minecraft`: `treeId = [namespace] + "_" + [path] + "_tree"`
+- Entry ID = `namespace` + path under the type folder (without `.json`).  
+  - e.g. `data/minecraft/resource_farm_maps/tree_base_type/oak.json` → `minecraft:oak`  
+  - e.g. `data/mymod/resource_farm_maps/resource_tree/custom/paper.json` → `mymod:custom/paper`  
+- In-game tree key is still derived from `item` / `translate_key` (e.g. `minecraft:dirt` → `dirt_tree`).  
+- Built-in presets live under: `src/main/resources/data/minecraft/resource_farm_maps/`.  
+- Copy-paste samples: [`datapack_sample/`](datapack_sample/).
 
-#### Scenario 2: The `item` Parameter Is Not Provided
-In this case, the `treeId` is generated based on the `translateKey`:
-`treeId = (the substring after the last "." in the translateKey) + "_tree"`
+### Load order
 
-#### Steps to Remove a Resource Tree
-Accurately fill the `treeId` generated according to the above rules into the corresponding `.json` configuration file to complete the removal of the target resource tree.
+1. Scan styles + tree definitions from all mod jars  
+2. Filter by YAML preset `group` switches  
+3. Write the tree registry  
+4. Apply removals  
+5. Register blocks/items  
 
-1. Example 1 (with `item` parameter, `namespace` is `minecraft`):
-    - `item` parameter: `minecraft:stick` (where `namespace` = `minecraft`, `path` = `stick`)
-    - Generated `treeId`: `stick_tree`
-2. Example 2 (with `item` parameter, `namespace` is not `minecraft`):
-    - `item` parameter: `create:andesite_alloy` (where `namespace` = `create`, `path` = `andesite_alloy`)
-    - Generated `treeId`: `create_andesite_alloy_tree`
-3. Example 3 (without `item` parameter, only `translateKey` is provided):
-    - `translateKey`: `gui.example.resource_tree`
-    - Extracted substring: the part after the last "." → `resource_tree`
-    - Generated `treeId`: `resource_tree_tree`
+**Note:** Only JSON packaged inside mod jars is scanned at this stage. World folder datapacks that appear later are **not** applied to tree registration (unlike reloadable recipes).
+
+---
+
+## 2. Register a resource tree
+
+**Path:** `data/<namespace>/resource_farm_maps/resource_tree/<any path>.json`
+
+### Fields
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `item` | string | — | Linked item id (**or** `translate_key`, at least one required) |
+| `translate_key` | string | — | Display translation key; also used for id if no item |
+| `group` | string | none | Preset group: `base` / `mineral` / `biology` / `agriculture`. Missing/other = **always load** (addons) |
+| `automatic_basic_recipe` | bool | `true` | Auto basic product / sapling recipes |
+| `product_output` | int | `1` | Basic craft output count |
+| `tree_style` | string | `oak` | Base style id (`oak` → `minecraft:oak`) |
+| `ore_style` | string | `iron` | Ore overlay style id |
+| `grower` | string | `oak` | Grower id; controls which vanilla/custom configured feature is used |
+| `fertilize` | object | bone meal default | Fertilizer settings (below) |
+| `growth_frequency` | int | `10` | ~1/N chance per random tick |
+| `custom_place_block` | string | — | Plantable block id |
+| `custom_place_block_tag` | string | — | Plantable block tag |
+| `light_level` | int | `0` | Glow 0–15 (model `light_emission`) |
+| `color` | int or string | `0` | Tint: `0x9E7255`, `#9E7255`, or decimal |
+
+### Example A: Minimal
+
+```json
+{
+  "item": "minecraft:paper",
+  "color": "0xF5F5DC"
+}
+```
+
+This registers `paper_tree`. Omitted fields resolve to:
+
+| Field | Runtime value |
+|-------|---------------|
+| `tree_style` | `oak` |
+| `ore_style` | `iron` |
+| `grower` | `oak` |
+| `fertilize` | bone meal, main/secondary chance `0.35` |
+| `automatic_basic_recipe` | `true` |
+| `product_output` | `1` |
+| `growth_frequency` | `10` |
+| `light_level` | `0` |
+
+Use this first to confirm loading works, then add visuals, fertilizer, placement rules, and recipes.
+
+### Example B: Full (nether star theme)
+
+```json
+{
+  "item": "minecraft:nether_star",
+  "translate_key": "block.resource_farm.nether_star_tree",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "tree_style": "oak",
+  "ore_style": "emerald",
+  "grower": "oak",
+  "fertilize": {
+    "main_item": "minecraft:blaze_powder",
+    "main_chance": 0.3
+  },
+  "growth_frequency": 100,
+  "custom_place_block": "minecraft:beacon",
+  "light_level": 12,
+  "color": "0xFFFFFF"
+}
+```
+
+### Example C: No item (translate key only)
+
+```json
+{
+  "group": "base",
+  "translate_key": "resource_farm.resource_tree.wood",
+  "automatic_basic_recipe": false,
+  "tree_style": "dark_oak",
+  "ore_style": "nether_quartz",
+  "color": "0xB08F55"
+}
+```
+
+Provide the translation key in lang files (built-in presets already register several).
+
+### Example D: Custom plantable tag and slower growth
+
+```json
+{
+  "item": "minecraft:amethyst_shard",
+  "translate_key": "block.mymod.amethyst_shard_tree",
+  "product_output": 4,
+  "tree_style": "mymod:minimal_starwood",
+  "ore_style": "mymod:minimal_gold",
+  "fertilize": {
+    "main_item": "minecraft:glowstone_dust",
+    "main_chance": 0.2,
+    "secondary_item": "minecraft:bone_meal",
+    "secondary_chance": 0.05
+  },
+  "growth_frequency": 40,
+  "custom_place_block_tag": "minecraft:crystal_sound_blocks",
+  "light_level": 6,
+  "color": "#B985FF"
+}
+```
+
+- Use `custom_place_block_tag` when a tree can be planted on a set of blocks; use `custom_place_block` for a single block.
+- Higher `growth_frequency` means slower random-tick growth. `40` is roughly one quarter of the default `10` rate.
+- `tree_style` / `ore_style` reference the partial style files in the sample pack; see sections 5 and 6.
+
+### `group` vs config toggles
+
+Config file: `resource_farm/resource_farm_preset_tree` (Configuration mod)
+
+| `group` | Toggle |
+|---------|--------|
+| `base` | `presetTreeGeneration.minecraftBase` |
+| `mineral` | `minecraftMineral` |
+| `biology` | `minecraftBiology` |
+| `agriculture` | `minecraftAgriculture` |
+
+- If `enablePresetTreeGroups` is false, those four groups are **all skipped**.  
+- Definitions **without** `group` always load (recommended for addon mods).
+
+---
+
+## 3. Fertilize object
+
+### Type shortcuts (checked first; other fields ignored)
+
+```json
+{ "type": "default" }
+```
+
+→ Bone meal @ 0.35 / 0.35.
+
+```json
+{ "type": "null" }
+```
+
+→ Not fertilizable.
+
+### Custom items
+
+```json
+{
+  "main_item": "minecraft:blaze_powder",
+  "main_chance": 0.3,
+  "secondary_item": "minecraft:bone_meal",
+  "secondary_chance": 0.1
+}
+```
+
+Chances must be in `[0.0, 1.0]`.
+
+---
+
+## 4. Remove trees
+
+**Path:** `data/<namespace>/resource_farm_maps/resource_tree_remove/<any>.json`
+
+Applied **after** all trees are registered. Any of:
+
+```json
+"dirt_tree"
+```
+
+```json
+{ "id": "dirt" }
+```
+
+```json
+{ "tree_id": "dirt_tree" }
+```
+
+- `dirt` or `dirt_tree` both work (`_tree` is appended if missing).  
+- Empty object + filename `dirt.json` also resolves to `dirt`.
+
+Id rules:
+
+- `item` `minecraft:dirt` → **`dirt_tree`**  
+- `item` `mod:foo_bar` → **`mod_foo_bar_tree`**  
+- only `translate_key` `a.b.wood` → **`wood_tree`**
+
+---
+
+## 5. Wood base style `tree_base_type`
+
+**Path:** `data/<namespace>/resource_farm_maps/tree_base_type/<path>.json`  
+**Use in trees:** `"tree_style": "oak"` or `"mymod:custom_wood"`
+
+Built-in (`minecraft:`): `oak`, `dark_oak`, `birch`, `spruce`, `jungle`, `acacia`, `cherry`, `mangrove`, `pale_oak`.
+
+Structure (nested):
+
+```json
+{
+  "type": "oak",
+  "models": {
+    "sapling_base": "minecraft:block/oak_sapling",
+    "leaves_base": "minecraft:block/oak_leaves",
+    "log_base": "minecraft:block/oak_log",
+    "log_horizontal_base": "minecraft:block/oak_log_horizontal",
+    "stripped_log_base": "minecraft:block/stripped_oak_log",
+    "stripped_log_horizontal_base": "minecraft:block/stripped_oak_log_horizontal",
+    "wood_base": "minecraft:block/oak_wood",
+    "stripped_wood_base": "minecraft:block/stripped_oak_wood",
+    "planks_base": "minecraft:block/oak_planks"
+  },
+  "overlays": {
+    "sapling_overlay": "resource_farm:block/tree/sapling/oak_sapling_overlay",
+    "leaves_overlay": "resource_farm:block/tree/leaves/oak_leaves_overlay",
+    "resin": "resource_farm:item/resin/base_resin",
+    "resin_overlay": "resource_farm:item/resin/base_resin",
+    "fruit": "resource_farm:item/fruit/base_fruit",
+    "fruit_overlay": "resource_farm:item/fruit/base_fruit_overlay",
+    "clump": "resource_farm:item/crossover/clump",
+    "clump_overlay": "resource_farm:item/crossover/clump_overlay"
+  },
+  "translate_keys": {
+    "sapling": "block.resource_farm.tree.sapling",
+    "leaves": "block.resource_farm.tree.leaves",
+    "log": "block.resource_farm.tree.log",
+    "stripped_log": "block.resource_farm.tree.stripped_log",
+    "wood": "block.resource_farm.tree.wood",
+    "stripped_wood": "block.resource_farm.tree.stripped_wood",
+    "planks": "block.resource_farm.tree.planks",
+    "resin": "item.resource_farm.tree.resin",
+    "fruit": "item.resource_farm.tree.fruit",
+    "clump": "item.resource_farm.tree.clump"
+  }
+}
+```
+
+- `models.*` — base block models  
+- `overlays.*` — tint / item layer textures  
+- Invalid `tree_style` falls back to default oak  
+- `type`, `models`, `overlays`, `translate_keys`, and their child fields can be omitted. Missing values fall back to oak, built-in Resource Farm textures, and default translation keys.
+
+Copy from: `src/main/resources/data/minecraft/resource_farm_maps/tree_base_type/`.
+
+### Minimal wood base style
+
+```json
+{
+  "type": "oak",
+  "models": {
+    "log_base": "minecraft:block/dark_oak_log",
+    "log_horizontal_base": "minecraft:block/dark_oak_log_horizontal",
+    "planks_base": "minecraft:block/dark_oak_planks"
+  },
+  "overlays": {
+    "leaves_overlay": "resource_farm:block/tree/leaves/dark_oak_leaves_overlay"
+  }
+}
+```
+
+This only changes logs, horizontal logs, planks, and the leaves overlay. Everything else, including sapling models, resin/fruit/clump textures, and translation keys, falls back to the default oak-style values. See [`minimal_starwood.json`](datapack_sample/data/mymod/resource_farm_maps/tree_base_type/minimal_starwood.json).
+
+### Sample file
+
+See [`datapack_sample/data/mymod/resource_farm_maps/tree_base_type/starwood.json`](datapack_sample/data/mymod/resource_farm_maps/tree_base_type/starwood.json):
+
+- File → style id **`mymod:starwood`**
+- Reference in a tree: `"tree_style": "mymod:starwood"`
+- Demo tree: [`nether_star_themed.json`](datapack_sample/data/mymod/resource_farm_maps/resource_tree/nether_star_themed.json) (also uses custom `mymod:star_ore`)
+
+Easiest workflow: copy built-in `oak.json` / `dark_oak.json`, then only change `models` paths and `type`.
+
+---
+
+## 6. Ore overlay style `tree_extra_type`
+
+**Path:** `data/<namespace>/resource_farm_maps/tree_extra_type/<path>.json`  
+**Use:** `"ore_style": "iron"` or `"mymod:my_ore"`
+
+```json
+{
+  "base": "resource_farm:block/ore/iron",
+  "center": "resource_farm:block/ore/center"
+}
+```
+
+| Field | Role |
+|-------|------|
+| `base` | Main overlay texture; defaults to `resource_farm:block/ore/iron` |
+| `center` | Center layer (e.g. log face); defaults to `resource_farm:block/ore/center` |
+
+Minimal example:
+
+```json
+{
+  "base": "resource_farm:block/ore/gold"
+}
+```
+
+The center layer then falls back to `resource_farm:block/ore/center`. See [`minimal_gold.json`](datapack_sample/data/mymod/resource_farm_maps/tree_extra_type/minimal_gold.json).
+
+Built-in: `copper`, `diamond`, `emerald`, `gold`, `iron`, `lapis`, `nether_gold`, `nether_quartz`, `redstone`, `crack`.
+
+---
+
+## 7. For addon / datapack authors
+
+1. Layout:
+
+```text
+src/main/resources/data/<yourmodid>/resource_farm_maps/
+  resource_tree/
+    my_item.json
+  tree_base_type/          # optional
+  tree_extra_type/         # optional
+  resource_tree_remove/    # optional
+```
+
+2. Prefer **no** `group` (or a custom group name) so player preset toggles do not skip your trees.  
+3. Reuse built-in styles: `"tree_style": "oak"`, `"ore_style": "diamond"`.  
+4. For new looks, add style JSON first, then reference `"tree_style": "mymod:my_wood"`.  
+5. Ensure `data/` is packaged into the jar. Check logs:
+
+```text
+[ResourceFarm] resource_farm_maps: ... base, ... extra, ... grower, ... tree json, ... remove
+[ResourceFarm] Resource tree registration: applied N tree(s) (skipped M by preset), removed R.
+```
+
+---
+
+## 8. Migration from old config JSON
+
+| Old (removed) | New (datapack) |
+|---------------|----------------|
+| `config/.../resource_tree_register_configs.json` | `data/.../resource_farm_maps/resource_tree/*.json` |
+| `resource_tree_remove_configs.json` | `resource_tree_remove/*.json` |
+| camelCase `treeStyle` / `colors` | snake_case `tree_style` / `color` |
+| `fertilizeSetting` | `fertilize` (supports `type`) |
+| One JSON array | **One file per tree** |
+
+Old config paths are **not** read anymore.
+
+---
+
+## 9. Sample index
+
+| Location | Notes |
+|----------|--------|
+| [datapack_sample/](datapack_sample/) | Starter layout (includes `tree_base_type` + `tree_extra_type`) |
+| Wood base sample | [`tree_base_type/starwood.json`](datapack_sample/data/mymod/resource_farm_maps/tree_base_type/starwood.json) |
+| Partial wood base sample | [`tree_base_type/minimal_starwood.json`](datapack_sample/data/mymod/resource_farm_maps/tree_base_type/minimal_starwood.json) |
+| Ore overlay sample | [`tree_extra_type/star_ore.json`](datapack_sample/data/mymod/resource_farm_maps/tree_extra_type/star_ore.json) |
+| Minimal ore overlay sample | [`tree_extra_type/minimal_gold.json`](datapack_sample/data/mymod/resource_farm_maps/tree_extra_type/minimal_gold.json) |
+| Custom plantable tag sample | [`resource_tree/custom_soil_and_tag.json`](datapack_sample/data/mymod/resource_farm_maps/resource_tree/custom_soil_and_tag.json) |
+| Built-in presets | `src/main/resources/data/minecraft/resource_farm_maps/` |
+
+中文版：[TreesConfigInstructions_cn.md](TreesConfigInstructions_cn.md)

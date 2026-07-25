@@ -1,0 +1,15 @@
+{
+  "group": "mineral",
+  "item": "minecraft:redstone",
+  "automatic_basic_recipe": true,
+  "product_output": 32,
+  "tree_style": "jungle",
+  "grower": "jungle",
+  "ore_style": "redstone",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 4,
+  "color": "0xC20900"
+}

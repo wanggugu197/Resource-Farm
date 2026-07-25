@@ -1,0 +1,16 @@
+{
+  "group": "base",
+  "item": "minecraft:experience_bottle",
+  "translate_key": "mco.backup.entry.worldType.experience",
+  "automatic_basic_recipe": true,
+  "product_output": 4,
+  "tree_style": "dark_oak",
+  "grower": "dark_oak",
+  "ore_style": "emerald",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 8,
+  "color": "0x59B057"
+}

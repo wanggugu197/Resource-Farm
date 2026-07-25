@@ -1,0 +1,15 @@
+{
+  "group": "agriculture",
+  "item": "minecraft:nether_wart",
+  "automatic_basic_recipe": true,
+  "product_output": 8,
+  "tree_style": "acacia",
+  "grower": "acacia",
+  "ore_style": "lapis",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xD83441"
+}

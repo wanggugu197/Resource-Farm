@@ -1,0 +1,9 @@
+{
+  "secondary_chance": 0.85,
+  "mega_tree": null,
+  "secondary_mega_tree": null,
+  "tree": "minecraft:worldgen/configured_feature/mangrove",
+  "secondary_tree": "minecraft:worldgen/configured_feature/tall_mangrove",
+  "flowers": null,
+  "secondary_flowers": null
+}

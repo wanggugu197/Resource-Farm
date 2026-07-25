@@ -1,0 +1,16 @@
+{
+  "group": "base",
+  "item": "minecraft:sculk",
+  "translate_key": "resource_farm.resource_tree.sculk",
+  "automatic_basic_recipe": true,
+  "product_output": 16,
+  "tree_style": "acacia",
+  "grower": "acacia",
+  "ore_style": "lapis",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0x0E2128"
+}

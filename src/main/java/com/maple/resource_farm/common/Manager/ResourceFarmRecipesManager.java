@@ -1,6 +1,6 @@
 package com.maple.resource_farm.common.Manager;
 
-import com.maple.resource_farm.data.tree.ResourceTreeAccessManagement;
+import com.maple.resource_farm.ResourceTree.ResourceTreeAccessManagement;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;

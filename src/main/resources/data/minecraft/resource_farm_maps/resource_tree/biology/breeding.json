@@ -1,0 +1,15 @@
+{
+  "group": "biology",
+  "translate_key": "resource_farm.resource_tree.breeding",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "tree_style": "dark_oak",
+  "grower": "dark_oak",
+  "ore_style": "iron",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xFF6C5E"
+}
