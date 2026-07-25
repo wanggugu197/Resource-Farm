@@ -4,7 +4,7 @@ import net.minecraft.network.chat.Component;
 
 import com.mapleutillib.api.registry.ModLangProvider;
 
-import static com.maple.resource_farm.common.registry.ResourceFarmRegistration.REGISTRY;
+import static com.maple.resource_farm.ResourceFarm.REGISTRY;
 
 public final class LangHandler {
 

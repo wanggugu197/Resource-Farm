@@ -5,7 +5,6 @@ import com.maple.resource_farm.data.ResourceFarmBlocks;
 import com.maple.resource_farm.data.misc.ResourceFarmBlockTags;
 import com.maple.resource_farm.data.misc.ResourceFarmItemTags;
 import com.maple.resource_farm.data.tree.ResourceTree;
-import com.maple.resource_farm.utils.RLUtils;
 
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
@@ -13,6 +12,7 @@ import net.minecraft.tags.ItemTags;
 
 import com.gto.registrylib.util.entry.BlockEntry;
 import com.gto.registrylib.util.entry.ItemEntry;
+import com.mapleutillib.utils.RLUtils;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
 import java.util.List;

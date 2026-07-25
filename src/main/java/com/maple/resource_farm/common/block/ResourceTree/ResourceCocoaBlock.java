@@ -1,10 +1,7 @@
 package com.maple.resource_farm.common.block.ResourceTree;
 
 import com.maple.resource_farm.api.ResourceTree.ResourceTreeType;
-import com.maple.resource_farm.api.block.ColoringSettings;
 import com.maple.resource_farm.api.block.FertilizeSettings;
-import com.maple.resource_farm.api.block.LightEmittingBlock;
-import com.maple.resource_farm.api.block.TintableBlock;
 import com.maple.resource_farm.data.ResourceFarmBlocks;
 
 import net.minecraft.core.BlockPos;
@@ -33,9 +30,8 @@ import net.neoforged.neoforge.common.util.Lazy;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ResourceCocoaBlock extends CocoaBlock implements TintableBlock, LightEmittingBlock {
+public class ResourceCocoaBlock extends CocoaBlock {
 
-    private final String treeId;
     private final Lazy<String> translateKey;
     private final ResourceTreeType treeType;
 
@@ -47,9 +43,6 @@ public class ResourceCocoaBlock extends CocoaBlock implements TintableBlock, Lig
     private final Block customAttachBlock;
     @Nullable
     private final TagKey<Block> customAttachBlockTag;
-
-    private final int lightLevel;
-    private final ColoringSettings coloringSettings;
 
     protected static final VoxelShape[] EAST_AABB = new VoxelShape[] {
             Block.box(11.0D, 7.0D, 6.0D, 15.0D, 12.0D, 10.0D),
@@ -76,17 +69,13 @@ public class ResourceCocoaBlock extends CocoaBlock implements TintableBlock, Lig
                               Properties properties,
                               FertilizeSettings fertilizeSetting,
                               @Nullable Block customAttachBlock,
-                              @Nullable TagKey<Block> customAttachBlockTag,
-                              int lightLevel, ColoringSettings coloringSettings) {
-        super(LightEmittingBlock.applyLightLevel(properties, lightLevel));
-        this.treeId = treeId;
+                              @Nullable TagKey<Block> customAttachBlockTag) {
+        super(properties);
         this.translateKey = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getTranslateKey();
         this.treeType = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getResourceTreeConfig().treeType();
         this.fertilizeSetting = fertilizeSetting;
         this.customAttachBlock = customAttachBlock;
         this.customAttachBlockTag = customAttachBlockTag;
-        this.lightLevel = lightLevel;
-        this.coloringSettings = coloringSettings;
         this.registerDefaultState(this.stateDefinition.any()
                 .setValue(FACING, Direction.NORTH)
                 .setValue(AGE, 0));
@@ -95,25 +84,9 @@ public class ResourceCocoaBlock extends CocoaBlock implements TintableBlock, Lig
     public static ResourceCocoaBlock create(String treeId,
                                             Properties properties,
                                             @Nullable Block customAttachBlock,
-                                            @Nullable TagKey<Block> customAttachBlockTag,
-                                            int lightLevel, ColoringSettings coloringSettings) {
+                                            @Nullable TagKey<Block> customAttachBlockTag) {
         return new ResourceCocoaBlock(treeId, properties, FertilizeSettings.DEFAULT,
-                customAttachBlock, customAttachBlockTag, lightLevel, coloringSettings);
-    }
-
-    @Override
-    public boolean[] getTintLayers() {
-        return coloringSettings.tintLayers();
-    }
-
-    @Override
-    public int[] getColors() {
-        return coloringSettings.colors();
-    }
-
-    @Override
-    public int getLightLevel() {
-        return lightLevel;
+                customAttachBlock, customAttachBlockTag);
     }
 
     @Override

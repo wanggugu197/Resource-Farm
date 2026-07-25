@@ -2,7 +2,7 @@
 configuration = "4.1.2+26.1.2"
 
 registryLib = "8.0.14"
-mapleutillib = "0.2.0"
+mapleutillib = "0.2.1"
 
 jei = "29.16.0.48"
 jade = "26.1.8+neoforge"

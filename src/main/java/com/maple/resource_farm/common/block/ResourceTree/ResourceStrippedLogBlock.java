@@ -1,37 +1,28 @@
 package com.maple.resource_farm.common.block.ResourceTree;
 
 import com.maple.resource_farm.api.ResourceTree.ResourceTreeType;
-import com.maple.resource_farm.api.block.ColoringSettings;
-import com.maple.resource_farm.common.block.RotatedColoringPillarBlock;
 import com.maple.resource_farm.data.ResourceFarmBlocks;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.neoforged.neoforge.common.util.Lazy;
 
 import org.jetbrains.annotations.NotNull;
 
-public class ResourceStrippedLogBlock extends RotatedColoringPillarBlock {
+public class ResourceStrippedLogBlock extends RotatedPillarBlock {
 
-    private final String treeId;
     private final Lazy<String> translateKey;
     private final ResourceTreeType treeType;
 
-    public ResourceStrippedLogBlock(String treeId,
-                                    Properties properties,
-                                    int lightLevel,
-                                    ColoringSettings coloringSettings) {
-        super(properties, lightLevel, coloringSettings);
-        this.treeId = treeId;
+    public ResourceStrippedLogBlock(String treeId, Properties properties) {
+        super(properties);
         this.translateKey = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getTranslateKey();
         this.treeType = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getResourceTreeConfig().treeType();
     }
 
-    public static ResourceStrippedLogBlock create(String treeId,
-                                                  Properties properties,
-                                                  int lightLevel,
-                                                  ColoringSettings coloringSettings) {
-        return new ResourceStrippedLogBlock(treeId, properties, lightLevel, coloringSettings);
+    public static ResourceStrippedLogBlock create(String treeId, Properties properties) {
+        return new ResourceStrippedLogBlock(treeId, properties);
     }
 
     @Override

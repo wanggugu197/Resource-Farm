@@ -1,13 +1,12 @@
 package com.maple.resource_farm.api.block;
 
-import com.maple.resource_farm.utils.RegistriesUtils;
-
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.util.Lazy;
 
 import com.google.gson.JsonObject;
+import com.mapleutillib.utils.RegistriesUtils;
 
 import javax.annotation.Nullable;
 

@@ -11,7 +11,7 @@ import net.neoforged.neoforge.common.NeoForge;
 
 import com.mapleutillib.api.pack.addon.AddonFinder;
 
-import static com.maple.resource_farm.common.registry.ResourceFarmRegistration.REGISTRY;
+import static com.maple.resource_farm.ResourceFarm.REGISTRY;
 
 /**
  * 通用初始化。

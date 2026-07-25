@@ -7,7 +7,7 @@ import com.gto.registrylib.util.entry.RegistryEntry;
 
 import java.util.Map;
 
-import static com.maple.resource_farm.common.registry.ResourceFarmRegistration.REGISTRY;
+import static com.maple.resource_farm.ResourceFarm.REGISTRY;
 
 public class ResourceFarmCreativeModeTabs {
 

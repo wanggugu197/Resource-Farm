@@ -4,8 +4,6 @@ import java.util.Comparator;
 
 public class IntObjectHolder<T> {
 
-    public static final Comparator<IntObjectHolder<?>> PRIORITY_SORTER = new C();
-
     public int number;
     public T obj;
 

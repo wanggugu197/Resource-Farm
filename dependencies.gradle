@@ -1,9 +1,8 @@
 dependencies {
-
     // Configuration
     jarJar(api(forge.configuration.get()))
 
-    // RegistryLib + MapleUtilLib (replaces Registrate)
+    // RegistryLib + MapleUtilLib
     implementation(forge.registrylib)
     implementation(forge.mapleutillib)
 
@@ -12,5 +11,4 @@ dependencies {
     localRuntime(forge.bundles.jei)
 
     localRuntime(forge.jade)
-
 }

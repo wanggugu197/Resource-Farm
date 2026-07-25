@@ -5,12 +5,13 @@ import com.maple.resource_farm.api.block.FertilizeSettings;
 import com.maple.resource_farm.data.lang.LangHandler;
 import com.maple.resource_farm.data.tree.builder.TreeRecipe;
 import com.maple.resource_farm.data.tree.builder.TreeRegister;
-import com.maple.resource_farm.utils.RLUtils;
 
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+
+import com.mapleutillib.utils.RLUtils;
 
 import static com.maple.resource_farm.api.ResourceOre.ResourceOreTypes.*;
 import static com.maple.resource_farm.api.ResourceTree.ResourceTreeTypes.*;

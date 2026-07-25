@@ -1,8 +1,6 @@
 package com.maple.resource_farm.common.block.ResourceTree;
 
 import com.maple.resource_farm.api.ResourceTree.ResourceTreeType;
-import com.maple.resource_farm.api.block.ColoringSettings;
-import com.maple.resource_farm.common.block.RotatedColoringPillarBlock;
 import com.maple.resource_farm.config.ResourceFarmConfigHolder;
 import com.maple.resource_farm.data.ResourceFarmBlocks;
 
@@ -32,29 +30,23 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ResourceLogBlock extends RotatedColoringPillarBlock {
+public class ResourceLogBlock extends RotatedPillarBlock {
 
     private final String treeId;
     private final Lazy<String> translateKey;
     private final ResourceTreeType treeType;
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
 
-    public ResourceLogBlock(String treeId,
-                            Properties properties,
-                            int lightLevel,
-                            ColoringSettings coloringSettings) {
-        super(properties, lightLevel, coloringSettings);
+    public ResourceLogBlock(String treeId, Properties properties) {
+        super(properties);
         this.treeId = treeId;
         this.translateKey = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getTranslateKey();
         this.treeType = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getResourceTreeConfig().treeType();
         this.registerDefaultState(this.defaultBlockState().setValue(PERSISTENT, Boolean.FALSE));
     }
 
-    public static ResourceLogBlock create(String treeId,
-                                          Properties properties,
-                                          int lightLevel,
-                                          ColoringSettings coloringSettings) {
-        return new ResourceLogBlock(treeId, properties, lightLevel, coloringSettings);
+    public static ResourceLogBlock create(String treeId, Properties properties) {
+        return new ResourceLogBlock(treeId, properties);
     }
 
     @Override
@@ -86,7 +78,8 @@ public class ResourceLogBlock extends RotatedColoringPillarBlock {
     }
 
     @Override
-    public @Nullable BlockState getToolModifiedState(@NotNull BlockState state, @NotNull UseOnContext context, @NotNull ItemAbility ability, boolean simulate) {
+    public @Nullable BlockState getToolModifiedState(@NotNull BlockState state, @NotNull UseOnContext context,
+                                                     @NotNull ItemAbility ability, boolean simulate) {
         if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedLog) {
             if (ability == ItemAbilities.AXE_STRIP) {
                 BlockEntry<?> strippedLog = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getStrippedLog();

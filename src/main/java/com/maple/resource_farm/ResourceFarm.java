@@ -2,8 +2,6 @@ package com.maple.resource_farm;
 
 import com.maple.resource_farm.common.CommonInit;
 import com.maple.resource_farm.config.ResourceFarmConfigHolder;
-import com.maple.resource_farm.utils.FormattingUtil;
-import com.maple.resource_farm.utils.RLUtils;
 
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
@@ -13,7 +11,9 @@ import net.neoforged.fml.javafmlmod.FMLModContainer;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.data.loading.DatagenModLoader;
 
-import com.mojang.serialization.Codec;
+import com.mapleutillib.api.registry.ModRegistryCore;
+import com.mapleutillib.utils.FormattingUtil;
+import com.mapleutillib.utils.RLUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
@@ -25,9 +25,7 @@ public class ResourceFarm {
 
     public static final String MOD_ID = "resource_farm";
     private static final Identifier TEMPLATE_LOCATION = RLUtils.get(MOD_ID, "");
-    public static final Codec<Identifier> ResourceFarm_ID = Codec.STRING.comapFlatMap(
-            str -> Identifier.read(appendIdString(str)),
-            s -> s.getNamespace().equals(MOD_ID) ? s.getPath() : s.toString());
+    public static final ModRegistryCore REGISTRY = ModRegistryCore.create(MOD_ID);
 
     public static final String NAME = "Resource Farm";
     public static final Logger LOGGER = LogManager.getLogger(NAME);

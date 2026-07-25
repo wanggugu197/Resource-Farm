@@ -1,10 +1,7 @@
 package com.maple.resource_farm.common.block.ResourceTree;
 
 import com.maple.resource_farm.api.ResourceTree.ResourceTreeType;
-import com.maple.resource_farm.api.block.ColoringSettings;
 import com.maple.resource_farm.api.block.FertilizeSettings;
-import com.maple.resource_farm.api.block.LightEmittingBlock;
-import com.maple.resource_farm.api.block.TintableBlock;
 import com.maple.resource_farm.common.block.grower.ResourceTreeGrower;
 import com.maple.resource_farm.data.ResourceFarmBlocks;
 
@@ -32,15 +29,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.util.Lazy;
 
+import com.gto.registrylib.tooltip.SubNode;
+import com.gto.registrylib.tooltip.TooltipNodeCollector;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
-public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock, LightEmittingBlock {
+public class ResourceSaplingBlock extends SaplingBlock {
 
-    private final String treeId;
     private final Lazy<String> translateKey;
     private final ResourceTreeType treeType;
 
@@ -53,21 +49,14 @@ public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock,
     @Nullable
     private final TagKey<Block> customPlaceBlockTag;
 
-    private final int lightLevel;
-
-    private final ColoringSettings coloringSettings;
-
     public ResourceSaplingBlock(String treeId,
                                 ResourceTreeGrower resourceTreeGrower,
                                 Properties properties,
                                 FertilizeSettings fertilizeSetting,
                                 int growthFrequency,
                                 Lazy<Block> customPlaceBlock,
-                                @Nullable TagKey<Block> customPlaceBlockTag,
-                                int lightLevel,
-                                ColoringSettings coloringSettings) {
-        super(null, LightEmittingBlock.applyLightLevel(properties, lightLevel));
-        this.treeId = treeId;
+                                @Nullable TagKey<Block> customPlaceBlockTag) {
+        super(null, properties);
         this.translateKey = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getTranslateKey();
         this.treeType = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getResourceTreeConfig().treeType();
         this.resourceTreeGrower = resourceTreeGrower;
@@ -75,31 +64,13 @@ public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock,
         this.growthFrequency = growthFrequency;
         this.customPlaceBlock = customPlaceBlock;
         this.customPlaceBlockTag = customPlaceBlockTag;
-        this.lightLevel = lightLevel;
-        this.coloringSettings = coloringSettings;
     }
 
     public static ResourceSaplingBlock create(String treeId, ResourceTreeGrower treeGrower, Properties properties,
                                               FertilizeSettings fertilizeSetting, int growthFrequency,
-                                              Lazy<Block> customPlaceBlock, TagKey<Block> customPlaceBlockTag,
-                                              int lightLevel, ColoringSettings coloringSettings) {
+                                              Lazy<Block> customPlaceBlock, TagKey<Block> customPlaceBlockTag) {
         return new ResourceSaplingBlock(treeId, treeGrower, properties, fertilizeSetting, growthFrequency, customPlaceBlock,
-                customPlaceBlockTag, lightLevel, coloringSettings);
-    }
-
-    @Override
-    public boolean[] getTintLayers() {
-        return coloringSettings.tintLayers();
-    }
-
-    @Override
-    public int[] getColors() {
-        return coloringSettings.colors();
-    }
-
-    @Override
-    public int getLightLevel() {
-        return lightLevel;
+                customPlaceBlockTag);
     }
 
     @Override
@@ -177,58 +148,41 @@ public class ResourceSaplingBlock extends SaplingBlock implements TintableBlock,
     }
 
     /**
-     * 26.1 起方块不再提供 appendHoverText。
+     * 写入树苗物品 tooltip（RegistryLib {@code addTooltip} / {@link TooltipNodeCollector}）。
+     * <p>
+     * 催熟物名称用 {@link Item#getDescriptionId()}，避免 26.1 下
+     * {@code Item.getName(EMPTY)} 读 {@code ITEM_NAME} 得到空组件。
      */
-    public void appendSaplingTooltip(@NotNull Consumer<Component> tooltipComponents) {
+    public void appendSaplingTooltip(@NotNull TooltipNodeCollector collector) {
         if (customPlaceBlock.get() != Blocks.BARRIER) {
-            tooltipComponents.accept(Component.translatable("tooltip.resource_farm.sapling.placed_on_block",
-                    customPlaceBlock.get().getName().copy().withStyle(ChatFormatting.YELLOW)));
+            collector.node(new SubNode.Basic(Component.translatable(
+                    "tooltip.resource_farm.sapling.placed_on_block",
+                    customPlaceBlock.get().getName().copy().withStyle(ChatFormatting.YELLOW))));
         }
         if (customPlaceBlockTag != null) {
             Identifier tagRL = customPlaceBlockTag.location();
-            tooltipComponents.accept(Component.translatable("tooltip.resource_farm.sapling.placed_on_block_tag",
+            collector.node(new SubNode.Basic(Component.translatable(
+                    "tooltip.resource_farm.sapling.placed_on_block_tag",
                     Component.translatable(String.format("tag.block.%s.%s", tagRL.getNamespace(), tagRL.getPath()))
-                            .withStyle(ChatFormatting.YELLOW)));
+                            .withStyle(ChatFormatting.YELLOW))));
         }
 
-        appendFertilizeTooltip(tooltipComponents);
-    }
-
-    /**
-     * 显示催熟物品名称。
-     * <p>
-     * 26.1 中 {@link Item#getName(ItemStack)} 仅读取栈上 {@code DataComponents.ITEM_NAME}，
-     * 对 {@link ItemStack#EMPTY} 会返回 {@link net.minecraft.network.chat.CommonComponents#EMPTY}，
-     * 导致提示里催熟物品名称为空白。应使用 {@link Item#getDescriptionId()} 翻译键。
-     */
-    private void appendFertilizeTooltip(@NotNull Consumer<Component> tooltipComponents) {
-        if (fertilizeSetting == null || fertilizeSetting == FertilizeSettings.NULL) {
-            return;
-        }
+        if (fertilizeSetting == null || fertilizeSetting == FertilizeSettings.NULL) return;
         Lazy<Item> mainLazy = fertilizeSetting.mainRipeningItem();
         Lazy<Item> secondaryLazy = fertilizeSetting.secondaryRipeningItem();
-        if (mainLazy == null) {
-            return;
-        }
-
+        if (mainLazy == null) return;
         Item mainItem = mainLazy.get();
-        if (mainItem == null || mainItem == Items.BARRIER || mainItem == Items.AIR) {
-            return;
-        }
-
+        if (mainItem == Items.BARRIER || mainItem == Items.AIR) return;
         Component mainItemName = itemDisplayName(mainItem).copy().withStyle(ChatFormatting.GREEN);
         Item secondaryItem = secondaryLazy != null ? secondaryLazy.get() : null;
         if (secondaryItem != null && secondaryItem != Items.BARRIER && secondaryItem != Items.AIR && secondaryItem != mainItem) {
             Component secondaryItemName = itemDisplayName(secondaryItem).copy().withStyle(ChatFormatting.GREEN);
-            tooltipComponents.accept(Component.translatable(
-                    "tooltip.resource_farm.sapling.fertilize_2", mainItemName, secondaryItemName));
+            collector.node(new SubNode.Basic(Component.translatable("tooltip.resource_farm.sapling.fertilize_2", mainItemName, secondaryItemName)));
         } else {
-            tooltipComponents.accept(Component.translatable(
-                    "tooltip.resource_farm.sapling.fertilize_1", mainItemName));
+            collector.node(new SubNode.Basic(Component.translatable("tooltip.resource_farm.sapling.fertilize_1", mainItemName)));
         }
     }
 
-    /** 安全获取物品显示名（不依赖 ItemStack 组件） */
     private static Component itemDisplayName(Item item) {
         return Component.translatable(item.getDescriptionId());
     }

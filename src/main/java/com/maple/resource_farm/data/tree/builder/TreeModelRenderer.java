@@ -3,41 +3,43 @@ package com.maple.resource_farm.data.tree.builder;
 import com.maple.resource_farm.ResourceFarm;
 import com.maple.resource_farm.api.ResourceOre.ResourceOreType;
 import com.maple.resource_farm.api.ResourceTree.ResourceTreeType;
-import com.maple.resource_farm.api.block.ColoringSettings;
 import com.maple.resource_farm.config.ResourceFarmConfigHolder;
 import com.maple.resource_farm.data.ResourceFarmBlocks;
-import com.maple.resource_farm.data.misc.ResourceFarmModels;
-import com.maple.resource_farm.data.misc.ResourceFarmModels.LayerFaceTextures;
 import com.maple.resource_farm.data.tree.ResourceTree;
 import com.maple.resource_farm.data.tree.ResourceTreeConfig;
 
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.client.renderer.item.ClientItem;
+import net.minecraft.client.renderer.item.ItemModel;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.FoliageColor;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import com.mapleutillib.api.pack.DynamicAssets;
 import com.mapleutillib.api.pack.PackPaths;
+import com.mojang.serialization.JsonOps;
 import lombok.Getter;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * 运行时树木方块 / 物品模型生成，写入 MapleUtilLib {@link DynamicAssets}。
- * <p>
- * 由 {@code REGISTRY.packs().whenClient(TreeModelRenderer::reinitModels)} 在
- * ModelManager.reload 时调用。
+ * 运行时树木 multipart 联合渲染：
+ * <ul>
+ * <li>基底：vanilla 方块模型</li>
+ * <li>着色叠加层：动态生成，含 tintindex 0；element 级 {@code light_emission}</li>
+ * </ul>
+ * 模型自发光写在 element 的 {@code light_emission}（0–15），不是 face 字段；
+ * 也不等同于方块 {@code lightLevel} 世界光照。
  */
 public class TreeModelRenderer {
 
-    // ===================== 核心常量 =====================
     private static final Identifier BLANK_TEXTURE = ResourceFarm.id("block/void");
-    private static final String VERTICAL_LOG_SUFFIX = "_vertical";
-    private static final int ROTATE_90_DEGREE = 90;
+    private static final int ROTATE_90 = 90;
 
     private static final boolean STRIPPED_LOG_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedLog;
     private static final boolean WOOD_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateWood;
@@ -45,19 +47,10 @@ public class TreeModelRenderer {
     private static final boolean PLANKS_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generatePlanks;
     private static final boolean CLUMP_ENABLED = ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateClump();
 
-    private static final Identifier PARENT_ALL = ResourceFarmModels.STATIC_ALL_PARENT;
-    private static final Identifier PARENT_HORIZONTAL_COLUMN = ResourceFarmModels.STATIC_HORIZONTAL_COLUMN_PARENT;
-    private static final Identifier PARENT_BOTTOM_TOP = ResourceFarmModels.STATIC_BOTTOM_TOP_PARENT;
-    private static final Identifier PARENT_CROSS = ResourceFarmModels.STATIC_CROSS_PARENT;
-    private static final Identifier PARENT_LEAVES = ResourceFarmModels.STATIC_LEAVES_PARENT;
-    private static final Identifier PARENT_ITEM = ResourceFarmModels.STATIC_ITEM_PARENT;
-
     private static boolean isTreeConfigValid(ResourceTreeConfig treeConfig) {
-        if (treeConfig == null) return false;
-        return treeConfig.treeType() != null && treeConfig.oreType() != null;
+        return treeConfig != null && treeConfig.treeType() != null && treeConfig.oreType() != null;
     }
 
-    // ===================== 核心实体 =====================
     @Getter
     private static class ResourceTreeBundle {
 
@@ -65,54 +58,44 @@ public class TreeModelRenderer {
         private final String treeName;
         private final ResourceTreeType treeType;
         private final ResourceOreType oreType;
-        private final ColoringSettings coloring;
-        private final ColoringSettings leavesColoring;
-        private final ColoringSettings clumpColoring;
+        private final int color;
+        /** 模型 face light_emission（0–15） */
+        private final int lightEmission;
 
         private final Identifier saplingId;
         private final Identifier leavesId;
         private final Identifier logId;
-
         private final Identifier strippedLogId;
         private final Identifier woodId;
         private final Identifier strippedWoodId;
-
         private final Identifier planksId;
-
         private final Identifier resinId;
         private final Identifier fruitId;
         private final Identifier clumpId;
 
         public ResourceTreeBundle(String treeId, ResourceTree resourceTree) {
+            var config = resourceTree.getResourceTreeConfig();
             this.treeId = treeId;
-            this.treeName = resourceTree.getResourceTreeConfig().id();
-            this.treeType = resourceTree.getResourceTreeConfig().treeType();
-            this.oreType = resourceTree.getResourceTreeConfig().oreType();
-            ColoringSettings base = resourceTree.getResourceTreeConfig().coloringSettings();
-            this.coloring = base;
-            this.leavesColoring = ColoringSettings.getLeave(base);
-            this.clumpColoring = ColoringSettings.reversed(base);
+            this.treeName = config.id();
+            this.treeType = config.treeType();
+            this.oreType = config.oreType();
+            this.color = config.color();
+            this.lightEmission = Mth.clamp(config.lightLevel(), 0, 15);
 
             this.saplingId = resourceTree.getSapling().identifier();
             this.leavesId = resourceTree.getLeaves().identifier();
             this.logId = resourceTree.getLog().identifier();
-
             this.strippedLogId = STRIPPED_LOG_ENABLED ? resourceTree.getStrippedLog().identifier() : null;
             this.woodId = WOOD_ENABLED ? resourceTree.getWood().identifier() : null;
             this.strippedWoodId = STRIPPED_WOOD_ENABLED ? resourceTree.getStrippedWood().identifier() : null;
-
             this.planksId = PLANKS_ENABLED ? resourceTree.getPlanks().identifier() : null;
-
             this.resinId = resourceTree.getResin().identifier();
             this.fruitId = resourceTree.getFruit().identifier();
             this.clumpId = CLUMP_ENABLED ? resourceTree.getClump().identifier() : null;
         }
 
         public boolean isValid() {
-            var isTreeInfoValid = treeId != null && !treeId.isBlank() && treeName != null && !treeName.isBlank();
-            var isTypeValid = treeType != null && oreType != null;
-            var isResourceValid = saplingId != null && leavesId != null && logId != null;
-            return isTreeInfoValid && isTypeValid && isResourceValid;
+            return treeId != null && !treeId.isBlank() && treeName != null && !treeName.isBlank() && treeType != null && oreType != null && saplingId != null && leavesId != null && logId != null;
         }
 
         public boolean isStrippedLogEnabled() {
@@ -136,58 +119,76 @@ public class TreeModelRenderer {
         }
     }
 
-    // ===================== 批量注册器 =====================
     private static class BatchRegistrar {
 
         private final ConcurrentHashMap<Identifier, JsonObject> blockModels = new ConcurrentHashMap<>();
         private final ConcurrentHashMap<Identifier, JsonObject> blockStates = new ConcurrentHashMap<>();
-        private final ConcurrentHashMap<Identifier, JsonObject> itemModels = new ConcurrentHashMap<>();
-        private final ConcurrentHashMap<Identifier, ItemMapping> itemMappings = new ConcurrentHashMap<>();
+        private final ConcurrentHashMap<Identifier, DualTextureItem> dualTextureItems = new ConcurrentHashMap<>();
+        private final ConcurrentHashMap<Identifier, CompositeBlockItem> compositeBlockItems = new ConcurrentHashMap<>();
         private final AtomicBoolean isCommitted = new AtomicBoolean(false);
 
-        private record ItemMapping(Identifier modelRef, ColoringSettings coloring) {}
+        private record DualTextureItem(Identifier layer0, Identifier layer1, ItemTintSource[] tints) {}
 
-        public void addBlockModel(Identifier blockId, JsonObject modelJson) {
-            if (blockId != null && modelJson != null) {
-                blockModels.put(blockId, modelJson);
+        /**
+         * 方块物品联合渲染：base 为原版/基底模型，tint 为资源着色层。
+         * {@code baseTint} 非空时对底层应用物品着色（如原版树叶物品的固定叶片色）。
+         */
+        private record CompositeBlockItem(Identifier baseModel, Identifier tintModel, int color,
+                                          @Nullable ItemTintSource baseTint) {}
+
+        void addBlockModel(Identifier modelKey, JsonObject json) {
+            if (modelKey != null && json != null) blockModels.put(modelKey, json);
+        }
+
+        void addBlockState(Identifier blockId, JsonObject json) {
+            if (blockId != null && json != null) blockStates.put(blockId, json);
+        }
+
+        /** 默认：第 1 层（overlay）着色，第 0 层不着色。 */
+        void addDualTextureItem(Identifier itemId, Identifier layer0, Identifier layer1, int color) {
+            addDualTextureItem(itemId, layer0, layer1, overlayOnlyTints(color));
+        }
+
+        void addDualTextureItem(Identifier itemId, Identifier layer0, Identifier layer1, ItemTintSource[] tints) {
+            if (itemId != null) dualTextureItems.put(itemId, new DualTextureItem(layer0, layer1, tints));
+        }
+
+        void addCompositeBlockItem(Identifier itemId, Identifier baseModel, Identifier tintModel, int color) {
+            addCompositeBlockItem(itemId, baseModel, tintModel, color, null);
+        }
+
+        void addCompositeBlockItem(Identifier itemId, Identifier baseModel, Identifier tintModel, int color,
+                                   @Nullable ItemTintSource baseTint) {
+            if (itemId != null && baseModel != null && tintModel != null) {
+                compositeBlockItems.put(itemId, new CompositeBlockItem(baseModel, tintModel, color, baseTint));
             }
         }
 
-        public void addBlockState(Identifier blockId, JsonObject stateJson) {
-            if (blockId != null && stateJson != null) {
-                blockStates.put(blockId, stateJson);
-            }
-        }
+        void commit(DynamicAssets assets) {
+            if (isCommitted.getAndSet(true)) return;
+            blockModels.forEach((modelKey, json) -> assets.put(PackPaths.blockModelFile(modelKey), json));
+            blockStates.forEach((blockId, json) -> assets.put(PackPaths.blockStateFile(blockId), json));
 
-        public void addItemModel(Identifier itemId, JsonObject modelJson) {
-            if (itemId != null && modelJson != null) {
-                itemModels.put(itemId, modelJson);
-            }
-        }
+            // 分层着色物品：逻辑在 resource_farm 内，不依赖 MapleUtilLib multiLayer* API
+            dualTextureItems.forEach((itemId, entry) -> writeMultiLayerTintedFlatItem(
+                    assets,
+                    itemId,
+                    entry.tints(),
+                    nullSafe(entry.layer0()),
+                    nullSafe(entry.layer1())));
 
-        public void addItemMapping(Identifier itemId, Identifier modelRef, ColoringSettings coloring) {
-            if (itemId != null && modelRef != null) {
-                itemMappings.put(itemId, new ItemMapping(modelRef, coloring));
-            }
-        }
-
-        public void commit(DynamicAssets assets) {
-            if (isCommitted.getAndSet(true)) {
-                return;
-            }
-            blockModels.forEach((id, json) -> assets.put(PackPaths.blockModelFile(id), json));
-            itemModels.forEach((id, json) -> assets.put(PackPaths.itemModelFile(id), json));
-            blockStates.forEach((id, json) -> assets.put(PackPaths.blockStateFile(id), json));
-            itemMappings.forEach((itemId, mapping) -> {
-                ItemTintSource[] tints = dualLayerConstantTints(
-                        mapping.coloring() != null ? mapping.coloring().tintLayers() : null,
-                        mapping.coloring() != null ? mapping.coloring().colors() : null);
-                writeItemMapping(assets, itemId, mapping.modelRef(), tints);
+            compositeBlockItems.forEach((itemId, entry) -> {
+                ItemModel.Unbaked base = entry.baseTint() != null ? ItemModelUtils.tintedModel(entry.baseModel(), entry.baseTint()) : ItemModelUtils.plainModel(entry.baseModel());
+                ItemModel.Unbaked unbaked = ItemModelUtils.composite(
+                        base,
+                        ItemModelUtils.tintedModel(entry.tintModel(), ItemModelUtils.constantTint(entry.color())));
+                writeItemDefinition(assets, itemId, unbaked);
             });
+
             clearAll();
         }
 
-        public void reset() {
+        void reset() {
             isCommitted.set(false);
             clearAll();
         }
@@ -195,356 +196,439 @@ public class TreeModelRenderer {
         private void clearAll() {
             blockModels.clear();
             blockStates.clear();
-            itemModels.clear();
-            itemMappings.clear();
+            dualTextureItems.clear();
+            compositeBlockItems.clear();
         }
     }
 
-    private static final Map<Identifier, Identifier> BLOCK_MODEL_LOCATION_CACHE = new ConcurrentHashMap<>();
-    private static final BatchRegistrar BATCH_REGISTRAR = new BatchRegistrar();
+    private static final BatchRegistrar BATCH = new BatchRegistrar();
 
-    // ===================== JSON / 路径工具 =====================
+    // ===================== JSON / light_emission =====================
 
-    private static JsonObject parentedModel(Identifier parent, Map<String, Identifier> textures) {
-        JsonObject root = new JsonObject();
-        if (parent != null) {
-            root.addProperty("parent", parent.toString());
-        }
-        if (textures != null && !textures.isEmpty()) {
-            JsonObject tex = new JsonObject();
-            textures.forEach((slot, id) -> {
-                if (slot != null && id != null) {
-                    tex.addProperty(slot, id.toString());
-                }
-            });
-            if (!tex.entrySet().isEmpty()) {
-                root.add("textures", tex);
-            }
-        }
-        return root;
-    }
-
-    private static JsonObject parentedModel(Identifier parent, Object... textureSlotPairs) {
-        if (textureSlotPairs == null || textureSlotPairs.length == 0) {
-            return parentedModel(parent, Map.of());
-        }
-        if ((textureSlotPairs.length & 1) != 0) {
-            throw new IllegalArgumentException("textureSlotPairs must be even: slot, id, slot, id, ...");
-        }
-        Map<String, Identifier> textures = new LinkedHashMap<>();
-        for (int i = 0; i < textureSlotPairs.length; i += 2) {
-            Object slot = textureSlotPairs[i];
-            Object id = textureSlotPairs[i + 1];
-            if (!(slot instanceof String s) || !(id instanceof Identifier rl)) {
-                throw new IllegalArgumentException(
-                        "texture pairs must be (String slot, Identifier id)");
-            }
-            textures.put(s, rl);
-        }
-        return parentedModel(parent, textures);
-    }
-
-    private static JsonObject multiLayerItemModel(Identifier parent, Identifier... layers) {
-        Map<String, Identifier> textures = new LinkedHashMap<>();
-        if (layers != null) {
-            for (int i = 0; i < layers.length; i++) {
-                if (layers[i] != null) {
-                    textures.put("layer" + i, layers[i]);
-                }
-            }
-        }
-        return parentedModel(parent, textures);
-    }
-
-    private static Identifier blockModelRef(Identifier blockId) {
-        return PackPaths.blockModelRef(blockId);
-    }
-
-    private static Identifier itemModelRef(Identifier itemId) {
-        return PackPaths.itemModelRef(itemId);
-    }
-
-    /**
-     * 双层 tint：按着色开关与颜色数组生成 2 槽 constant tint。
-     */
-    private static ItemTintSource[] dualLayerConstantTints(boolean[] layers, int[] colors) {
-        ItemTintSource[] tints = new ItemTintSource[2];
-        for (int i = 0; i < 2; i++) {
-            int value = -1;
-            if (layers != null && colors != null && i < layers.length && i < colors.length && layers[i]) {
-                value = colors[i];
-            }
-            tints[i] = ItemModelUtils.constantTint(value);
-        }
-        return tints;
-    }
-
-    private static void writeItemMapping(DynamicAssets assets, Identifier itemId, Identifier modelRef,
-                                         ItemTintSource[] tints) {
-        if (itemId.getNamespace().equals(assets.modId())) {
-            assets.mapItemTinted(itemId.getPath(), modelRef, tints);
-            return;
-        }
-        // 跨命名空间（addon）：直接写 items 文件路径
-        var unbaked = ItemModelUtils.tintedModel(modelRef, tints);
-        var clientItem = new net.minecraft.client.renderer.item.ClientItem(
-                unbaked, net.minecraft.client.renderer.item.ClientItem.Properties.DEFAULT);
-        net.minecraft.client.renderer.item.ClientItem.CODEC
-                .encodeStart(com.mojang.serialization.JsonOps.INSTANCE, clientItem)
-                .result()
-                .ifPresent(json -> assets.put(PackPaths.itemDefinitionFile(itemId), json));
-    }
-
-    // ===================== 基础工具 =====================
-
-    private static Identifier nullSafeTexture(Identifier texture) {
+    private static Identifier nullSafe(Identifier texture) {
         return texture == null ? BLANK_TEXTURE : texture;
     }
 
-    private static Identifier buildBlockModelLocation(Identifier blockId) {
-        if (blockId == null) {
-            return null;
+    /** 仅第 1 层（overlay）着色，第 0 层保持原色。用于树苗/树脂/果实等。 */
+    private static ItemTintSource[] overlayOnlyTints(int color) {
+        return new ItemTintSource[] {
+                ItemModelUtils.constantTint(0xFFFFFFFF),
+                ItemModelUtils.constantTint(color)
+        };
+    }
+
+    /** 仅第 0 层着色，第 1 层（overlay）保持原色。用于 crossover 碎块。 */
+    private static ItemTintSource[] baseOnlyTints(int color) {
+        return new ItemTintSource[] {
+                ItemModelUtils.constantTint(color),
+                ItemModelUtils.constantTint(0xFFFFFFFF)
+        };
+    }
+
+    /**
+     * 原版树叶物品使用的固定叶片色（与 {@code assets/minecraft/items/*_leaves.json} 一致）。
+     * cherry / pale_oak 纹理自带颜色，返回 null 表示底层不着色。
+     */
+    @Nullable
+    private static ItemTintSource vanillaLeavesItemTint(ResourceTreeType treeType) {
+        if (treeType == null || treeType.type() == null) {
+            return ItemModelUtils.constantTint(FoliageColor.FOLIAGE_DEFAULT);
         }
-        return BLOCK_MODEL_LOCATION_CACHE.computeIfAbsent(blockId, TreeModelRenderer::blockModelRef);
+        Integer color = switch (treeType.type()) {
+            case "birch" -> FoliageColor.FOLIAGE_BIRCH;
+            case "spruce" -> FoliageColor.FOLIAGE_EVERGREEN;
+            case "mangrove" -> FoliageColor.FOLIAGE_MANGROVE;
+            case "cherry", "pale_oak" -> null;
+            default -> FoliageColor.FOLIAGE_DEFAULT; // oak / jungle / acacia / dark_oak
+        };
+        return color == null ? null : ItemModelUtils.constantTint(color);
     }
 
-    private static String buildBlockModelRef(Identifier blockId) {
-        var blockModelLocation = buildBlockModelLocation(blockId);
-        return blockModelLocation == null ? "" : blockModelLocation.toString();
-    }
+    private static final Identifier PARENT_ITEM_GENERATED = Identifier.withDefaultNamespace("item/generated");
 
-    private static JsonObject buildDefaultVariant(String modelRef) {
-        var variant = new JsonObject();
-        var modelValue = (modelRef == null || modelRef.isBlank()) ? "" : modelRef;
-        variant.add("model", new JsonPrimitive(modelValue));
-        return variant;
-    }
-
-    private static JsonObject buildRotatedVariant(String modelRef, int x, Integer y) {
-        var variant = new JsonObject();
-        var modelValue = (modelRef == null || modelRef.isBlank()) ? "" : modelRef;
-        variant.add("model", new JsonPrimitive(modelValue));
-        variant.add("x", new JsonPrimitive(x));
-        if (y != null) {
-            variant.add("y", new JsonPrimitive(y));
+    /**
+     * 本模组内实现的多层 flat 着色物品写入（不依赖 MapleUtilLib multiLayer*）。
+     */
+    private static void writeMultiLayerTintedFlatItem(DynamicAssets assets, Identifier itemId,
+                                                      ItemTintSource[] tints, Identifier... layers) {
+        Identifier modelRef = PackPaths.itemModelRef(itemId);
+        JsonObject root = new JsonObject();
+        root.addProperty("parent", PARENT_ITEM_GENERATED.toString());
+        JsonObject textures = new JsonObject();
+        if (layers != null) {
+            for (int i = 0; i < layers.length; i++) {
+                if (layers[i] != null) {
+                    textures.addProperty("layer" + i, layers[i].toString());
+                }
+            }
         }
-        return variant;
+        root.add("textures", textures);
+        assets.put(PackPaths.itemModelFile(itemId), root);
+
+        ItemTintSource[] safe = tints == null ? new ItemTintSource[0] : tints;
+        writeItemDefinition(assets, itemId, ItemModelUtils.tintedModel(modelRef, safe));
     }
 
-    // ===================== 模型构建 =====================
-
-    private static void createAndRegisterDualLayerItemModel(
-                                                            Identifier itemId,
-                                                            Identifier layer0Texture,
-                                                            Identifier layer1Texture,
-                                                            ColoringSettings coloring) {
-        var layer0 = nullSafeTexture(layer0Texture);
-        var layer1 = nullSafeTexture(layer1Texture);
-        BATCH_REGISTRAR.addItemModel(itemId, multiLayerItemModel(PARENT_ITEM, layer0, layer1));
-        BATCH_REGISTRAR.addItemMapping(itemId, itemModelRef(itemId), coloring);
+    /** 写入 items 定义（支持跨命名空间）。 */
+    private static void writeItemDefinition(DynamicAssets assets, Identifier itemId, ItemModel.Unbaked unbaked) {
+        ClientItem clientItem = new ClientItem(unbaked, ClientItem.Properties.DEFAULT);
+        ClientItem.CODEC
+                .encodeStart(JsonOps.INSTANCE, clientItem)
+                .resultOrPartial(err -> ResourceFarm.LOGGER.error(
+                        "编码 ClientItem 失败 itemId={} err={}", itemId, err))
+                .ifPresent(json -> assets.put(PackPaths.itemDefinitionFile(itemId), json));
     }
 
-    private static void createAndRegisterDualLayerBlockModel(
-                                                             Identifier blockId,
-                                                             Identifier layer0Texture,
-                                                             Identifier layer1Texture) {
-        var layer0 = nullSafeTexture(layer0Texture);
-        var layer1 = nullSafeTexture(layer1Texture);
-        BATCH_REGISTRAR.addBlockModel(blockId,
-                parentedModel(PARENT_ALL, "layer0", layer0, "layer1", layer1));
+    private static JsonArray uvFull() {
+        JsonArray uv = new JsonArray();
+        uv.add(0);
+        uv.add(0);
+        uv.add(16);
+        uv.add(16);
+        return uv;
     }
 
-    private static void createAndRegisterDualLayerHorizontalColumnModel(
-                                                                        Identifier baseLogId,
-                                                                        LayerFaceTextures layer0Faces,
-                                                                        LayerFaceTextures layer1Faces) {
-        var horizontalLogModelJson = parentedModel(PARENT_HORIZONTAL_COLUMN,
-                "layer0_side", layer0Faces.side(),
-                "layer0_end", layer0Faces.top(),
-                "layer1_side", layer1Faces.side(),
-                "layer1_end", layer1Faces.top());
-
-        var verticalLogModelJson = parentedModel(PARENT_BOTTOM_TOP,
-                "layer0_bottom", layer0Faces.bottom(),
-                "layer0_side", layer0Faces.side(),
-                "layer0_top", layer0Faces.top(),
-                "layer1_bottom", layer1Faces.bottom(),
-                "layer1_side", layer1Faces.side(),
-                "layer1_top", layer1Faces.top());
-
-        var logName = baseLogId.getPath();
-        var horizontalLogId = ResourceFarm.id(logName);
-        var verticalLogId = ResourceFarm.id(logName + VERTICAL_LOG_SUFFIX);
-        BATCH_REGISTRAR.addBlockModel(horizontalLogId, horizontalLogModelJson);
-        BATCH_REGISTRAR.addBlockModel(verticalLogId, verticalLogModelJson);
-
-        createAndRegisterLogBlockState(baseLogId, horizontalLogId, verticalLogId);
+    /**
+     * 构造 face：texture + tintindex 0。
+     * <p>
+     * 注意：MC 26.1 的 {@code light_emission} 写在 <strong>element</strong> 上，
+     * face 上写会被忽略（见 CuboidModelElement / CuboidFace 反序列化）。
+     *
+     * @param textureRef 如 {@code #all} / {@code #side}
+     * @param cullface   可为 null
+     */
+    private static JsonObject face(String textureRef, String cullface) {
+        JsonObject f = new JsonObject();
+        f.add("uv", uvFull());
+        f.addProperty("texture", textureRef);
+        if (cullface != null) {
+            f.addProperty("cullface", cullface);
+        }
+        f.addProperty("tintindex", 0);
+        return f;
     }
 
-    private static void createAndRegisterDualLayerCrossModel(
-                                                             Identifier saplingId,
-                                                             Identifier layer0Texture,
-                                                             Identifier layer1Texture) {
-        var layer0 = nullSafeTexture(layer0Texture);
-        var layer1 = nullSafeTexture(layer1Texture);
-        BATCH_REGISTRAR.addBlockModel(saplingId,
-                parentedModel(PARENT_CROSS, "layer0", layer0, "layer1", layer1));
+    private static JsonArray vec3(double x, double y, double z) {
+        JsonArray a = new JsonArray();
+        a.add(x);
+        a.add(y);
+        a.add(z);
+        return a;
     }
 
-    private static void createAndRegisterSaplingBlockState(Identifier saplingId) {
-        var blockStateJson = new JsonObject();
-        var variants = new JsonObject();
-        var saplingModelRef = buildBlockModelRef(saplingId);
-        var stageVariant = buildDefaultVariant(saplingModelRef);
-        variants.add("stage=0", stageVariant);
-        variants.add("stage=1", stageVariant);
-        blockStateJson.add("variants", variants);
-        BATCH_REGISTRAR.addBlockState(saplingId, blockStateJson);
+    /** 将 light_emission 写到 element（0–15）；0 时省略。 */
+    private static void applyElementLightEmission(JsonObject el, int light) {
+        if (light > 0) {
+            el.addProperty("light_emission", Mth.clamp(light, 0, 15));
+        }
     }
 
-    private static void createAndRegisterLogBlockState(
-                                                       Identifier logId,
-                                                       Identifier horizontalModelId,
-                                                       Identifier verticalModelId) {
-        var blockStateJson = new JsonObject();
-        var variants = new JsonObject();
-        var horizontalModelRef = buildBlockModelRef(horizontalModelId);
-        var verticalModelRef = buildBlockModelRef(verticalModelId);
-
-        variants.add("axis=x", buildRotatedVariant(horizontalModelRef, ROTATE_90_DEGREE, ROTATE_90_DEGREE));
-        variants.add("axis=y", buildDefaultVariant(verticalModelRef));
-        variants.add("axis=z", buildRotatedVariant(horizontalModelRef, ROTATE_90_DEGREE, null));
-
-        blockStateJson.add("variants", variants);
-        BATCH_REGISTRAR.addBlockState(logId, blockStateJson);
+    private static JsonObject cubeElement(String texAll, int light, boolean expanded) {
+        JsonObject el = new JsonObject();
+        if (expanded) {
+            el.add("from", vec3(-0.01, -0.01, -0.01));
+            el.add("to", vec3(16.01, 16.01, 16.01));
+        } else {
+            el.add("from", vec3(0, 0, 0));
+            el.add("to", vec3(16, 16, 16));
+        }
+        el.addProperty("shade", false);
+        applyElementLightEmission(el, light);
+        JsonObject faces = new JsonObject();
+        faces.add("down", face(texAll, "down"));
+        faces.add("up", face(texAll, "up"));
+        faces.add("north", face(texAll, "north"));
+        faces.add("south", face(texAll, "south"));
+        faces.add("west", face(texAll, "west"));
+        faces.add("east", face(texAll, "east"));
+        el.add("faces", faces);
+        return el;
     }
 
-    private static void createAndRegisterSimpleBlockState(Identifier location) {
-        var blockStateJson = new JsonObject();
-        var variants = new JsonObject();
-        var modelRef = buildBlockModelRef(location);
-        variants.add("", buildDefaultVariant(modelRef));
-        blockStateJson.add("variants", variants);
-        BATCH_REGISTRAR.addBlockState(location, blockStateJson);
+    private static JsonObject columnElement(int light) {
+        JsonObject el = new JsonObject();
+        el.add("from", vec3(-0.01, -0.01, -0.01));
+        el.add("to", vec3(16.01, 16.01, 16.01));
+        el.addProperty("shade", false);
+        applyElementLightEmission(el, light);
+        JsonObject faces = new JsonObject();
+        faces.add("down", face("#end", "down"));
+        faces.add("up", face("#end", "up"));
+        faces.add("north", face("#side", "north"));
+        faces.add("south", face("#side", "south"));
+        faces.add("west", face("#side", "west"));
+        faces.add("east", face("#side", "east"));
+        el.add("faces", faces);
+        return el;
     }
 
-    private static void createAndRegisterDualLayerLeavesModel(
-                                                              Identifier leavesId,
-                                                              Identifier layer0Texture,
-                                                              Identifier layer1Texture) {
-        var layer0 = nullSafeTexture(layer0Texture);
-        var layer1 = nullSafeTexture(layer1Texture);
-        BATCH_REGISTRAR.addBlockModel(leavesId,
-                parentedModel(PARENT_LEAVES, "layer0", layer0, "layer1", layer1));
+    private static JsonObject crossElement(double x0, double y0, double z0, double x1, double y1, double z1,
+                                           String axis, int light, String... faceNames) {
+        JsonObject el = new JsonObject();
+        el.add("from", vec3(x0, y0, z0));
+        el.add("to", vec3(x1, y1, z1));
+        JsonObject rot = new JsonObject();
+        rot.add("origin", vec3(8, 8, 8));
+        rot.addProperty("axis", axis);
+        rot.addProperty("angle", 45);
+        rot.addProperty("rescale", true);
+        el.add("rotation", rot);
+        el.addProperty("shade", false);
+        applyElementLightEmission(el, light);
+        JsonObject faces = new JsonObject();
+        for (String name : faceNames) {
+            faces.add(name, face("#cross", null));
+        }
+        el.add("faces", faces);
+        return el;
     }
 
-    private static void createAndRegisterItemModelFromBlock(
-                                                            Identifier itemId,
-                                                            Identifier blockId,
-                                                            ColoringSettings coloring) {
-        BATCH_REGISTRAR.addItemMapping(itemId, buildBlockModelLocation(blockId), coloring);
+    private static JsonObject tintedCubeJson(Identifier texture, int light) {
+        JsonObject root = new JsonObject();
+        root.addProperty("parent", "minecraft:block/block");
+        root.addProperty("render_type", "minecraft:cutout_mipped");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("particle", nullSafe(texture).toString());
+        textures.addProperty("all", nullSafe(texture).toString());
+        root.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(cubeElement("#all", light, true));
+        root.add("elements", elements);
+        return root;
     }
 
-    // ===================== 快捷注册 =====================
+    private static JsonObject tintedLeavesJson(Identifier texture, int light) {
+        JsonObject root = new JsonObject();
+        root.addProperty("parent", "minecraft:block/block");
+        root.addProperty("render_type", "minecraft:cutout_mipped");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("particle", nullSafe(texture).toString());
+        textures.addProperty("all", nullSafe(texture).toString());
+        root.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(cubeElement("#all", light, true));
+        root.add("elements", elements);
+        return root;
+    }
+
+    private static JsonObject tintedColumnJson(Identifier side, Identifier end, int light) {
+        JsonObject root = new JsonObject();
+        root.addProperty("parent", "minecraft:block/block");
+        root.addProperty("render_type", "minecraft:cutout_mipped");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("particle", nullSafe(side).toString());
+        textures.addProperty("side", nullSafe(side).toString());
+        textures.addProperty("end", nullSafe(end).toString());
+        root.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(columnElement(light));
+        root.add("elements", elements);
+        return root;
+    }
+
+    private static JsonObject tintedCrossJson(Identifier texture, int light) {
+        JsonObject root = new JsonObject();
+        root.addProperty("ambientocclusion", false);
+        root.addProperty("render_type", "minecraft:cutout");
+        JsonObject textures = new JsonObject();
+        textures.addProperty("particle", nullSafe(texture).toString());
+        textures.addProperty("cross", nullSafe(texture).toString());
+        root.add("textures", textures);
+        JsonArray elements = new JsonArray();
+        elements.add(crossElement(0.8, 0, 8, 15.2, 16, 8, "y", light, "north", "south"));
+        elements.add(crossElement(8, 0, 0.8, 8, 16, 15.2, "y", light, "west", "east"));
+        root.add("elements", elements);
+        return root;
+    }
+
+    // ===================== multipart helpers =====================
+
+    private static Identifier modelRef(Identifier modelKey) {
+        return PackPaths.blockModelRef(modelKey);
+    }
+
+    private static JsonObject applyModel(Identifier model) {
+        JsonObject apply = new JsonObject();
+        apply.addProperty("model", model.toString());
+        return apply;
+    }
+
+    private static JsonObject applyModel(Identifier model, int x, Integer y) {
+        JsonObject apply = applyModel(model);
+        apply.addProperty("x", x);
+        if (y != null) apply.addProperty("y", y);
+        return apply;
+    }
+
+    private static JsonObject multipartPart(JsonObject apply) {
+        JsonObject part = new JsonObject();
+        part.add("apply", apply);
+        return part;
+    }
+
+    private static JsonObject multipartPartWhen(String property, String value, JsonObject apply) {
+        JsonObject when = new JsonObject();
+        when.addProperty(property, value);
+        JsonObject part = new JsonObject();
+        part.add("when", when);
+        part.add("apply", apply);
+        return part;
+    }
+
+    private static JsonObject multipartState(JsonArray parts) {
+        JsonObject root = new JsonObject();
+        root.add("multipart", parts);
+        return root;
+    }
+
+    private static void putSimpleMultipart(Identifier blockId, Identifier baseModel, Identifier tintModelRef) {
+        JsonArray parts = new JsonArray();
+        parts.add(multipartPart(applyModel(baseModel)));
+        parts.add(multipartPart(applyModel(tintModelRef)));
+        BATCH.addBlockState(blockId, multipartState(parts));
+    }
+
+    private static void putLogMultipart(Identifier blockId,
+                                        Identifier baseVertical,
+                                        Identifier baseHorizontal,
+                                        Identifier tintColumnRef) {
+        JsonArray parts = new JsonArray();
+        parts.add(multipartPartWhen("axis", "y", applyModel(baseVertical)));
+        parts.add(multipartPartWhen("axis", "y", applyModel(tintColumnRef)));
+        parts.add(multipartPartWhen("axis", "z", applyModel(baseHorizontal, ROTATE_90, null)));
+        parts.add(multipartPartWhen("axis", "z", applyModel(tintColumnRef, ROTATE_90, null)));
+        parts.add(multipartPartWhen("axis", "x", applyModel(baseHorizontal, ROTATE_90, ROTATE_90)));
+        parts.add(multipartPartWhen("axis", "x", applyModel(tintColumnRef, ROTATE_90, ROTATE_90)));
+        BATCH.addBlockState(blockId, multipartState(parts));
+    }
+
+    // ===================== tint model builders =====================
+
+    private static Identifier tintModelKey(Identifier blockId, String suffix) {
+        return Identifier.fromNamespaceAndPath(blockId.getNamespace(), blockId.getPath() + suffix);
+    }
+
+    private static Identifier createTintedCube(Identifier blockId, Identifier texture, int light) {
+        Identifier key = tintModelKey(blockId, "_tint");
+        BATCH.addBlockModel(key, tintedCubeJson(texture, light));
+        return modelRef(key);
+    }
+
+    private static Identifier createTintedLeaves(Identifier blockId, Identifier texture, int light) {
+        Identifier key = tintModelKey(blockId, "_tint");
+        BATCH.addBlockModel(key, tintedLeavesJson(texture, light));
+        return modelRef(key);
+    }
+
+    private static Identifier createTintedCross(Identifier blockId, Identifier texture, int light) {
+        Identifier key = tintModelKey(blockId, "_tint");
+        BATCH.addBlockModel(key, tintedCrossJson(texture, light));
+        return modelRef(key);
+    }
+
+    private static Identifier createTintedColumn(Identifier blockId, Identifier side, Identifier end, int light) {
+        Identifier key = tintModelKey(blockId, "_tint");
+        BATCH.addBlockModel(key, tintedColumnJson(side, end, light));
+        return modelRef(key);
+    }
+
+    // ===================== register =====================
+
+    private static void registerCubeLike(Identifier blockId, Identifier baseModel, Identifier tintTexture, int color, int light) {
+        Identifier tintRef = createTintedCube(blockId, tintTexture, light);
+        putSimpleMultipart(blockId, baseModel, tintRef);
+        BATCH.addCompositeBlockItem(blockId, baseModel, tintRef, color);
+    }
+
+    private static void registerLeaves(Identifier leavesId, Identifier baseModel, Identifier overlay,
+                                       int color, int light, ResourceTreeType treeType) {
+        Identifier tintRef = createTintedLeaves(leavesId, overlay, light);
+        putSimpleMultipart(leavesId, baseModel, tintRef);
+        // 底层原版树叶需与对应 *_leaves 物品相同的 constant 叶片色，否则库存中灰白
+        BATCH.addCompositeBlockItem(leavesId, baseModel, tintRef, color, vanillaLeavesItemTint(treeType));
+    }
+
+    private static void registerLog(Identifier logId,
+                                    Identifier baseVertical,
+                                    Identifier baseHorizontal,
+                                    Identifier oreSide,
+                                    Identifier oreEnd,
+                                    int color,
+                                    int light) {
+        Identifier tintRef = createTintedColumn(logId, oreSide, oreEnd, light);
+        putLogMultipart(logId, baseVertical, baseHorizontal, tintRef);
+        BATCH.addCompositeBlockItem(logId, baseVertical, tintRef, color);
+    }
+
+    private static void registerSapling(Identifier saplingId, ResourceTreeType treeType, int color, int light) {
+        Identifier tintRef = createTintedCross(saplingId, treeType.saplingOverlay(), light);
+        putSimpleMultipart(saplingId, treeType.saplingBase(), tintRef);
+        BATCH.addDualTextureItem(saplingId, treeType.saplingItemTexture(), treeType.saplingOverlay(), color);
+    }
+
     private static void registerSapling(ResourceTreeBundle bundle) {
-        var saplingId = bundle.getSaplingId();
-        var treeType = bundle.getTreeType();
-        createAndRegisterDualLayerCrossModel(saplingId, treeType.sapling(), treeType.saplingOverlay());
-        createAndRegisterDualLayerItemModel(saplingId, treeType.sapling(), treeType.saplingOverlay(),
-                bundle.getColoring());
-        createAndRegisterSaplingBlockState(saplingId);
+        registerSapling(bundle.getSaplingId(), bundle.getTreeType(), bundle.getColor(), bundle.getLightEmission());
     }
 
     private static void registerLeaves(ResourceTreeBundle bundle) {
-        var leavesId = bundle.getLeavesId();
-        var treeType = bundle.getTreeType();
-        createAndRegisterDualLayerLeavesModel(leavesId, treeType.leaves(), treeType.leavesOverlay());
-        createAndRegisterItemModelFromBlock(leavesId, leavesId, bundle.getLeavesColoring());
-        createAndRegisterSimpleBlockState(leavesId);
+        var t = bundle.getTreeType();
+        registerLeaves(bundle.getLeavesId(), t.leavesBase(), t.leavesOverlay(),
+                bundle.getColor(), bundle.getLightEmission(), t);
     }
 
     private static void registerLog(ResourceTreeBundle bundle) {
-        var logId = bundle.getLogId();
-        var treeType = bundle.getTreeType();
-        var oreType = bundle.getOreType();
-        var logLayer0 = LayerFaceTextures.bottomTopSame(treeType.logTop(), treeType.log());
-        var logLayer1 = LayerFaceTextures.bottomTopSame(oreType.center(), oreType.base());
-        createAndRegisterDualLayerHorizontalColumnModel(logId, logLayer0, logLayer1);
-        createAndRegisterItemModelFromBlock(logId, logId, bundle.getColoring());
+        var t = bundle.getTreeType();
+        var o = bundle.getOreType();
+        registerLog(bundle.getLogId(), t.logBase(), t.logHorizontalBase(),
+                o.base(), o.center(), bundle.getColor(), bundle.getLightEmission());
     }
 
     private static void registerStrippedLog(ResourceTreeBundle bundle) {
         if (!bundle.isStrippedLogEnabled()) return;
-        var strippedLogId = bundle.getStrippedLogId();
-        var treeType = bundle.getTreeType();
-        var oreType = bundle.getOreType();
-        var logLayer0 = LayerFaceTextures.bottomTopSame(treeType.strippedLogTop(), treeType.strippedLog());
-        var logLayer1 = LayerFaceTextures.bottomTopSame(oreType.center(), oreType.base());
-        createAndRegisterDualLayerHorizontalColumnModel(strippedLogId, logLayer0, logLayer1);
-        createAndRegisterItemModelFromBlock(strippedLogId, strippedLogId, bundle.getColoring());
-
-        var logName = strippedLogId.getPath();
-        var horizontalLogId = ResourceFarm.id(logName);
-        var verticalLogId = ResourceFarm.id(logName + VERTICAL_LOG_SUFFIX);
-        createAndRegisterLogBlockState(strippedLogId, horizontalLogId, verticalLogId);
+        var t = bundle.getTreeType();
+        var o = bundle.getOreType();
+        registerLog(bundle.getStrippedLogId(), t.strippedLogBase(), t.strippedLogHorizontalBase(),
+                o.base(), o.center(), bundle.getColor(), bundle.getLightEmission());
     }
 
     private static void registerWood(ResourceTreeBundle bundle) {
         if (!bundle.isWoodEnabled()) return;
-        var woodId = bundle.getWoodId();
-        var treeType = bundle.getTreeType();
-        var oreType = bundle.getOreType();
-        createAndRegisterDualLayerBlockModel(woodId, treeType.log(), oreType.base());
-        createAndRegisterItemModelFromBlock(woodId, woodId, bundle.getColoring());
-        createAndRegisterSimpleBlockState(woodId);
+        registerCubeLike(bundle.getWoodId(), bundle.getTreeType().woodBase(),
+                bundle.getOreType().base(), bundle.getColor(), bundle.getLightEmission());
     }
 
     private static void registerStrippedWood(ResourceTreeBundle bundle) {
         if (!bundle.isStrippedWoodEnabled()) return;
-        var strippedWoodId = bundle.getStrippedWoodId();
-        var treeType = bundle.getTreeType();
-        var oreType = bundle.getOreType();
-        createAndRegisterDualLayerBlockModel(strippedWoodId, treeType.strippedLog(), oreType.base());
-        createAndRegisterItemModelFromBlock(strippedWoodId, strippedWoodId, bundle.getColoring());
-        createAndRegisterSimpleBlockState(strippedWoodId);
+        registerCubeLike(bundle.getStrippedWoodId(), bundle.getTreeType().strippedWoodBase(),
+                bundle.getOreType().base(), bundle.getColor(), bundle.getLightEmission());
     }
 
     private static void registerPlanks(ResourceTreeBundle bundle) {
         if (!bundle.isPlanksEnabled()) return;
-        var planksId = bundle.getPlanksId();
-        var treeType = bundle.getTreeType();
-        var oreType = bundle.getOreType();
-        createAndRegisterDualLayerBlockModel(planksId, treeType.planks(), oreType.base());
-        createAndRegisterItemModelFromBlock(planksId, planksId, bundle.getColoring());
-        createAndRegisterSimpleBlockState(planksId);
+        registerCubeLike(bundle.getPlanksId(), bundle.getTreeType().planksBase(),
+                bundle.getOreType().base(), bundle.getColor(), bundle.getLightEmission());
     }
 
     private static void registerResin(ResourceTreeBundle bundle) {
-        var resinId = bundle.getResinId();
-        var treeType = bundle.getTreeType();
-        createAndRegisterDualLayerItemModel(resinId, treeType.resin(), treeType.resinOverlay(),
-                bundle.getColoring());
+        var t = bundle.getTreeType();
+        BATCH.addDualTextureItem(bundle.getResinId(), t.resin(), t.resinOverlay(), bundle.getColor());
     }
 
     private static void registerFruit(ResourceTreeBundle bundle) {
-        var fruitId = bundle.getFruitId();
-        var treeType = bundle.getTreeType();
-        createAndRegisterDualLayerItemModel(fruitId, treeType.fruit(), treeType.fruitOverlay(),
-                bundle.getColoring());
+        var t = bundle.getTreeType();
+        BATCH.addDualTextureItem(bundle.getFruitId(), t.fruit(), t.fruitOverlay(), bundle.getColor());
     }
 
     private static void registerClump(ResourceTreeBundle bundle) {
         if (!bundle.isClumpEnabled()) return;
-        var clump = bundle.getClumpId();
-        var treeType = bundle.getTreeType();
-        createAndRegisterDualLayerItemModel(clump, treeType.clump(), treeType.clumpOverlay(),
-                bundle.getClumpColoring());
+        var t = bundle.getTreeType();
+        // crossover 碎块：layer0=clump 需着色，layer1=clump_overlay 不着色
+        BATCH.addDualTextureItem(bundle.getClumpId(), t.clump(), t.clumpOverlay(),
+                baseOnlyTints(bundle.getColor()));
     }
 
     private static void buildAndRegisterTreeBlockBundle(ResourceTreeBundle bundle) {
-        if (bundle == null || !bundle.isValid()) {
-            return;
-        }
+        if (bundle == null || !bundle.isValid()) return;
         registerSapling(bundle);
         registerLeaves(bundle);
         registerLog(bundle);
@@ -558,35 +642,28 @@ public class TreeModelRenderer {
     }
 
     public static void clearCache() {
-        BLOCK_MODEL_LOCATION_CACHE.clear();
-        BATCH_REGISTRAR.reset();
+        BATCH.reset();
     }
 
-    /**
-     * MapleUtilLib {@code whenClient} 入口：清空后重建全部树木模型并写入动态资源包。
-     */
     public static void reinitModels(DynamicAssets assets) {
         clearCache();
 
-        ResourceFarmBlocks.ResourceTreeMap.values().parallelStream().forEach(resourceTree -> {
-            if (resourceTree == null) return;
-
+        for (ResourceTree resourceTree : ResourceFarmBlocks.ResourceTreeMap.values()) {
+            if (resourceTree == null) continue;
             var treeConfig = resourceTree.getResourceTreeConfig();
-            if (!isTreeConfigValid(treeConfig)) return;
-
+            if (!isTreeConfigValid(treeConfig)) continue;
             try {
                 var blockBundle = new ResourceTreeBundle(treeConfig.id(), resourceTree);
                 if (blockBundle.isValid()) {
                     buildAndRegisterTreeBlockBundle(blockBundle);
                 }
             } catch (Exception e) {
-                var treeId = treeConfig.id();
                 ResourceFarm.LOGGER.error(
-                        "构建树模型失败，treeId={}，resourceTree={}，开始跳过该树的后续构建",
-                        treeId, resourceTree, e);
+                        "构建树模型失败，treeId={}，resourceTree={}",
+                        treeConfig.id(), resourceTree, e);
             }
-        });
+        }
 
-        BATCH_REGISTRAR.commit(assets);
+        BATCH.commit(assets);
     }
 }

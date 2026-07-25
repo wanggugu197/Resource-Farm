@@ -1,11 +1,12 @@
 package com.maple.resource_farm.data.tree.builder;
 
 import com.maple.resource_farm.data.ResourceFarmBlocks;
-import com.maple.resource_farm.utils.RegistriesUtils;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.util.Lazy;
+
+import com.mapleutillib.utils.RegistriesUtils;
 
 public class TreeInitialization {
 
@@ -29,8 +30,8 @@ public class TreeInitialization {
                         if (item != Items.BARRIER) {
                             return item.getDescriptionId();
                         }
-                        return "§ktranslate";
                     }
+                    return "§ktranslate";
                 }
                 return translateKey;
             }));

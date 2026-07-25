@@ -8,9 +8,6 @@ import com.maple.resource_farm.api.ResourceTree.ResourceTreeTypes;
 import com.maple.resource_farm.api.block.FertilizeSettings;
 import com.maple.resource_farm.data.tree.ResourceTreeConfig;
 import com.maple.resource_farm.data.tree.builder.TreeRegister;
-import com.maple.resource_farm.utils.FormattingUtil;
-import com.maple.resource_farm.utils.JsonConfigUtil;
-import com.maple.resource_farm.utils.RLUtils;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
@@ -20,6 +17,9 @@ import net.minecraft.world.level.block.Block;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mapleutillib.utils.FormattingUtil;
+import com.mapleutillib.utils.JsonConfigUtil;
+import com.mapleutillib.utils.RLUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,7 @@ public class TreeRegisterConfig {
     private static List<JsonObject> treeRegisterConfig;
 
     public static void init() {
-        JsonArray jsonArray = JsonConfigUtil.loadJsonArray(fileName);
+        JsonArray jsonArray = JsonConfigUtil.loadJsonArray(ResourceFarm.MOD_ID, fileName);
         treeRegisterConfig = new ArrayList<>();
         for (JsonElement element : jsonArray) {
             if (element.isJsonObject()) treeRegisterConfig.add(element.getAsJsonObject());

@@ -1,14 +1,13 @@
 package com.maple.resource_farm.common.block.ResourceTree;
 
 import com.maple.resource_farm.api.ResourceTree.ResourceTreeType;
-import com.maple.resource_farm.api.block.ColoringSettings;
-import com.maple.resource_farm.common.block.ColoringBlock;
 import com.maple.resource_farm.config.ResourceFarmConfigHolder;
 import com.maple.resource_farm.data.ResourceFarmBlocks;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
@@ -18,31 +17,26 @@ import com.gto.registrylib.util.entry.BlockEntry;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ResourceWoodBlock extends ColoringBlock {
+public class ResourceWoodBlock extends Block {
 
     private final String treeId;
     private final Lazy<String> translateKey;
     private final ResourceTreeType treeType;
 
-    public ResourceWoodBlock(String treeId,
-                             Properties properties,
-                             int lightLevel,
-                             ColoringSettings coloringSettings) {
-        super(properties, lightLevel, coloringSettings);
+    public ResourceWoodBlock(String treeId, Properties properties) {
+        super(properties);
         this.treeId = treeId;
         this.translateKey = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getTranslateKey();
         this.treeType = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getResourceTreeConfig().treeType();
     }
 
-    public static ResourceWoodBlock create(String treeId,
-                                           Properties properties,
-                                           int lightLevel,
-                                           ColoringSettings coloringSettings) {
-        return new ResourceWoodBlock(treeId, properties, lightLevel, coloringSettings);
+    public static ResourceWoodBlock create(String treeId, Properties properties) {
+        return new ResourceWoodBlock(treeId, properties);
     }
 
     @Override
-    public @Nullable BlockState getToolModifiedState(@NotNull BlockState state, @NotNull UseOnContext context, @NotNull ItemAbility ability, boolean simulate) {
+    public @Nullable BlockState getToolModifiedState(@NotNull BlockState state, @NotNull UseOnContext context,
+                                                     @NotNull ItemAbility ability, boolean simulate) {
         if (ResourceFarmConfigHolder.TreeConfigHolder.tree.blockGeneration.generateStrippedWood) {
             if (ability == ItemAbilities.AXE_STRIP) {
                 BlockEntry<?> strippedWood = ResourceFarmBlocks.ResourceTreeMap.get(treeId).getStrippedWood();

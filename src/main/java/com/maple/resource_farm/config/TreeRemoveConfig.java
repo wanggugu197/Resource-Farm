@@ -2,10 +2,10 @@ package com.maple.resource_farm.config;
 
 import com.maple.resource_farm.ResourceFarm;
 import com.maple.resource_farm.data.tree.builder.TreeRegister;
-import com.maple.resource_farm.utils.JsonConfigUtil;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.mapleutillib.utils.JsonConfigUtil;
 
 public class TreeRemoveConfig {
 
@@ -14,7 +14,7 @@ public class TreeRemoveConfig {
     private static JsonArray removeTreesConfig;
 
     public static void init() {
-        removeTreesConfig = JsonConfigUtil.loadJsonArray(fileName);
+        removeTreesConfig = JsonConfigUtil.loadJsonArray(ResourceFarm.MOD_ID, fileName);
 
         ResourceFarm.LOGGER.info(
                 "⌈Resource Tree Config Initialization⌋ Removal of resource trees via JSON configuration completed. " +

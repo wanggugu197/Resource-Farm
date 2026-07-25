@@ -1,11 +1,11 @@
 package com.maple.resource_farm.data.tree.builder;
 
+import com.maple.resource_farm.ResourceFarm;
 import com.maple.resource_farm.api.IntObjectHolder;
 import com.maple.resource_farm.config.ResourceFarmConfigHolder;
 import com.maple.resource_farm.data.ResourceFarmBlocks;
 import com.maple.resource_farm.data.tree.ResourceTree;
 import com.maple.resource_farm.utils.RFArrayUtils;
-import com.maple.resource_farm.utils.VanillaRecipeHelper;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -17,6 +17,7 @@ import net.minecraft.world.level.ItemLike;
 
 import com.gto.registrylib.util.entry.BlockEntry;
 import com.gto.registrylib.util.entry.ItemEntry;
+import com.mapleutillib.utils.recipe.VanillaRecipeHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,14 +110,23 @@ public class TreeRecipe {
             // 处理配方 烟熏/熔炼获得树脂
             if (ResourceFarmConfigHolder.TreeConfigHolder.tree.recipeGeneration.generateResinRecipes) {
                 ItemEntry<?> resin = resourceTree.getResin();
-                VanillaRecipeHelper.addSmokingRecipe(consumer, name + "_smoke_resin_from_logs",
-                        ingredientLogs, resin.get(), 4, 0.5f);
+                VanillaRecipeHelper.smoking(consumer, ResourceFarm.id(name + "_smoke_resin_from_logs"))
+                        .input(ingredientLogs)
+                        .output(resin.get(), 4)
+                        .experience(0.5f)
+                        .save();
 
                 if (GENERATE_PLANKS) {
-                    VanillaRecipeHelper.addSmeltingRecipe(consumer, name + "_smelt_resin_from_planks",
-                            resourceTree.getPlanks(), resin.get(), 0.1f);
-                    VanillaRecipeHelper.addSmokingRecipe(consumer, name + "_smoke_resin_from_planks",
-                            resourceTree.getPlanks(), resin.get(), 0.1f);
+                    VanillaRecipeHelper.smelting(consumer, ResourceFarm.id(name + "_smelt_resin_from_planks"))
+                            .input(resourceTree.getPlanks())
+                            .output(resin.get())
+                            .experience(0.1f)
+                            .save();
+                    VanillaRecipeHelper.smoking(consumer, ResourceFarm.id(name + "_smoke_resin_from_planks"))
+                            .input(resourceTree.getPlanks())
+                            .output(resin.get())
+                            .experience(0.1f)
+                            .save();
                 }
             }
 
@@ -124,20 +134,24 @@ public class TreeRecipe {
             if (ResourceFarmConfigHolder.TreeConfigHolder.tree.recipeGeneration.generateBasicWoodConversionRecipes) {
                 if (GENERATE_PLANKS) {
                     BlockEntry<?> planks = resourceTree.getPlanks();
-                    VanillaRecipeHelper.addShapelessRecipe(consumer, name + "_craft_planks_from_log",
-                            VanillaRecipeHelper.result(planks.get(), 4), ingredientLogs);
+                    VanillaRecipeHelper.shapeless(consumer, ResourceFarm.id(name + "_craft_planks_from_log"))
+                            .output(planks.get(), 4)
+                            .requires(ingredientLogs)
+                            .save();
                 }
                 if (GENERATE_WOOD) {
-                    VanillaRecipeHelper.addShapedRecipe(consumer, name + "_craft_wood_from_log",
-                            VanillaRecipeHelper.result(resourceTree.getWood().get()),
-                            "AA ", "AA ", "   ",
-                            'A', resourceTree.getLog());
+                    VanillaRecipeHelper.shaped(consumer, ResourceFarm.id(name + "_craft_wood_from_log"))
+                            .output(resourceTree.getWood().get())
+                            .pattern("AA ", "AA ", "   ")
+                            .define('A', resourceTree.getLog())
+                            .save();
                 }
                 if (GENERATE_STRIPPED_LOG && GENERATE_STRIPPED_WOOD) {
-                    VanillaRecipeHelper.addShapedRecipe(consumer, name + "_craft_stripped_wood_from_stripped_log",
-                            VanillaRecipeHelper.result(resourceTree.getStrippedWood().get()),
-                            "AA ", "AA ", "   ",
-                            'A', resourceTree.getStrippedLog());
+                    VanillaRecipeHelper.shaped(consumer, ResourceFarm.id(name + "_craft_stripped_wood_from_stripped_log"))
+                            .output(resourceTree.getStrippedWood().get())
+                            .pattern("AA ", "AA ", "   ")
+                            .define('A', resourceTree.getStrippedLog())
+                            .save();
                 }
             }
         });
@@ -158,18 +172,22 @@ public class TreeRecipe {
         if (resourceTree.getTreeItem().get() != Items.BARRIER) {
             if (GENERATE_TREE_ITEM_RECIPES) {
                 Item treeItem = resourceTree.getTreeItem().get();
-                VanillaRecipeHelper.addShapedRecipe(consumer, treeId + "_craft_" + BuiltInRegistries.ITEM.getKey(treeItem).getPath(),
-                        VanillaRecipeHelper.result(treeItem, resourceTree.getResourceTreeConfig().productOutput()),
-                        " A ", "ABA", " A ",
-                        'A', resourceTree.getResin(), 'B', resourceTree.getFruit());
+                VanillaRecipeHelper.shaped(consumer, ResourceFarm.id(treeId + "_craft_" + BuiltInRegistries.ITEM.getKey(treeItem).getPath()))
+                        .output(treeItem, resourceTree.getResourceTreeConfig().productOutput())
+                        .pattern(" A ", "ABA", " A ")
+                        .define('A', resourceTree.getResin())
+                        .define('B', resourceTree.getFruit())
+                        .save();
                 treeCommonRecipeCount.addTo(treeId, 1);
             }
 
             if (GENERATE_SAPLING_RECIPES) {
-                VanillaRecipeHelper.addShapedRecipe(consumer, treeId + "_craft_sapling",
-                        VanillaRecipeHelper.result(resourceTree.getSapling().get()),
-                        "AAA", "ABA", "AAA",
-                        'A', resourceTree.getTreeItem().get(), 'B', ItemTags.SAPLINGS);
+                VanillaRecipeHelper.shaped(consumer, ResourceFarm.id(treeId + "_craft_sapling"))
+                        .output(resourceTree.getSapling().get())
+                        .pattern("AAA", "ABA", "AAA")
+                        .define('A', resourceTree.getTreeItem().get())
+                        .define('B', ItemTags.SAPLINGS)
+                        .save();
             }
         }
     }
@@ -193,10 +211,11 @@ public class TreeRecipe {
         if (!GENERATE_SAPLING_RECIPES) return;
         Object[] newTreeItems = refactorShape(treeItems);
 
-        VanillaRecipeHelper.addShapedRecipe(consumer, treeId + "_craft_sapling",
-                VanillaRecipeHelper.result(resourceTree.getSapling().get()),
-                RFArrayUtils.concatenateArrays("ABC", "DIE", "FGH", RFArrayUtils.insertCharBeforeElement(RFArrayUtils.concatenateArrays(
-                        newTreeItems, ItemTags.SAPLINGS))));
+        VanillaRecipeHelper.shaped(consumer, ResourceFarm.id(treeId + "_craft_sapling"))
+                .output(resourceTree.getSapling().get())
+                .pattern(RFArrayUtils.concatenateArrays("ABC", "DIE", "FGH", RFArrayUtils.insertCharBeforeElement(RFArrayUtils.concatenateArrays(
+                        newTreeItems, ItemTags.SAPLINGS))))
+                .save();
     }
 
     public static void AscensionTreeSaplingRecipeBuild(RecipeOutput consumer, String id, Item items, String... ids) {
@@ -214,10 +233,11 @@ public class TreeRecipe {
 
         Object[] newTreeItems = refactorShape(treeItems);
 
-        VanillaRecipeHelper.addShapedRecipe(consumer, "ascension_" + treeId + "_craft_sapling",
-                VanillaRecipeHelper.result(resourceTree.getSapling().get()),
-                RFArrayUtils.concatenateArrays(SAPLING_RECIPE_BASE, RFArrayUtils.insertCharBeforeElement(RFArrayUtils.concatenateArrays(
-                        newTreeItems, ItemTags.SAPLINGS))));
+        VanillaRecipeHelper.shaped(consumer, ResourceFarm.id("ascension_" + treeId + "_craft_sapling"))
+                .output(resourceTree.getSapling().get())
+                .pattern(RFArrayUtils.concatenateArrays(SAPLING_RECIPE_BASE, RFArrayUtils.insertCharBeforeElement(RFArrayUtils.concatenateArrays(
+                        newTreeItems, ItemTags.SAPLINGS))))
+                .save();
     }
 
     public static Object[] refactorShape(Object[] oldShape) {
@@ -250,9 +270,10 @@ public class TreeRecipe {
         Object[] breedingOutput = { 'A', resourceTree.getResin(), 'B', resourceTree.getFruit() };
         Set<IntObjectHolder<Item>> itemSet = Arrays.stream(treeItems).collect(Collectors.toSet());
         for (IntObjectHolder<Item> item : itemSet) {
-            VanillaRecipeHelper.addShapedRecipe(consumer, treeId + "_craft_tree_" + BuiltInRegistries.ITEM.getKey(item.obj).getPath(),
-                    VanillaRecipeHelper.result(item.obj, item.number),
-                    RFArrayUtils.concatenateArrays(SHAPE[treeCommonRecipeCount.getInt(treeId)], breedingOutput));
+            VanillaRecipeHelper.shaped(consumer, ResourceFarm.id(treeId + "_craft_tree_" + BuiltInRegistries.ITEM.getKey(item.obj).getPath()))
+                    .output(item.obj, item.number)
+                    .pattern(RFArrayUtils.concatenateArrays(SHAPE[treeCommonRecipeCount.getInt(treeId)], breedingOutput))
+                    .save();
             treeCommonRecipeCount.addTo(treeId, 1);
         }
     }
@@ -268,8 +289,9 @@ public class TreeRecipe {
     public static void TreeItemRecipeBuildWithExtra(RecipeOutput consumer, String treeId, ResourceTree resourceTree,
                                                     Item extra, int count, IntObjectHolder<Item> item) {
         Object[] breedingOutput = { 'A', resourceTree.getResin(), 'B', resourceTree.getFruit(), 'C', extra };
-        VanillaRecipeHelper.addShapedRecipe(consumer, treeId + "_craft_tree_" + BuiltInRegistries.ITEM.getKey(item.obj).getPath(),
-                VanillaRecipeHelper.result(item.obj, item.number),
-                RFArrayUtils.concatenateArrays(SHAPEWithContainer[count - 1], breedingOutput));
+        VanillaRecipeHelper.shaped(consumer, ResourceFarm.id(treeId + "_craft_tree_" + BuiltInRegistries.ITEM.getKey(item.obj).getPath()))
+                .output(item.obj, item.number)
+                .pattern(RFArrayUtils.concatenateArrays(SHAPEWithContainer[count - 1], breedingOutput))
+                .save();
     }
 }
