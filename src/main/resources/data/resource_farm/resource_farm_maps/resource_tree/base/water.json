@@ -1,0 +1,15 @@
+{
+  "group": "base",
+  "translate_key": "block.minecraft.water",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "tree_style": "resource_farm:jungle",
+  "grower": "resource_farm:jungle",
+  "ore_style": "resource_farm:nether_gold",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0x5A82F3"
+}

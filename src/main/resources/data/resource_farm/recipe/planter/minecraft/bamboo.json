@@ -1,0 +1,16 @@
+{
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "minecraft:bamboo",
+      "max": 4,
+      "min": 2
+    }
+  ],
+  "seed": "minecraft:bamboo",
+  "soils": [
+    "#resource_farm:dirt_soils"
+  ]
+}

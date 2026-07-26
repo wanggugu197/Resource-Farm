@@ -1,0 +1,16 @@
+{
+  "group": "biology",
+  "item": "minecraft:breeze_rod",
+  "translate_key": "entity.minecraft.breeze",
+  "automatic_basic_recipe": true,
+  "product_output": 8,
+  "tree_style": "resource_farm:cherry",
+  "grower": "resource_farm:cherry",
+  "ore_style": "resource_farm:diamond",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 6,
+  "color": "0xC4DAFF"
+}

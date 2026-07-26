@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "resource_farm:advanced_cloche",
+    "B": "minecraft:diamond_block",
+    "C": "minecraft:ender_eye"
+  },
+  "pattern": [
+    "BBB",
+    "CAC",
+    "BBB"
+  ],
+  "result": {
+    "id": "resource_farm:elite_cloche"
+  }
+}

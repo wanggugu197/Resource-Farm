@@ -1,0 +1,15 @@
+{
+  "group": "biology",
+  "translate_key": "resource_farm.resource_tree.aquatic_products",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "tree_style": "resource_farm:dark_oak",
+  "grower": "resource_farm:dark_oak",
+  "ore_style": "resource_farm:redstone",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0x28B6EC"
+}

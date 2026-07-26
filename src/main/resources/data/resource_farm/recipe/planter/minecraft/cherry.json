@@ -1,0 +1,27 @@
+{
+  "type": "resource_farm:growth",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "minecraft:cherry_log",
+      "max": 6,
+      "min": 2
+    },
+    {
+      "chance": 0.5,
+      "item": "minecraft:cherry_sapling",
+      "max": 2,
+      "min": 1
+    },
+    {
+      "chance": 0.5,
+      "item": "minecraft:stick",
+      "max": 2,
+      "min": 1
+    }
+  ],
+  "seed": "minecraft:cherry_sapling",
+  "soils": [
+    "#resource_farm:tree_soils"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "group": "biology",
+  "item": "minecraft:shulker_shell",
+  "translate_key": "entity.minecraft.shulker",
+  "automatic_basic_recipe": true,
+  "product_output": 4,
+  "tree_style": "resource_farm:cherry",
+  "grower": "resource_farm:cherry",
+  "ore_style": "resource_farm:crack",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xCA87D4"
+}

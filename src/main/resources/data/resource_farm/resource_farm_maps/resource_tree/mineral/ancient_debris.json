@@ -1,0 +1,15 @@
+{
+  "group": "mineral",
+  "item": "minecraft:ancient_debris",
+  "automatic_basic_recipe": true,
+  "product_output": 4,
+  "tree_style": "resource_farm:birch",
+  "grower": "resource_farm:birch",
+  "ore_style": "resource_farm:lapis",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xAD7365"
+}

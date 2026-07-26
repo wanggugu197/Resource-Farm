@@ -13,5 +13,6 @@ dependencies {
     compileOnly(forge.bundles.jei)
     localRuntime(forge.bundles.jei)
 
+    compileOnly(forge.jade)
     localRuntime(forge.jade)
 }

@@ -1,0 +1,16 @@
+{
+  "group": "biology",
+  "item": "minecraft:phantom_membrane",
+  "translate_key": "entity.minecraft.phantom",
+  "automatic_basic_recipe": true,
+  "product_output": 8,
+  "tree_style": "resource_farm:mangrove",
+  "grower": "resource_farm:mangrove",
+  "ore_style": "resource_farm:nether_quartz",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xFFFFFC"
+}

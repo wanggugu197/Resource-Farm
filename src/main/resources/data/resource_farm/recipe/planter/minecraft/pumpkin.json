@@ -1,0 +1,16 @@
+{
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "minecraft:pumpkin",
+      "max": 1,
+      "min": 1
+    }
+  ],
+  "seed": "minecraft:pumpkin_seeds",
+  "soils": [
+    "#resource_farm:farmland_soils"
+  ]
+}

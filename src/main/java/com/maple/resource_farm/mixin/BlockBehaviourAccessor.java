@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.Optional;
 
 /**
- * 26.1.2 中 {@code drops} 为 {@code final Optional&lt;ResourceKey&lt;LootTable&gt;&gt;}，需 @Mutable 才能写入。
+ * 26.1.2 中 {@code output} 为 {@code final Optional&lt;ResourceKey&lt;LootTable&gt;&gt;}，需 @Mutable 才能写入。
  */
 @Mixin(BlockBehaviour.class)
 public interface BlockBehaviourAccessor {

@@ -1,0 +1,16 @@
+{
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "minecraft:carrot",
+      "max": 5,
+      "min": 2
+    }
+  ],
+  "seed": "minecraft:carrot",
+  "soils": [
+    "#resource_farm:farmland_soils"
+  ]
+}

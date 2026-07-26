@@ -1,0 +1,15 @@
+{
+  "group": "mineral",
+  "item": "minecraft:quartz",
+  "automatic_basic_recipe": true,
+  "product_output": 16,
+  "tree_style": "resource_farm:spruce",
+  "grower": "resource_farm:spruce",
+  "ore_style": "resource_farm:nether_quartz",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xFFFFFF"
+}

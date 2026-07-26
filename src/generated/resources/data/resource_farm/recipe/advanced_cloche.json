@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "resource_farm:glass_cloche",
+    "B": "minecraft:copper_block"
+  },
+  "pattern": [
+    "BBB",
+    "BAB",
+    "BBB"
+  ],
+  "result": {
+    "id": "resource_farm:advanced_cloche"
+  }
+}

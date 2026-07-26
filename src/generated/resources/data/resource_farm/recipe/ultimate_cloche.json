@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "resource_farm:elite_cloche",
+    "B": "minecraft:echo_shard",
+    "C": "minecraft:respawn_anchor",
+    "D": "minecraft:netherite_block",
+    "E": "minecraft:shulker_box"
+  },
+  "pattern": [
+    "BCB",
+    "EAE",
+    "BDB"
+  ],
+  "result": {
+    "id": "resource_farm:ultimate_cloche"
+  }
+}

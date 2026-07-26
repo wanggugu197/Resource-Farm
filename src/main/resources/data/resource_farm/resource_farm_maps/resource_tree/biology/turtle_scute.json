@@ -1,0 +1,16 @@
+{
+  "group": "biology",
+  "item": "minecraft:turtle_scute",
+  "translate_key": "entity.minecraft.turtle",
+  "automatic_basic_recipe": true,
+  "product_output": 8,
+  "tree_style": "resource_farm:birch",
+  "grower": "resource_farm:birch",
+  "ore_style": "resource_farm:lapis",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0x5FFF7A"
+}

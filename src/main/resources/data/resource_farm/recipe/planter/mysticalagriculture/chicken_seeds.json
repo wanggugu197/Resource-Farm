@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "mysticalagriculture"
+    }
+  ],
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "mysticalagriculture:chicken_essence",
+      "min": 1,
+      "max": 3
+    },
+    {
+      "chance": 0.1,
+      "item": "mysticalagriculture:chicken_seeds"
+    }
+  ],
+  "seed": "mysticalagriculture:chicken_seeds",
+  "soil": [
+    "#resource_farm:farmland_soils",
+    "#resource_farm:tier_1_soils",
+    "#resource_farm:tier_2_soils",
+    "#resource_farm:tier_3_soils",
+    "#resource_farm:tier_4_soils",
+    "#resource_farm:tier_5_soils"
+  ],
+  "duration": 1500,
+  "fertilizable": true
+}

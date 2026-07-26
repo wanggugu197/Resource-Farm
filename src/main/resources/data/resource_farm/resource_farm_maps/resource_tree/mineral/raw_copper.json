@@ -1,0 +1,15 @@
+{
+  "group": "mineral",
+  "item": "minecraft:raw_copper",
+  "automatic_basic_recipe": true,
+  "product_output": 16,
+  "tree_style": "resource_farm:jungle",
+  "grower": "resource_farm:jungle",
+  "ore_style": "resource_farm:copper",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xF7AD7E"
+}

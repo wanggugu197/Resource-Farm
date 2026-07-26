@@ -1,0 +1,33 @@
+{
+  "type": "resource_farm:growth",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "minecraft:oak_log",
+      "max": 4,
+      "min": 1
+    },
+    {
+      "chance": 0.3,
+      "item": "minecraft:azalea",
+      "max": 1,
+      "min": 1
+    },
+    {
+      "chance": 0.1,
+      "item": "minecraft:flowering_azalea",
+      "max": 1,
+      "min": 1
+    },
+    {
+      "chance": 0.5,
+      "item": "minecraft:stick",
+      "max": 2,
+      "min": 1
+    }
+  ],
+  "seed": "minecraft:azalea",
+  "soils": [
+    "#resource_farm:tree_soils"
+  ]
+}

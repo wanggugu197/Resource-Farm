@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "#c:glass_panes",
+    "B": "#minecraft:wooden_buttons"
+  },
+  "pattern": [
+    "AAA",
+    "A A",
+    "ABA"
+  ],
+  "result": {
+    "id": "resource_farm:glass_cloche"
+  }
+}

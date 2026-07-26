@@ -1,0 +1,15 @@
+{
+  "group": "mineral",
+  "item": "minecraft:flint",
+  "automatic_basic_recipe": true,
+  "product_output": 32,
+  "tree_style": "resource_farm:acacia",
+  "grower": "resource_farm:acacia",
+  "ore_style": "resource_farm:nether_gold",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0x5C5A5A"
+}

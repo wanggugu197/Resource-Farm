@@ -1,0 +1,16 @@
+{
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "minecraft:cocoa_beans",
+      "max": 3,
+      "min": 1
+    }
+  ],
+  "seed": "minecraft:cocoa_beans",
+  "soils": [
+    "#resource_farm:jungle_soils"
+  ]
+}

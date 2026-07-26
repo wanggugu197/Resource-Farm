@@ -1,10 +1,14 @@
 package com.maple.resource_farm.common;
 
-import com.maple.resource_farm.ResourceTree.builder.TreeModelRenderer;
-import com.maple.resource_farm.common.Manager.ResourceFarmDynamicDataEvents;
-import com.maple.resource_farm.data.ResourceFarmRegister;
+import com.maple.resource_farm.common.manager.ResourceFarmDynamicDataEvents;
+import com.maple.resource_farm.config.ResourceFarmConfigHolder;
 import com.maple.resource_farm.data.lang.LangHandler;
+import com.maple.resource_farm.data.misc.ResourceFarmBlockTags;
 import com.maple.resource_farm.data.misc.ResourceFarmCreativeModeTabs;
+import com.maple.resource_farm.data.misc.ResourceFarmItemTags;
+import com.maple.resource_farm.plantPot.ResourcePlantPotRegister;
+import com.maple.resource_farm.resourceTree.ResourceTreeAccessManagement;
+import com.maple.resource_farm.resourceTree.builder.TreeModelRenderer;
 
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
@@ -29,7 +33,14 @@ public class CommonInit {
     public static void init(final IEventBus modBus) {
         NeoForge.EVENT_BUS.register(ResourceFarmDynamicDataEvents.class);
         ResourceFarmCreativeModeTabs.init();
-        ResourceFarmRegister.init(modBus);
+        ResourceFarmItemTags.init();
+        ResourceFarmBlockTags.init();
+        if (ResourceFarmConfigHolder.farmConfigHolder.dev.enableResourceTree) {
+            ResourceTreeAccessManagement.registerTree(modBus);
+        }
+        if (ResourceFarmConfigHolder.farmConfigHolder.dev.enableBonsaiPot) {
+            ResourcePlantPotRegister.register(modBus);
+        }
         LangHandler.init();
 
         initDynamicPacks(modBus);
@@ -41,7 +52,6 @@ public class CommonInit {
      * <pre>{@code
      * REGISTRY.packs()
      *     .register(modBus)
-     *     .packIcon("icon.png")
      *     .addNamespace(...)   // addon
      *     .whenClient(...)
      *     // .whenServer((data, regs) -> ...)  // RF 暂不用
@@ -50,7 +60,6 @@ public class CommonInit {
     private static void initDynamicPacks(IEventBus modBus) {
         var packs = REGISTRY.packs()
                 .register(modBus)
-                .packIcon("icon.png") // 与 neoforge.mods.toml logoFile 一致；默认即此值
                 .whenClient(TreeModelRenderer::reinitModels);
 
         try {

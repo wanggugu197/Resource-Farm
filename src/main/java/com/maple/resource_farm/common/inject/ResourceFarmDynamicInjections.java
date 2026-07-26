@@ -218,7 +218,7 @@ public final class ResourceFarmDynamicInjections {
     }
 
     public static void dumpAll(HolderLookup.Provider provider) {
-        if (!ResourceFarmConfigHolder.FarmConfigHolder.dev.dumpData) {
+        if (!ResourceFarmConfigHolder.farmConfigHolder.dev.dumpData) {
             return;
         }
         Path parent = ResourceFarm.getGameDir().resolve("resource_farm/dumped/data");

@@ -1,0 +1,16 @@
+{
+  "group": "biology",
+  "item": "minecraft:ghast_tear",
+  "translate_key": "entity.minecraft.ghast",
+  "automatic_basic_recipe": true,
+  "product_output": 8,
+  "tree_style": "resource_farm:oak",
+  "grower": "resource_farm:oak",
+  "ore_style": "resource_farm:lapis",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xE5FFFF"
+}

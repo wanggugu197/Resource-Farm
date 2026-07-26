@@ -51,5 +51,32 @@ public final class LangHandler {
         addLang("tag.item.resource_farm.resource_resin", "资源树脂", "Resource Resin");
         addLang("tag.item.resource_farm.resource_fruit", "资源果实", "Resource Fruit");
         addLang("tag.item.resource_farm.resource_clump", "资源碎块", "Resource Clump");
+
+        // ==================== JEI 翻译 ====================
+        addLang("jei.resource_farm.growth_recipe", "盆栽盆配方", "Bonsai Pot Recipe");
+        addLang("jei.resource_farm.recipe.drop.count", "数量: %s", "Count: %s");
+        addLang("jei.resource_farm.recipe.drop.count_between", "数量: %s - %s", "Count: %s - %s");
+        addLang("jei.resource_farm.recipe.drop.chance", "概率: %s", "Chance: %s");
+        addLang("jei.resource_farm.recipe.seed.during", "耗时: %s 秒", "During: %s s");
+        addLang("jei.resource_farm.recipe.seed.fertilizable", "§c§l无法手动施肥加速", "§c§lCannot manually apply fertilizer to speed up the process");
+
+        // ==================== Jade 翻译 ====================
+        addLang("config.jade.plugin_resource_farm.bonsai_pot_info", "盆栽盆信息", "Bonsai Pot Info");
+        addLang("config.jade.plugin_resource_farm.hopping_bonsai_pot_info", "漏式盆栽盆信息", "Hopping Bonsai Pot Info");
+        // --- Bonsai Pot ---
+        addLang("jade.resource_farm.sky_boost", "§e露天加速 §r§7: §a%s§r§7", "§eSky boost §r§7: §a%s§r§7");
+        addLang("jade.resource_farm.no_crop", "§7未种植作物", "§7No crop planted");
+        // --- Hopping Bonsai Pot ---
+        addLang("jade.resource_farm.crop_ready", "§a§l%s §r§a已成熟，可以收获！", "§a§l%s §r§ais ready to harvest!");
+        addLang("jade.resource_farm.crop_progress", "§2%s §r§7: 阶段 §e%d§7/§e%d §r§7(§b%d%%§7)", "§2%s §r§7: Stage §e%d§7/§e%d §r§7(§b%d%%§7)");
+        addLang("jade.resource_farm.soil_info", "§7土壤: §f%s §r§7(生长倍率: §e%s§r§7)", "§7Soil: §f%s §r§7(Growth: §e%s§r§7)");
+        addLang("jade.resource_farm.fertilizer_info", "§6肥料: §f%s §r§7(速度: §b%s§r§7, 产量: §b%s§r§7)", "§6Fertilizer: §f%s §r§7(Speed: §b%s§r§7, Yield: §b%s§r§7)");
+        addLang("jade.resource_farm.cloche_installed", "§b%s §r§7: 速度 §b×%s§r§7, 产量 §b×%s§r§7", "§b%s §r§7: Speed §b×%s§r§7, Yield §b×%s§r§7");
+
+        addLang("tooltip.resource_farm.cloche_item_1", "§7玻璃罩等级§r §b%s§r", "§7Glass Cloche Tire§r §b%s§r");
+        addLang("tooltip.resource_farm.cloche_item_2", "§7速度§r §b×%s§r  §7产量§r §b×%s§r", "§7Speed§r §b×%s§r  §7Yield§r §b×%s§r");
+
+        // ==================== 消息翻译 ====================
+        addLang("message.resource_farm.invalid_seed_soil_combination", "§6该种子与当前土壤不兼容", "§6This seed is not compatible with the current soil");
     }
 }

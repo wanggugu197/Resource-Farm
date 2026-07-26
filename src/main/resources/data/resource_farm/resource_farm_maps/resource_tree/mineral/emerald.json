@@ -1,0 +1,15 @@
+{
+  "group": "mineral",
+  "item": "minecraft:emerald",
+  "automatic_basic_recipe": true,
+  "product_output": 8,
+  "tree_style": "resource_farm:cherry",
+  "grower": "resource_farm:cherry",
+  "ore_style": "resource_farm:emerald",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 2,
+  "color": "0x51FF8E"
+}

@@ -1,0 +1,10 @@
+{
+  "values": [
+    "minecraft:mycelium",
+    "minecraft:podzol",
+    {"id":"farmersdelight:rich_soil", "required": false},
+    {"id":"farmersdelight:organic_compost", "required": false},
+    {"id":"aether_ii:mycelial_aether_dirt", "required": false},
+    {"id": "agritechevolved:mulch", "required": false}
+  ]
+}

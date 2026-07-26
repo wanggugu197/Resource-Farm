@@ -1,0 +1,15 @@
+{
+  "group": "mineral",
+  "item": "minecraft:diamond",
+  "automatic_basic_recipe": true,
+  "product_output": 8,
+  "tree_style": "resource_farm:cherry",
+  "grower": "resource_farm:cherry",
+  "ore_style": "resource_farm:diamond",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 2,
+  "color": "0x99FFFF"
+}

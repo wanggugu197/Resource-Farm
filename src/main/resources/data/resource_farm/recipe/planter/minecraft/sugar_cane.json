@@ -1,0 +1,17 @@
+{
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "minecraft:sugar_cane",
+      "max": 3,
+      "min": 1
+    }
+  ],
+  "seed": "minecraft:sugar_cane",
+  "soils": [
+    "#resource_farm:dirt_soils",
+    "#resource_farm:sand_soils"
+  ]
+}

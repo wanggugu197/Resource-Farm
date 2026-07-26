@@ -1,8 +1,8 @@
 [versions]
 configuration = "4.1.2+26.1.2"
 
-registryLib = "8.0.14"
-mapleutillib = "0.2.1"
+registryLib = "8.0.15"
+mapleutillib = "0.2.3"
 ldlib2 = "26.1.2.29"
 
 jei = "29.16.0.48"

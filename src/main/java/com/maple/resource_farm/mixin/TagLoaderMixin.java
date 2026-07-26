@@ -1,7 +1,7 @@
 package com.maple.resource_farm.mixin;
 
 import com.maple.resource_farm.api.ITagLoader;
-import com.maple.resource_farm.common.Manager.ResourceFarmTagManager;
+import com.maple.resource_farm.common.manager.ResourceFarmTagManager;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.Identifier;

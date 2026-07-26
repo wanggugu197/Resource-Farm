@@ -1,10 +1,10 @@
 package com.maple.resource_farm.mixin;
 
 import com.maple.resource_farm.ResourceFarm;
-import com.maple.resource_farm.common.Manager.ResourceFarmComposTablesManager;
-import com.maple.resource_farm.common.Manager.ResourceFarmLootTablesManager;
-import com.maple.resource_farm.common.Manager.ResourceFarmRecipesManager;
 import com.maple.resource_farm.common.inject.ResourceFarmDynamicInjections;
+import com.maple.resource_farm.common.manager.ResourceFarmComposTablesManager;
+import com.maple.resource_farm.common.manager.ResourceFarmLootTablesManager;
+import com.maple.resource_farm.common.manager.ResourceFarmRecipesManager;
 
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementHolder;

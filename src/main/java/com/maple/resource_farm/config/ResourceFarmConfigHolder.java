@@ -1,7 +1,8 @@
 package com.maple.resource_farm.config;
 
 import com.maple.resource_farm.ResourceFarm;
-import com.maple.resource_farm.ResourceTree.config.PresetResourceTreeConfigHolder;
+import com.maple.resource_farm.plantPot.BonsaiPotConfigHolder;
+import com.maple.resource_farm.resourceTree.PresetResourceTreeConfigHolder;
 
 import dev.toma.configuration.Configuration;
 import dev.toma.configuration.config.Config;
@@ -13,8 +14,9 @@ import org.jetbrains.annotations.ApiStatus;
 @Config(id = ResourceFarm.MOD_ID, filename = "resource_farm/resource_farm")
 public class ResourceFarmConfigHolder {
 
-    public static ResourceFarmConfigHolder FarmConfigHolder;
-    public static PresetResourceTreeConfigHolder TreeConfigHolder;
+    public static ResourceFarmConfigHolder farmConfigHolder;
+    public static PresetResourceTreeConfigHolder treeConfigHolder;
+    public static BonsaiPotConfigHolder bonsaiPotConfigHolder;
 
     private static final Object LOCK = new Object();
 
@@ -23,14 +25,17 @@ public class ResourceFarmConfigHolder {
 
     public static void init() {
         synchronized (LOCK) {
-            if (FarmConfigHolder == null || INTERNAL_INSTANCE == null) {
+            if (farmConfigHolder == null || INTERNAL_INSTANCE == null) {
                 // 基础配置
                 INTERNAL_INSTANCE = Configuration.registerConfig(ResourceFarmConfigHolder.class, ConfigFormats.YAML);
-                FarmConfigHolder = INTERNAL_INSTANCE.getConfigInstance();
+                farmConfigHolder = INTERNAL_INSTANCE.getConfigInstance();
 
                 // 预设树木组配置（控制数据包 group=base/mineral/... 是否加载）
                 PresetResourceTreeConfigHolder.INSTANCE = Configuration.registerConfig(PresetResourceTreeConfigHolder.class, ConfigFormats.YAML);
-                TreeConfigHolder = PresetResourceTreeConfigHolder.INSTANCE.getConfigInstance();
+                treeConfigHolder = PresetResourceTreeConfigHolder.INSTANCE.getConfigInstance();
+
+                BonsaiPotConfigHolder.INSTANCE = Configuration.registerConfig(BonsaiPotConfigHolder.class, ConfigFormats.YAML);
+                bonsaiPotConfigHolder = BonsaiPotConfigHolder.INSTANCE.getConfigInstance();
             }
         }
     }
@@ -57,5 +62,12 @@ public class ResourceFarmConfigHolder {
                 "是否启用资源树模块？ Whether to enable the resource tree module? Default: true"
         })
         public boolean enableResourceTree = true;
+
+        @Configurable
+        @Configurable.Comment({
+                "是否启用盆栽盆模块",
+                "Whether to enable the plant pot module? Default: true"
+        })
+        public boolean enableBonsaiPot = true;
     }
 }

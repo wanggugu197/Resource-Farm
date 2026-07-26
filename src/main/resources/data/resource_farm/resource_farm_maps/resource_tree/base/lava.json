@@ -1,0 +1,15 @@
+{
+  "group": "base",
+  "translate_key": "block.minecraft.lava",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "tree_style": "resource_farm:jungle",
+  "grower": "resource_farm:jungle",
+  "ore_style": "resource_farm:nether_gold",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 15,
+  "color": "0xE46516"
+}

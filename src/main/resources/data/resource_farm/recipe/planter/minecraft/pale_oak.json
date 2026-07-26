@@ -1,0 +1,33 @@
+{
+  "type": "resource_farm:growth",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "minecraft:pale_oak_log",
+      "max": 8,
+      "min": 4
+    },
+    {
+      "chance": 0.5,
+      "item": "minecraft:pale_oak_sapling",
+      "max": 2,
+      "min": 1
+    },
+    {
+      "chance": 0.5,
+      "item": "minecraft:stick",
+      "max": 2,
+      "min": 1
+    },
+    {
+      "chance": 0.3,
+      "item": "minecraft:pale_hanging_moss",
+      "max": 2,
+      "min": 1
+    }
+  ],
+  "seed": "minecraft:pale_oak_sapling",
+  "soils": [
+    "#resource_farm:tree_soils"
+  ]
+}

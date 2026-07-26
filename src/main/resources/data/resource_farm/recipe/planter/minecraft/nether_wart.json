@@ -1,0 +1,16 @@
+{
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "minecraft:nether_wart",
+      "max": 3,
+      "min": 1
+    }
+  ],
+  "seed": "minecraft:nether_wart",
+  "soils": [
+    "#resource_farm:soul_sand_soils"
+  ]
+}

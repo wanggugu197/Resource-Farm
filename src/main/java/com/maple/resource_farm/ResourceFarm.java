@@ -67,15 +67,4 @@ public class ResourceFarm {
         }
         return TEMPLATE_LOCATION.withPath(path);
     }
-
-    public static String appendIdString(String id) {
-        int i = id.indexOf(':');
-        if (i > 0) {
-            return id;
-        } else if (i == 0) {
-            return MOD_ID + id;
-        } else {
-            return MOD_ID + ":" + id;
-        }
-    }
 }

@@ -1,0 +1,15 @@
+{
+  "group": "mineral",
+  "item": "minecraft:amethyst_shard",
+  "automatic_basic_recipe": true,
+  "product_output": 16,
+  "tree_style": "resource_farm:dark_oak",
+  "grower": "resource_farm:dark_oak",
+  "ore_style": "resource_farm:emerald",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 1,
+  "color": "0xFFCBFF"
+}

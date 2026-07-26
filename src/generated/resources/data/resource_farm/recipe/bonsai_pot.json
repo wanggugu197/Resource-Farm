@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:brick"
+  },
+  "pattern": [
+    "   ",
+    "A A",
+    "AAA"
+  ],
+  "result": {
+    "id": "resource_farm:bonsai_pot"
+  }
+}

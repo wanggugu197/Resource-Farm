@@ -1,0 +1,22 @@
+{
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "minecraft:cactus",
+      "max": 3,
+      "min": 1
+    },
+    {
+      "chance": 0.25,
+      "item": "minecraft:cactus_flower",
+      "max": 1,
+      "min": 1
+    }
+  ],
+  "seed": "minecraft:cactus",
+  "soils": [
+    "#resource_farm:sand_soils"
+  ]
+}

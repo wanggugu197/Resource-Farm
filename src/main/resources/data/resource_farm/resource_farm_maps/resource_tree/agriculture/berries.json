@@ -1,0 +1,15 @@
+{
+  "group": "agriculture",
+  "translate_key": "resource_farm.resource_tree.berries",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "tree_style": "resource_farm:cherry",
+  "grower": "resource_farm:cherry",
+  "ore_style": "resource_farm:copper",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xDC457D"
+}

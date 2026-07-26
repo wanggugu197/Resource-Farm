@@ -1,0 +1,16 @@
+{
+  "group": "agriculture",
+  "item": "minecraft:chorus_fruit",
+  "translate_key": "resource_farm.resource_tree.chorus",
+  "automatic_basic_recipe": true,
+  "product_output": 16,
+  "tree_style": "resource_farm:cherry",
+  "grower": "resource_farm:cherry",
+  "ore_style": "resource_farm:crack",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xE3A7E1"
+}

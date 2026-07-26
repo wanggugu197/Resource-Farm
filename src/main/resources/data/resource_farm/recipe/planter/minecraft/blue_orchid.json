@@ -1,0 +1,16 @@
+{
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "minecraft:blue_orchid",
+      "max": 1,
+      "min": 1
+    }
+  ],
+  "seed": "minecraft:blue_orchid",
+  "soils": [
+    "#resource_farm:dirt_soils"
+  ]
+}

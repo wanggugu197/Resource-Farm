@@ -1,0 +1,16 @@
+{
+  "group": "biology",
+  "item": "minecraft:slime_ball",
+  "translate_key": "entity.minecraft.slime",
+  "automatic_basic_recipe": true,
+  "product_output": 8,
+  "tree_style": "resource_farm:acacia",
+  "grower": "resource_farm:acacia",
+  "ore_style": "resource_farm:copper",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xB4FFA6"
+}
