@@ -41,11 +41,11 @@ public class ResourceFarmItemTags {
     public static final TagKey<Item> SCULK_SOILS = createItemTag("sculk_soils");
 
     // ===== 神秘农业/JustDireThings 的分级土壤 =====
-    public static final TagKey<Item> MA_TIER1_SOILS = createItemTag("ma_tier1_soils");
-    public static final TagKey<Item> MA_TIER2_SOILS = createItemTag("ma_tier2_soils");
-    public static final TagKey<Item> MA_TIER3_SOILS = createItemTag("ma_tier3_soils");
-    public static final TagKey<Item> MA_TIER4_SOILS = createItemTag("ma_tier4_soils");
-    public static final TagKey<Item> MA_TIER5_SOILS = createItemTag("ma_tier5_soils");
+    public static final TagKey<Item> MA_TIER1_SOILS = createItemTag("tier_1_soils");
+    public static final TagKey<Item> MA_TIER2_SOILS = createItemTag("tier_2_soils");
+    public static final TagKey<Item> MA_TIER3_SOILS = createItemTag("tier_3_soils");
+    public static final TagKey<Item> MA_TIER4_SOILS = createItemTag("tier_4_soils");
+    public static final TagKey<Item> MA_TIER5_SOILS = createItemTag("tier_5_soils");
 
     private static TagKey<Item> createItemTag(String path) {
         return TagKey.create(Registries.ITEM, ResourceFarm.id(path));

@@ -20,7 +20,7 @@
     }
   ],
   "seed": "mysticalagriculture:armadillo_seeds",
-  "soil": [
+  "soils": [
     "#resource_farm:farmland_soils",
     "#resource_farm:tier_1_soils",
     "#resource_farm:tier_2_soils",

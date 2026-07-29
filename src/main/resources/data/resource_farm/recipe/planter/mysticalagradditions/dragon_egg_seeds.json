@@ -2,7 +2,7 @@
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
-      "modid": "mysticalagriculture"
+      "modid": "mysticalagradditions"
     }
   ],
   "type": "resource_farm:growth",
@@ -20,13 +20,8 @@
     }
   ],
   "seed": "mysticalagriculture:dragon_egg_seeds",
-  "soil": [
-    "#resource_farm:farmland_soils",
-    "#resource_farm:tier_1_soils",
-    "#resource_farm:tier_2_soils",
-    "#resource_farm:tier_3_soils",
-    "#resource_farm:tier_4_soils",
-    "#resource_farm:tier_5_soils"
+  "soils": [
+    "mysticalagradditions:dragon_egg_crux"
   ],
   "duration": 1500,
   "fertilizable": true

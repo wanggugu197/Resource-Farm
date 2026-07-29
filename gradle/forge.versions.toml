@@ -8,6 +8,11 @@ ldlib2 = "26.1.2.29"
 jei = "29.16.0.48"
 jade = "26.1.8+neoforge"
 
+cucumber = "26.1.2-9.0.5"
+mysticalagriculture = "26.1.2-9.0.4"
+mysticalagradditions = "26.1.2-9.0.1"
+mysticalautomation = "26.1.2-2.0.6"
+
 [libraries]
 configuration       = { module = "dev.toma.configuration:configuration-neoforge", version.ref = "configuration" }
 
@@ -24,5 +29,17 @@ jei-neoforge-impl   = { module = "mezz.jei:jei-26.1.2-neoforge", version.ref = "
 
 jade                = { module = "maven.modrinth:jade", version.ref = "jade" }
 
+# https://maven.blakesmods.com/#/releases/com/blakebr0/cucumber/Cucumber
+cucumber = { group = "com.blakebr0.cucumber", name = "Cucumber", version.ref = "cucumber" }
+# https://maven.blakesmods.com/#/releases/com/blakebr0/mysticalagriculture/MysticalAgriculture
+mysticalagriculture = { group = "com.blakebr0.mysticalagriculture", name = "MysticalAgriculture", version.ref = "mysticalagriculture" }
+# https://maven.blakesmods.com/#/releases/com/blakebr0/mysticalagradditions/MysticalAgradditions
+mysticalagradditions = { group = "com.blakebr0.mysticalagradditions", name = "MysticalAgradditions", version.ref = "mysticalagradditions" }
+# https://maven.blakesmods.com/#/releases/com/blakebr0/mysticalautomation/MysticalAutomation
+mysticalautomation = { group = "com.blakebr0.mysticalautomation", name = "MysticalAutomation", version.ref = "mysticalautomation" }
+
+
 [bundles]
 jei = ["jei-neoforge-api", "jei-neoforge-impl"]
+
+mystical = ["cucumber", "mysticalagriculture", "mysticalagradditions", "mysticalautomation"]
