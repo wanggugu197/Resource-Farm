@@ -1,5 +1,6 @@
 package com.maple.resource_farm.resourceTree.builder;
 
+import com.gto.registrylib.datagen.provider.RegistryLibRecipeProvider;
 import com.maple.resource_farm.ResourceFarm;
 import com.maple.resource_farm.api.IntObjectHolder;
 import com.maple.resource_farm.config.ResourceFarmConfigHolder;
@@ -96,7 +97,7 @@ public class TreeRecipe {
     private static final boolean GENERATE_TREE_ITEM_RECIPES = ResourceFarmConfigHolder.treeConfigHolder.tree.recipeGeneration.generateTreeItemRecipes;
     private static final boolean GENERATE_SAPLING_RECIPES = ResourceFarmConfigHolder.treeConfigHolder.tree.recipeGeneration.generateSaplingRecipes;
 
-    public static void init(RecipeOutput consumer) {
+    public static void init(RegistryLibRecipeProvider consumer) {
         ResourceTreeAccessManagement.ResourceTreeMap.forEach((name, resourceTree) -> {
 
             // 制作树苗/物品
@@ -161,12 +162,12 @@ public class TreeRecipe {
             if (ResourceFarmConfigHolder.treeConfigHolder.tree.recipeGeneration.generateBonsaiPotRecipes) {
                 GrowthRecipe.Builder builder = GrowthRecipe.builder(consumer)
                         .id(ResourceFarm.id(name + "_in_bonsai_pot"))
-                        .duration(200 * resourceTree.getResourceTreeConfig().growthFrequency())
+                        .duration(180 * resourceTree.getResourceTreeConfig().growthFrequency())
                         .seed(RecipeHelper.ingredient(resourceTree.getSapling()))
-                        .addOutput(OutputEntry.of(resourceTree.getLog().asItem(), 2, 6))
-                        .addOutput(OutputEntry.of(resourceTree.getResin().asItem(), 4, 8))
-                        .addOutput(OutputEntry.of(resourceTree.getFruit().asItem(), 8, 12))
-                        .addOutput(OutputEntry.of(resourceTree.getSapling().asItem(), 1, 2, 0.2f));
+                        .addOutput(OutputEntry.of(resourceTree.getLog().asItem(), 1, 4))
+                        .addOutput(OutputEntry.of(resourceTree.getResin().asItem(), 4, 6))
+                        .addOutput(OutputEntry.of(resourceTree.getFruit().asItem(), 6, 8))
+                        .addOutput(OutputEntry.of(resourceTree.getSapling().asItem(), 1, 2, 0.1f));
                 boolean blockSoil = resourceTree.getResourceTreeConfig().customPlaceBlock().get() != Blocks.BARRIER;
                 boolean blockTagSoil = resourceTree.getResourceTreeConfig().customPlaceBlockTag() != null;
                 if (blockSoil)

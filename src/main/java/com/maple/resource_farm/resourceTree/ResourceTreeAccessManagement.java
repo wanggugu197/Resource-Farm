@@ -1,5 +1,6 @@
 package com.maple.resource_farm.resourceTree;
 
+import com.gto.registrylib.datagen.provider.RegistryLibRecipeProvider;
 import com.maple.resource_farm.config.ResourceFarmConfigHolder;
 import com.maple.resource_farm.resourceTree.builder.TreeBuilder;
 import com.maple.resource_farm.resourceTree.builder.TreeRecipe;
@@ -31,7 +32,7 @@ public class ResourceTreeAccessManagement {
         }
     }
 
-    public static void registerTreeRecipe(RecipeOutput consumer) {
+    public static void registerTreeRecipe(RegistryLibRecipeProvider consumer) {
         TreeRecipe.init(consumer);
         if (ResourceFarmConfigHolder.treeConfigHolder != null && ResourceFarmConfigHolder.treeConfigHolder.enablePresetTreeGroups) {
             PresetResourceTreeConfigHolder.PresetTreeGenerationConfigs configs = ResourceFarmConfigHolder.treeConfigHolder.presetTreeGeneration;

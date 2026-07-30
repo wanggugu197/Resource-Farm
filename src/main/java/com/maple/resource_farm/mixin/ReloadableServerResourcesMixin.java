@@ -1,5 +1,6 @@
 package com.maple.resource_farm.mixin;
 
+import com.gto.registrylib.datagen.provider.RegistryLibRecipeProvider;
 import com.maple.resource_farm.ResourceFarm;
 import com.maple.resource_farm.common.inject.ResourceFarmDynamicInjections;
 import com.maple.resource_farm.common.manager.ResourceFarmComposTablesManager;
@@ -99,7 +100,22 @@ public abstract class ReloadableServerResourcesMixin {
         ResourceFarm.LOGGER.info("=== Resource Farm 动态数据（晚期：recipes，标签已绑定）===");
 
         long step = System.currentTimeMillis();
-        ResourceFarmRecipesManager.recipeAddition(new RecipeOutput() {
+
+        HolderLookup.Provider registries = ((RecipeManagerAccessor) this.getRecipeManager()).resource_farm$getRegistries();
+        ResourceFarmRecipesManager.recipeAddition(new RegistryLibRecipeProvider(null, registries,creatRecipeOutput()));
+        ResourceFarm.LOGGER.info("配方对象生成完成，耗时 {}ms", System.currentTimeMillis() - step);
+
+        ResourceFarmDynamicInjections.injectRecipes(this.getRecipeManager());
+        ResourceFarmDynamicInjections.injectAdvancements(this.getAdvancements());
+
+        ResourceFarmDynamicInjections.dumpAll(registries);
+
+        ResourceFarm.LOGGER.info("Resource Farm late recipe inject took {}ms", System.currentTimeMillis() - t0);
+        ResourceFarm.LOGGER.info("=== Resource Farm 晚期注入结束 ===");
+    }
+
+    private static RecipeOutput creatRecipeOutput() {
+        return new RecipeOutput() {
 
             @Override
             public Advancement.@NotNull Builder advancement() {
@@ -114,16 +130,6 @@ public abstract class ReloadableServerResourcesMixin {
                                @Nullable AdvancementHolder advancement, ICondition @NotNull... conditions) {
                 ResourceFarmDynamicInjections.addRecipe(id, recipe, advancement);
             }
-        });
-        ResourceFarm.LOGGER.info("配方对象生成完成，耗时 {}ms", System.currentTimeMillis() - step);
-
-        ResourceFarmDynamicInjections.injectRecipes(this.getRecipeManager());
-        ResourceFarmDynamicInjections.injectAdvancements(this.getAdvancements());
-
-        HolderLookup.Provider registries = ((RecipeManagerAccessor) this.getRecipeManager()).resource_farm$getRegistries();
-        ResourceFarmDynamicInjections.dumpAll(registries);
-
-        ResourceFarm.LOGGER.info("Resource Farm late recipe inject took {}ms", System.currentTimeMillis() - t0);
-        ResourceFarm.LOGGER.info("=== Resource Farm 晚期注入结束 ===");
+        };
     }
 }

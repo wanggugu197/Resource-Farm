@@ -1,5 +1,6 @@
 package com.maple.resource_farm.resourceTree.data.register;
 
+import com.gto.registrylib.datagen.provider.RegistryLibRecipeProvider;
 import com.maple.resource_farm.api.IntObjectHolder;
 import com.maple.resource_farm.data.lang.LangHandler;
 import com.maple.resource_farm.resourceTree.builder.TreeRecipe;
@@ -31,7 +32,7 @@ public class TreesCommonRegister {
         LangHandler.addLang("resource_farm.resource_tree.echo", "回响", "Echo");
     }
 
-    public static void baseSpecialRecipe(RecipeOutput consumer) {
+    public static void baseSpecialRecipe(RegistryLibRecipeProvider consumer) {
         TreeRecipe.TreeItemRecipeBuild(consumer, "wood",
                 item(Items.OAK_LOG, 16), item(Items.DARK_OAK_LOG, 16), item(Items.BIRCH_LOG, 16), item(Items.SPRUCE_LOG, 16),
                 item(Items.JUNGLE_LOG, 16), item(Items.ACACIA_LOG, 16), item(Items.CHERRY_LOG, 16), item(Items.MANGROVE_LOG, 16),
@@ -56,7 +57,7 @@ public class TreesCommonRegister {
         TreeRecipe.TreeItemRecipeBuild(consumer, "soul_sand", item(Items.SOUL_SOIL, 32));
     }
 
-    public static void mineralSpecialRecipe(RecipeOutput consumer) {
+    public static void mineralSpecialRecipe(RegistryLibRecipeProvider consumer) {
         TreeRecipe.TreeItemRecipeBuild(consumer, "coal", item(Items.CHARCOAL, 1));
         TreeRecipe.TreeItemRecipeBuild(consumer, "raw_copper", item(Items.COPPER_BLOCK, 1));
         TreeRecipe.TreeItemRecipeBuild(consumer, "raw_iron", item(Items.IRON_BLOCK, 1));
@@ -64,7 +65,7 @@ public class TreesCommonRegister {
         TreeRecipe.TreeItemRecipeBuild(consumer, "amethyst_shard", item(Items.BUDDING_AMETHYST, 1), item(Items.AMETHYST_CLUSTER, 1));
     }
 
-    public static void biologySpecialRecipe(RecipeOutput consumer) {
+    public static void biologySpecialRecipe(RegistryLibRecipeProvider consumer) {
         TreeRecipe.TreeItemAndSaplingRecipeBuild(consumer, "breeding",
                 item(Items.EGG, 16), item(Items.FEATHER, 16), item(Items.CHICKEN, 16), item(Items.PORKCHOP, 16),
                 item(Items.LEATHER, 16), item(Items.BEEF, 16), item(Items.WHITE_WOOL, 16), item(Items.MUTTON, 16));
@@ -83,7 +84,7 @@ public class TreesCommonRegister {
         TreeRecipe.TreeSaplingRecipeBuild(consumer, "minor_creature", Items.ROTTEN_FLESH, Items.GUNPOWDER, Items.BONE, Items.SPIDER_EYE);
     }
 
-    public static void agricultureSpecialRecipe(RecipeOutput consumer) {
+    public static void agricultureSpecialRecipe(RegistryLibRecipeProvider consumer) {
         TreeRecipe.TreeItemAndSaplingRecipeBuild(consumer, "cultivation",
                 item(Items.WHEAT, 16), item(Items.SUGAR_CANE, 16), item(Items.POTATO, 16), item(Items.CARROT, 16),
                 item(Items.BEETROOT, 16), item(Items.COCOA_BEANS, 6), item(Items.MELON, 2), item(Items.PUMPKIN, 2));
