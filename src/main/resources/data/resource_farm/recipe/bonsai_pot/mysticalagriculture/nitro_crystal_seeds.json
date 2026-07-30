@@ -1,0 +1,28 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "mysticalagriculture"
+    }
+  ],
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "mysticalagriculture:nitro_crystal_essence",
+      "min": 1,
+      "max": 3
+    },
+    {
+      "chance": 0.1,
+      "item": "mysticalagriculture:nitro_crystal_seeds"
+    }
+  ],
+  "seed": "mysticalagriculture:nitro_crystal_seeds",
+  "soils": [
+    "mysticalagradditions:nitro_crystal_crux"
+  ],
+  "duration": 1500,
+  "fertilizable": true
+}
