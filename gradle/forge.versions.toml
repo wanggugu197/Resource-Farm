@@ -42,4 +42,4 @@ mysticalautomation = { group = "com.blakebr0.mysticalautomation", name = "Mystic
 [bundles]
 jei = ["jei-neoforge-api", "jei-neoforge-impl"]
 
-mystical = ["cucumber", "mysticalagriculture", "mysticalagradditions", "mysticalautomation"]
+extraMystical = ["cucumber", "mysticalagriculture", "mysticalagradditions", "mysticalautomation"]

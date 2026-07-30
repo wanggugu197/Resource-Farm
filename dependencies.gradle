@@ -15,4 +15,7 @@ dependencies {
 
     compileOnly(forge.jade)
     localRuntime(forge.jade)
+
+    extraLocalRuntime(forge.bundles.extraMystical)
+    extraLocalRuntime(forge.bundles.extraMystical)
 }

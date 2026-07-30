@@ -1,0 +1,28 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "occultism"
+    }
+  ],
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "seed": "occultism:datura_seeds",
+  "soils": [
+    "#agritechtwo:farmland_soils"
+  ],
+  "output": [
+    {
+      "item": "occultism:datura",
+      "min": 1,
+      "max": 1,
+      "chance": 1.0
+    },
+    {
+      "item": "occultism:datura_seeds",
+      "min": 1,
+      "max": 1,
+      "chance": 0.5
+    }
+  ]
+}
