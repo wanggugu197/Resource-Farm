@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "biomesoplenty"
+    }
+  ],
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "biomesoplenty:orange_cosmos",
+      "max": 1,
+      "min": 1
+    }
+  ],
+  "seed": "biomesoplenty:orange_cosmos",
+  "soils": [
+    "#resource_farm:dirt_soils"
+  ]
+}
