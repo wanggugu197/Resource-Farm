@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "biomesoplenty"
+    }
+  ],
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "biomesoplenty:pink_hibiscus",
+      "max": 1,
+      "min": 1
+    }
+  ],
+  "seed": "biomesoplenty:pink_hibiscus",
+  "soils": [
+    "#resource_farm:dirt_soils"
+  ]
+}

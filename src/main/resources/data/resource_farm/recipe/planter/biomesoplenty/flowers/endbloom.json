@@ -1,0 +1,22 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "biomesoplenty"
+    }
+  ],
+  "type": "resource_farm:growth",
+  "renderer": "crop",
+  "output": [
+    {
+      "chance": 1.0,
+      "item": "biomesoplenty:endbloom",
+      "max": 1,
+      "min": 1
+    }
+  ],
+  "seed": "biomesoplenty:endbloom",
+  "soils": [
+    "#resource_farm:end_soils"
+  ]
+}
