@@ -11,5 +11,10 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0x594438"
+  "color": "0x594438",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:soul_soil", "count": 32 }
+    ]
+  }
 }

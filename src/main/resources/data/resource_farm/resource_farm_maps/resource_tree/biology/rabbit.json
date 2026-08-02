@@ -11,5 +11,17 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0xFFC885"
+  "color": "0xFFC885",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:rabbit", "count": 16 },
+      { "item": "minecraft:rabbit_hide", "count": 16 },
+      { "item": "minecraft:rabbit_foot", "count": 1 }
+    ],
+    "sapling_ingredients": [
+      "minecraft:rabbit",
+      "minecraft:rabbit_hide",
+      "minecraft:rabbit_foot"
+    ]
+  }
 }

@@ -11,5 +11,23 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0x28B6EC"
+  "color": "0x28B6EC",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:tropical_fish", "count": 16 },
+      { "item": "minecraft:pufferfish", "count": 16 },
+      { "item": "minecraft:salmon", "count": 16 },
+      { "item": "minecraft:cod", "count": 16 },
+      { "item": "minecraft:glow_ink_sac", "count": 16 },
+      { "item": "minecraft:ink_sac", "count": 16 }
+    ],
+    "sapling_ingredients": [
+      "minecraft:tropical_fish",
+      "minecraft:pufferfish",
+      "minecraft:salmon",
+      "minecraft:cod",
+      "minecraft:glow_ink_sac",
+      "minecraft:ink_sac"
+    ]
+  }
 }

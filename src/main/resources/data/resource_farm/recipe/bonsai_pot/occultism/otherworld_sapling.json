@@ -8,7 +8,7 @@
   "type": "resource_farm:growth",
   "seed": "occultism:otherworld_sapling",
   "soils": [
-    "#agritechtwo:tree_soils"
+    "#resource_farm:tree_soils"
   ],
   "output": [
     {

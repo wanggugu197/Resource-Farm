@@ -11,5 +11,15 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0xDC457D"
+  "color": "0xDC457D",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:sweet_berries", "count": 16 },
+      { "item": "minecraft:glow_berries", "count": 16 }
+    ],
+    "sapling_ingredients": [
+      "minecraft:sweet_berries",
+      "minecraft:glow_berries"
+    ]
+  }
 }

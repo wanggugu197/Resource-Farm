@@ -11,5 +11,10 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0xF7AD7E"
+  "color": "0xF7AD7E",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:copper_block", "count": 1 }
+    ]
+  }
 }

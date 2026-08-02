@@ -11,5 +11,15 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0xBDDCD1"
+  "color": "0xBDDCD1",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:prismarine_crystals", "count": 16 },
+      { "item": "minecraft:prismarine_shard", "count": 16 }
+    ],
+    "sapling_ingredients": [
+      "minecraft:prismarine_crystals",
+      "minecraft:prismarine_shard"
+    ]
+  }
 }

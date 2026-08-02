@@ -11,5 +11,28 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0xAAE23A"
+  "color": "0xAAE23A",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:white_dye", "count": 32 },
+      { "item": "minecraft:orange_dye", "count": 32 },
+      { "item": "minecraft:magenta_dye", "count": 32 },
+      { "item": "minecraft:light_blue_dye", "count": 32 },
+      { "item": "minecraft:yellow_dye", "count": 32 },
+      { "item": "minecraft:lime_dye", "count": 32 },
+      { "item": "minecraft:pink_dye", "count": 32 },
+      { "item": "minecraft:gray_dye", "count": 32 },
+      { "item": "minecraft:light_gray_dye", "count": 32 },
+      { "item": "minecraft:cyan_dye", "count": 32 },
+      { "item": "minecraft:purple_dye", "count": 32 },
+      { "item": "minecraft:blue_dye", "count": 32 },
+      { "item": "minecraft:brown_dye", "count": 32 },
+      { "item": "minecraft:green_dye", "count": 32 },
+      { "item": "minecraft:red_dye", "count": 32 },
+      { "item": "minecraft:black_dye", "count": 32 }
+    ],
+    "sapling_ingredients": [
+      "#c:dyes"
+    ]
+  }
 }

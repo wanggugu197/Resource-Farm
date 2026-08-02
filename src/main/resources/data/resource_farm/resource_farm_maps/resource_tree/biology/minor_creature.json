@@ -11,5 +11,20 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0xDD6C34"
+  "color": "0xDD6C34",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:rotten_flesh", "count": 16 },
+      { "item": "minecraft:gunpowder", "count": 16 },
+      { "item": "minecraft:bone", "count": 16 },
+      { "item": "minecraft:spider_eye", "count": 16 },
+      { "item": "minecraft:string", "count": 16 }
+    ],
+    "sapling_ingredients": [
+      "minecraft:rotten_flesh",
+      "minecraft:gunpowder",
+      "minecraft:bone",
+      "minecraft:spider_eye"
+    ]
+  }
 }

@@ -1,6 +1,5 @@
 package com.maple.resource_farm.common.manager;
 
-import com.gto.registrylib.datagen.provider.RegistryLibRecipeProvider;
 import com.maple.resource_farm.resourceTree.ResourceTreeAccessManagement;
 
 import net.minecraft.data.recipes.RecipeOutput;
@@ -11,7 +10,7 @@ public class ResourceFarmRecipesManager {
 
     public static Object2IntOpenHashMap<String> treeCommonRecipeCount;
 
-    public static void recipeAddition(RegistryLibRecipeProvider consumer) {
+    public static void recipeAddition(RecipeOutput consumer) {
         treeCommonRecipeCount = new Object2IntOpenHashMap<>();
 
         ResourceTreeAccessManagement.registerTreeRecipe(consumer);

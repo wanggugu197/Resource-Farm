@@ -12,5 +12,15 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0xFFCF40"
+  "color": "0xFFCF40",
+  "extra_recipes": {
+    "container_output": {
+      "container": "minecraft:glass_bottle",
+      "container_count": 4,
+      "output": {
+        "item": "minecraft:honey_bottle",
+        "count": 4
+      }
+    }
+  }
 }

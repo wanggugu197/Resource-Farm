@@ -1,0 +1,39 @@
+{
+  "item": "minecraft:golden_apple",
+  "translate_key": "block.mymod.golden_apple_tree",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "tree_style": "oak",
+  "grower": "oak",
+  "ore_style": "gold",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xFFD54F",
+  "extra_recipes": {
+    "item_outputs": [
+      {
+        "item": "minecraft:gold_ingot",
+        "count": 1
+      },
+      {
+        "item": "minecraft:apple",
+        "count": 2
+      }
+    ],
+    "sapling_ingredients": [
+      "minecraft:gold_ingot",
+      "#minecraft:logs"
+    ],
+    "container_output": {
+      "container": "minecraft:bucket",
+      "container_count": 1,
+      "output": {
+        "item": "minecraft:water_bucket",
+        "count": 1
+      }
+    }
+  }
+}

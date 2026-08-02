@@ -11,5 +11,10 @@
   },
   "growth_frequency": 10,
   "light_level": 4,
-  "color": "0xC20900"
+  "color": "0xC20900",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:redstone_block", "count": 2 }
+    ]
+  }
 }

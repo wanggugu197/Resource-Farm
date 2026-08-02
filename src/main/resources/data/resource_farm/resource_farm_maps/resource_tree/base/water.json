@@ -11,5 +11,18 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0x5A82F3"
+  "color": "0x5A82F3",
+  "extra_recipes": {
+    "sapling_ingredients": [
+      "minecraft:water_bucket"
+    ],
+    "container_output": {
+      "container": "minecraft:bucket",
+      "container_count": 1,
+      "output": {
+        "item": "minecraft:water_bucket",
+        "count": 1
+      }
+    }
+  }
 }

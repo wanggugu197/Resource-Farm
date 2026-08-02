@@ -9,8 +9,8 @@
   "renderer": "crop",
   "seed": "forbidden_arcanus:yellow_orchid",
   "soils": [
-    "#agritechtwo:farmland_soils",
-    "#agritechtwo:dirt_soils"
+    "#resource_farm:farmland_soils",
+    "#resource_farm:dirt_soils"
   ],
   "output": [
     {

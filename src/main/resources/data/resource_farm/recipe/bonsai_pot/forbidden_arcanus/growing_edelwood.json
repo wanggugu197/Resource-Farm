@@ -8,7 +8,7 @@
   "type": "resource_farm:growth",
   "seed": "forbidden_arcanus:growing_edelwood",
   "soils": [
-    "#agritechtwo:tree_soils"
+    "#resource_farm:tree_soils"
   ],
   "output": [
     {

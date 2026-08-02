@@ -1,6 +1,5 @@
 package com.maple.resource_farm.mixin;
 
-import com.gto.registrylib.datagen.provider.RegistryLibRecipeProvider;
 import com.maple.resource_farm.ResourceFarm;
 import com.maple.resource_farm.common.inject.ResourceFarmDynamicInjections;
 import com.maple.resource_farm.common.manager.ResourceFarmComposTablesManager;
@@ -30,6 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -102,7 +102,7 @@ public abstract class ReloadableServerResourcesMixin {
         long step = System.currentTimeMillis();
 
         HolderLookup.Provider registries = ((RecipeManagerAccessor) this.getRecipeManager()).resource_farm$getRegistries();
-        ResourceFarmRecipesManager.recipeAddition(new RegistryLibRecipeProvider(null, registries,creatRecipeOutput()));
+        ResourceFarmRecipesManager.recipeAddition(resource_farm$creatRecipeOutput());
         ResourceFarm.LOGGER.info("配方对象生成完成，耗时 {}ms", System.currentTimeMillis() - step);
 
         ResourceFarmDynamicInjections.injectRecipes(this.getRecipeManager());
@@ -114,7 +114,8 @@ public abstract class ReloadableServerResourcesMixin {
         ResourceFarm.LOGGER.info("=== Resource Farm 晚期注入结束 ===");
     }
 
-    private static RecipeOutput creatRecipeOutput() {
+    @Unique
+    private static RecipeOutput resource_farm$creatRecipeOutput() {
         return new RecipeOutput() {
 
             @Override

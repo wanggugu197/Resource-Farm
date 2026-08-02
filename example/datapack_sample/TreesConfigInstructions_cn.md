@@ -54,6 +54,7 @@
 | `custom_place_block_tag` | 字符串 | — | 可种植的方块 Tag |
 | `light_level` | int | `0` | 发光 0–15（写入模型 light_emission） |
 | `color` | int 或字符串 | `0` | 染色，如 `0x9E7255`、`#9E7255` 或十进制 |
+| `extra_recipes` | 对象 | 额外配方：额外树物品、自定义树苗原料、容器配方，见示例 E |
 
 ### 示例 A：最简（仅物品）
 
@@ -142,6 +143,63 @@
 - `custom_place_block_tag` 适合允许一组方块承载树苗；如果只允许一个方块，用 `custom_place_block`。
 - `growth_frequency` 数值越大，随机刻成功越慢；`40` 大约是默认 `10` 的四分之一频率。
 - `tree_style` / `ore_style` 使用的是示例目录里的部分字段样式文件，见第 5、6 节。
+
+### 示例 E：额外配方 `extra_recipes`
+
+```json
+{
+  "item": "minecraft:golden_apple",
+  "translate_key": "block.mymod.golden_apple_tree",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "tree_style": "oak",
+  "grower": "oak",
+  "ore_style": "gold",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xFFD54F",
+  "extra_recipes": {
+    "item_outputs": [
+      {
+        "item": "minecraft:gold_ingot",
+        "count": 1
+      },
+      {
+        "item": "minecraft:apple",
+        "count": 2
+      }
+    ],
+    "sapling_ingredients": [
+      "minecraft:gold_ingot",
+      "#minecraft:logs"
+    ],
+    "container_output": {
+      "container": "minecraft:bucket",
+      "container_count": 1,
+      "output": {
+        "item": "minecraft:water_bucket",
+        "count": 1
+      }
+    }
+  }
+}
+```
+
+`extra_recipes` 整体可省略；下面的三个子字段也都可以单独省略。
+
+| 子字段 | 类型 | 说明 |
+|--------|------|------|
+| `item_outputs` | 数组 | 额外树物品配方列表。每项是 `{ "item": "<物品ID>", "count": N }`，会生成一条使用该树树脂和果实合成该物品的配方，单次输出 `count` 个 |
+| `sapling_ingredients` | 字符串数组 | 自定义树苗配方原料。普通条目写物品 ID；`#` 开头写**物品 Tag**，例如 `#minecraft:logs` |
+| `container_output` | 对象 | 带额外输入材料的配方：`container` 是额外输入物品，`container_count` 是所需数量（只允许 1–4），`output` 是最终输出物品/数量 |
+
+- `item_outputs` 与 `automatic_basic_recipe` 独立：即使基础自动配方关闭，额外物品配方仍会生成（受模组配置中树物品配方开关控制）。
+- `sapling_ingredients` 与 `automatic_basic_recipe` 也独立：只要列表非空，就会生成自定义树苗配方（受模组配置中树苗配方开关控制）。
+- `container_output` 的 `container` 是合成输入材料，不是返还的容器；例如 `bucket` 是输入，`water_bucket` 才是输出。
+- `container_count` 只允许 1–4，超出范围会在加载时报错。
 
 ### 预设组 `group` 与配置开关
 
@@ -389,6 +447,7 @@ src/main/resources/data/<你的modid>/resource_farm_maps/
 | 矿叠加样式示例 | [`tree_extra_type/star_ore.json`](datapack_sample/data/mymod/resource_farm_maps/tree_extra_type/star_ore.json) |
 | 最小矿叠加示例 | [`tree_extra_type/minimal_gold.json`](datapack_sample/data/mymod/resource_farm_maps/tree_extra_type/minimal_gold.json) |
 | 自定义种植 Tag 示例 | [`resource_tree/custom_soil_and_tag.json`](datapack_sample/data/mymod/resource_farm_maps/resource_tree/custom_soil_and_tag.json) |
+| 额外配方示例 | [`resource_tree/extra_recipes_demo.json`](datapack_sample/data/mymod/resource_farm_maps/resource_tree/extra_recipes_demo.json) |
 | 模组内置预设 | `src/main/resources/data/minecraft/resource_farm_maps/` |
 
 英文版：[TreesConfigInstructions_us.md](TreesConfigInstructions_us.md)

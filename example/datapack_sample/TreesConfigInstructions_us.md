@@ -54,6 +54,7 @@ Resource trees, wood base styles, and ore overlay styles are all defined with **
 | `custom_place_block_tag` | string | — | Plantable block tag |
 | `light_level` | int | `0` | Glow 0–15 (model `light_emission`) |
 | `color` | int or string | `0` | Tint: `0x9E7255`, `#9E7255`, or decimal |
+| `extra_recipes` | object | Extra recipes: extra tree items, custom sapling ingredients, and container recipes; see Example E |
 
 ### Example A: Minimal
 
@@ -141,6 +142,63 @@ Provide the translation key in lang files (built-in presets already register sev
 - Use `custom_place_block_tag` when a tree can be planted on a set of blocks; use `custom_place_block` for a single block.
 - Higher `growth_frequency` means slower random-tick growth. `40` is roughly one quarter of the default `10` rate.
 - `tree_style` / `ore_style` reference the partial style files in the sample pack; see sections 5 and 6.
+
+### Example E: Extra recipes `extra_recipes`
+
+```json
+{
+  "item": "minecraft:golden_apple",
+  "translate_key": "block.mymod.golden_apple_tree",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "tree_style": "oak",
+  "grower": "oak",
+  "ore_style": "gold",
+  "fertilize": {
+    "type": "default"
+  },
+  "growth_frequency": 10,
+  "light_level": 0,
+  "color": "0xFFD54F",
+  "extra_recipes": {
+    "item_outputs": [
+      {
+        "item": "minecraft:gold_ingot",
+        "count": 1
+      },
+      {
+        "item": "minecraft:apple",
+        "count": 2
+      }
+    ],
+    "sapling_ingredients": [
+      "minecraft:gold_ingot",
+      "#minecraft:logs"
+    ],
+    "container_output": {
+      "container": "minecraft:bucket",
+      "container_count": 1,
+      "output": {
+        "item": "minecraft:water_bucket",
+        "count": 1
+      }
+    }
+  }
+}
+```
+
+`extra_recipes` is optional, and each of the three child fields can be omitted independently.
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `item_outputs` | array | Extra tree item recipes. Each entry is `{ "item": "<item id>", "count": N }` and adds a recipe using this tree's resin and fruit to craft that item, outputting `count` per craft |
+| `sapling_ingredients` | string array | Custom sapling recipe inputs. Plain entries are item ids; a leading `#` denotes an **item tag** such as `#minecraft:logs` |
+| `container_output` | object | Recipe with an extra input item: `container` is the extra input, `container_count` is how many are required (1–4 only), and `output` is the final output item/count |
+
+- `item_outputs` is independent of `automatic_basic_recipe`: even if basic auto recipes are off, extra item recipes are still generated (subject to the mod's tree item recipe generation toggle).
+- `sapling_ingredients` is also independent: a non-empty list always adds a custom sapling recipe (subject to the mod's sapling recipe generation toggle).
+- In `container_output`, `container` is a crafting input, not a returned container; for example `bucket` is the input and `water_bucket` is the output.
+- `container_count` must be 1–4; out-of-range values fail during loading.
 
 ### `group` vs config toggles
 
@@ -383,6 +441,7 @@ Old config paths are **not** read anymore.
 | Ore overlay sample | [`tree_extra_type/star_ore.json`](datapack_sample/data/mymod/resource_farm_maps/tree_extra_type/star_ore.json) |
 | Minimal ore overlay sample | [`tree_extra_type/minimal_gold.json`](datapack_sample/data/mymod/resource_farm_maps/tree_extra_type/minimal_gold.json) |
 | Custom plantable tag sample | [`resource_tree/custom_soil_and_tag.json`](datapack_sample/data/mymod/resource_farm_maps/resource_tree/custom_soil_and_tag.json) |
+| Extra recipes sample | [`resource_tree/extra_recipes_demo.json`](datapack_sample/data/mymod/resource_farm_maps/resource_tree/extra_recipes_demo.json) |
 | Built-in presets | `src/main/resources/data/minecraft/resource_farm_maps/` |
 
 中文版：[TreesConfigInstructions_cn.md](TreesConfigInstructions_cn.md)

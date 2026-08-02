@@ -11,5 +11,18 @@
   },
   "growth_frequency": 10,
   "light_level": 15,
-  "color": "0xE46516"
+  "color": "0xE46516",
+  "extra_recipes": {
+    "sapling_ingredients": [
+      "minecraft:lava_bucket"
+    ],
+    "container_output": {
+      "container": "minecraft:bucket",
+      "container_count": 1,
+      "output": {
+        "item": "minecraft:lava_bucket",
+        "count": 1
+      }
+    }
+  }
 }

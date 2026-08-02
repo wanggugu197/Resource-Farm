@@ -11,5 +11,27 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0x9BFF3F"
+  "color": "0x9BFF3F",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:wheat", "count": 16 },
+      { "item": "minecraft:sugar_cane", "count": 16 },
+      { "item": "minecraft:potato", "count": 16 },
+      { "item": "minecraft:carrot", "count": 16 },
+      { "item": "minecraft:beetroot", "count": 16 },
+      { "item": "minecraft:cocoa_beans", "count": 6 },
+      { "item": "minecraft:melon", "count": 2 },
+      { "item": "minecraft:pumpkin", "count": 2 }
+    ],
+    "sapling_ingredients": [
+      "minecraft:wheat",
+      "minecraft:sugar_cane",
+      "minecraft:potato",
+      "minecraft:carrot",
+      "minecraft:beetroot",
+      "minecraft:cocoa_beans",
+      "minecraft:melon",
+      "minecraft:pumpkin"
+    ]
+  }
 }

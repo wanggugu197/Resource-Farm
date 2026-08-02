@@ -11,5 +11,35 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0xFF6C5E"
+  "color": "0xFF6C5E",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:egg", "count": 16 },
+      { "item": "minecraft:feather", "count": 16 },
+      { "item": "minecraft:chicken", "count": 16 },
+      { "item": "minecraft:porkchop", "count": 16 },
+      { "item": "minecraft:leather", "count": 16 },
+      { "item": "minecraft:beef", "count": 16 },
+      { "item": "minecraft:white_wool", "count": 16 },
+      { "item": "minecraft:mutton", "count": 16 }
+    ],
+    "sapling_ingredients": [
+      "minecraft:egg",
+      "minecraft:feather",
+      "minecraft:chicken",
+      "minecraft:porkchop",
+      "minecraft:leather",
+      "minecraft:beef",
+      "minecraft:white_wool",
+      "minecraft:mutton"
+    ],
+    "container_output": {
+      "container": "minecraft:bucket",
+      "container_count": 1,
+      "output": {
+        "item": "minecraft:milk_bucket",
+        "count": 1
+      }
+    }
+  }
 }

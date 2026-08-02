@@ -11,5 +11,11 @@
   },
   "growth_frequency": 10,
   "light_level": 1,
-  "color": "0xFFCBFF"
+  "color": "0xFFCBFF",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:budding_amethyst", "count": 1 },
+      { "item": "minecraft:amethyst_cluster", "count": 1 }
+    ]
+  }
 }

@@ -9,7 +9,7 @@
   "renderer": "crop",
   "seed": "occultism:datura_seeds",
   "soils": [
-    "#agritechtwo:farmland_soils"
+    "#resource_farm:farmland_soils"
   ],
   "output": [
     {

@@ -12,5 +12,13 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0x0E2128"
+  "color": "0x0E2128",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:sculk_vein", "count": 8 },
+      { "item": "minecraft:sculk_catalyst", "count": 1 },
+      { "item": "minecraft:sculk_shrieker", "count": 1 },
+      { "item": "minecraft:sculk_sensor", "count": 1 }
+    ]
+  }
 }

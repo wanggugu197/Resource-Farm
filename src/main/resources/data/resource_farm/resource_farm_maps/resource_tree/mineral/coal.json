@@ -11,5 +11,10 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0x413D43"
+  "color": "0x413D43",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:charcoal", "count": 1 }
+    ]
+  }
 }

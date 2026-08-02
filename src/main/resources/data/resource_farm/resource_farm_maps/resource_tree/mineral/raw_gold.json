@@ -11,5 +11,10 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0xFFFF58"
+  "color": "0xFFFF58",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:gold_block", "count": 1 }
+    ]
+  }
 }

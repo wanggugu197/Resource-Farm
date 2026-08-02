@@ -11,5 +11,10 @@
   },
   "growth_frequency": 10,
   "light_level": 0,
-  "color": "0xFFEFCA"
+  "color": "0xFFEFCA",
+  "extra_recipes": {
+    "item_outputs": [
+      { "item": "minecraft:iron_block", "count": 1 }
+    ]
+  }
 }

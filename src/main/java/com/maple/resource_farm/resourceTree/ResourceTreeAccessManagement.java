@@ -1,7 +1,5 @@
 package com.maple.resource_farm.resourceTree;
 
-import com.gto.registrylib.datagen.provider.RegistryLibRecipeProvider;
-import com.maple.resource_farm.config.ResourceFarmConfigHolder;
 import com.maple.resource_farm.resourceTree.builder.TreeBuilder;
 import com.maple.resource_farm.resourceTree.builder.TreeRecipe;
 import com.maple.resource_farm.resourceTree.data.ResourceTree;
@@ -32,14 +30,7 @@ public class ResourceTreeAccessManagement {
         }
     }
 
-    public static void registerTreeRecipe(RegistryLibRecipeProvider consumer) {
+    public static void registerTreeRecipe(RecipeOutput consumer) {
         TreeRecipe.init(consumer);
-        if (ResourceFarmConfigHolder.treeConfigHolder != null && ResourceFarmConfigHolder.treeConfigHolder.enablePresetTreeGroups) {
-            PresetResourceTreeConfigHolder.PresetTreeGenerationConfigs configs = ResourceFarmConfigHolder.treeConfigHolder.presetTreeGeneration;
-            if (configs.minecraftBase) TreesCommonRegister.baseSpecialRecipe(consumer);
-            if (configs.minecraftMineral) TreesCommonRegister.mineralSpecialRecipe(consumer);
-            if (configs.minecraftBiology) TreesCommonRegister.biologySpecialRecipe(consumer);
-            if (configs.minecraftAgriculture) TreesCommonRegister.agricultureSpecialRecipe(consumer);
-        }
     }
 }
