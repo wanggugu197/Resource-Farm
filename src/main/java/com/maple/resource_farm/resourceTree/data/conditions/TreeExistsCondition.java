@@ -6,15 +6,22 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.neoforged.neoforge.common.conditions.ICondition;
 
-public record TreeExistsCondition(String treeId) implements ICondition {
+import javax.annotation.Nullable;
 
+public record TreeExistsCondition(@Nullable String group, @Nullable String treeId) implements ICondition {
     public static final MapCodec<TreeExistsCondition> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-            Codec.STRING.fieldOf("tree_id").forGetter(TreeExistsCondition::treeId)
+            Codec.STRING.optionalFieldOf("group", null).forGetter(TreeExistsCondition::group),
+            Codec.STRING.optionalFieldOf("tree_id", null).forGetter(TreeExistsCondition::treeId)
     ).apply(inst, TreeExistsCondition::new));
 
     @Override
-    public boolean test(ICondition.IContext context) {
-        String targetId = treeId.endsWith("_tree") ? treeId : treeId + "_tree";
+    public boolean test(IContext context) {
+        if (treeId != null && !treeId.isBlank()) {
+            String id = treeId.endsWith("_tree") ? treeId : treeId + "_tree";
+            return ResourceTreeAccessManagement.ResourceTreeMap.containsKey(id);
+        }
+        if (group == null || group.isBlank()) return true;
+        String targetId = group.endsWith("_tree") ? group : group + "_tree";
         return ResourceTreeAccessManagement.ResourceTreeMap.containsKey(targetId);
     }
 

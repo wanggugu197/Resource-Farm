@@ -34,12 +34,4 @@ public class ResourceTreeAccessManagement {
         TreeRecipe.init(consumer);
     }
 
-    public static boolean hasTree(String treeId) {
-        if (treeId == null || treeId.isBlank()) return false;
-        return ResourceTreeMap.containsKey(treeId);
-    }
-
-    public static ResourceTree getTree(String treeId) {
-        return ResourceTreeMap.get(treeId);
-    }
 }
