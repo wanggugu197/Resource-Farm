@@ -17,7 +17,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.maple.resource_farm.common.manager.ResourceFarmTagManager.addMember;
+import static com.mapleutillib.api.dynamicdata.DynamicDataManager.addTagMember;
 
 /**
  * 资源树 Tag 成员收集。
@@ -67,48 +67,48 @@ public class TreeTagInsert {
             if (resourceTree == null) return;
 
             Identifier sapling = id(resourceTree.getSapling());
-            addMember(map, BLOCK_TAG_SAPLINGS, sapling);
-            addMember(map, BLOCK_TAG_RESOURCE_SAPLING, sapling);
+            addTagMember(map, BLOCK_TAG_SAPLINGS, sapling);
+            addTagMember(map, BLOCK_TAG_RESOURCE_SAPLING, sapling);
 
             Identifier leaves = id(resourceTree.getLeaves());
-            addMember(map, BLOCK_TAG_LEAVES, leaves);
-            addMember(map, BLOCK_TAG_RESOURCE_LEAVES, leaves);
-            addMember(map, BLOCK_TAG_MINEABLE_WITH_HOE, leaves);
+            addTagMember(map, BLOCK_TAG_LEAVES, leaves);
+            addTagMember(map, BLOCK_TAG_RESOURCE_LEAVES, leaves);
+            addTagMember(map, BLOCK_TAG_MINEABLE_WITH_HOE, leaves);
 
             Identifier log = id(resourceTree.getLog());
-            addMember(map, BLOCK_TAG_LOGS, log);
-            addMember(map, BLOCK_TAG_PREVENTS_NEARBY_LEAF_DECAY, log);
-            addMember(map, BLOCK_TAG_RESOURCE_LOG, log);
-            addMember(map, BLOCK_TAG_MINEABLE_WITH_AXE, log);
+            addTagMember(map, BLOCK_TAG_LOGS, log);
+            addTagMember(map, BLOCK_TAG_PREVENTS_NEARBY_LEAF_DECAY, log);
+            addTagMember(map, BLOCK_TAG_RESOURCE_LOG, log);
+            addTagMember(map, BLOCK_TAG_MINEABLE_WITH_AXE, log);
 
             if (STRIPPED_LOG_ENABLED) {
                 Identifier strippedLog = id(resourceTree.getStrippedLog());
-                addMember(map, BLOCK_TAG_LOGS, strippedLog);
-                addMember(map, BLOCK_TAG_PREVENTS_NEARBY_LEAF_DECAY, strippedLog);
-                addMember(map, BLOCK_TAG_STRIPPED_LOGS, strippedLog);
-                addMember(map, BLOCK_TAG_RESOURCE_LOG, strippedLog);
-                addMember(map, BLOCK_TAG_MINEABLE_WITH_AXE, strippedLog);
+                addTagMember(map, BLOCK_TAG_LOGS, strippedLog);
+                addTagMember(map, BLOCK_TAG_PREVENTS_NEARBY_LEAF_DECAY, strippedLog);
+                addTagMember(map, BLOCK_TAG_STRIPPED_LOGS, strippedLog);
+                addTagMember(map, BLOCK_TAG_RESOURCE_LOG, strippedLog);
+                addTagMember(map, BLOCK_TAG_MINEABLE_WITH_AXE, strippedLog);
             }
             if (WOOD_ENABLED) {
                 Identifier wood = id(resourceTree.getWood());
-                addMember(map, BLOCK_TAG_LOGS, wood);
-                addMember(map, BLOCK_TAG_PREVENTS_NEARBY_LEAF_DECAY, wood);
-                addMember(map, BLOCK_TAG_RESOURCE_LOG, wood);
-                addMember(map, BLOCK_TAG_MINEABLE_WITH_AXE, wood);
+                addTagMember(map, BLOCK_TAG_LOGS, wood);
+                addTagMember(map, BLOCK_TAG_PREVENTS_NEARBY_LEAF_DECAY, wood);
+                addTagMember(map, BLOCK_TAG_RESOURCE_LOG, wood);
+                addTagMember(map, BLOCK_TAG_MINEABLE_WITH_AXE, wood);
             }
             if (STRIPPED_WOOD_ENABLED) {
                 Identifier strippedWood = id(resourceTree.getStrippedWood());
-                addMember(map, BLOCK_TAG_LOGS, strippedWood);
-                addMember(map, BLOCK_TAG_PREVENTS_NEARBY_LEAF_DECAY, strippedWood);
-                addMember(map, BLOCK_TAG_STRIPPED_WOODS, strippedWood);
-                addMember(map, BLOCK_TAG_RESOURCE_LOG, strippedWood);
-                addMember(map, BLOCK_TAG_MINEABLE_WITH_AXE, strippedWood);
+                addTagMember(map, BLOCK_TAG_LOGS, strippedWood);
+                addTagMember(map, BLOCK_TAG_PREVENTS_NEARBY_LEAF_DECAY, strippedWood);
+                addTagMember(map, BLOCK_TAG_STRIPPED_WOODS, strippedWood);
+                addTagMember(map, BLOCK_TAG_RESOURCE_LOG, strippedWood);
+                addTagMember(map, BLOCK_TAG_MINEABLE_WITH_AXE, strippedWood);
             }
             if (PLANKS_ENABLED) {
                 Identifier planks = id(resourceTree.getPlanks());
-                addMember(map, BLOCK_TAG_PLANKS, planks);
-                addMember(map, BLOCK_TAG_RESOURCE_PLANKS, planks);
-                addMember(map, BLOCK_TAG_MINEABLE_WITH_AXE, planks);
+                addTagMember(map, BLOCK_TAG_PLANKS, planks);
+                addTagMember(map, BLOCK_TAG_RESOURCE_PLANKS, planks);
+                addTagMember(map, BLOCK_TAG_MINEABLE_WITH_AXE, planks);
             }
         });
         return map;
@@ -122,49 +122,49 @@ public class TreeTagInsert {
         final boolean PLANKS_ENABLED = ResourceFarmConfigHolder.treeConfigHolder.tree.blockGeneration.generatePlanks;
         final boolean CLUMP_ENABLED = ResourceFarmConfigHolder.treeConfigHolder.tree.blockGeneration.generateClump();
 
-        ResourceTreeAccessManagement.ResourceTreeMap.forEach((_, resourceTree) -> {
+        ResourceTreeAccessManagement.ResourceTreeMap.forEach((a, resourceTree) -> {
             if (resourceTree == null) return;
 
             // BlockItem 与方块同 id
             Identifier sapling = id(resourceTree.getSapling());
-            addMember(map, ITEM_TAG_SAPLINGS, sapling);
-            addMember(map, ITEM_TAG_RESOURCE_SAPLING, sapling);
+            addTagMember(map, ITEM_TAG_SAPLINGS, sapling);
+            addTagMember(map, ITEM_TAG_RESOURCE_SAPLING, sapling);
 
             Identifier leaves = id(resourceTree.getLeaves());
-            addMember(map, ITEM_TAG_LEAVES, leaves);
-            addMember(map, ITEM_TAG_RESOURCE_LEAVES, leaves);
+            addTagMember(map, ITEM_TAG_LEAVES, leaves);
+            addTagMember(map, ITEM_TAG_RESOURCE_LEAVES, leaves);
 
             Identifier log = id(resourceTree.getLog());
-            addMember(map, ITEM_TAG_LOGS_THAT_BURN, log);
-            addMember(map, ITEM_TAG_RESOURCE_LOG, log);
+            addTagMember(map, ITEM_TAG_LOGS_THAT_BURN, log);
+            addTagMember(map, ITEM_TAG_RESOURCE_LOG, log);
 
             if (STRIPPED_LOG_ENABLED) {
                 Identifier strippedLog = id(resourceTree.getStrippedLog());
-                addMember(map, ITEM_TAG_LOGS_THAT_BURN, strippedLog);
-                addMember(map, ITEM_TAG_STRIPPED_LOGS, strippedLog);
-                addMember(map, ITEM_TAG_RESOURCE_LOG, strippedLog);
+                addTagMember(map, ITEM_TAG_LOGS_THAT_BURN, strippedLog);
+                addTagMember(map, ITEM_TAG_STRIPPED_LOGS, strippedLog);
+                addTagMember(map, ITEM_TAG_RESOURCE_LOG, strippedLog);
             }
             if (WOOD_ENABLED) {
                 Identifier wood = id(resourceTree.getWood());
-                addMember(map, ITEM_TAG_LOGS_THAT_BURN, wood);
-                addMember(map, ITEM_TAG_RESOURCE_LOG, wood);
+                addTagMember(map, ITEM_TAG_LOGS_THAT_BURN, wood);
+                addTagMember(map, ITEM_TAG_RESOURCE_LOG, wood);
             }
             if (STRIPPED_WOOD_ENABLED) {
                 Identifier strippedWood = id(resourceTree.getStrippedWood());
-                addMember(map, ITEM_TAG_LOGS_THAT_BURN, strippedWood);
-                addMember(map, ITEM_TAG_STRIPPED_WOODS, strippedWood);
-                addMember(map, ITEM_TAG_RESOURCE_LOG, strippedWood);
+                addTagMember(map, ITEM_TAG_LOGS_THAT_BURN, strippedWood);
+                addTagMember(map, ITEM_TAG_STRIPPED_WOODS, strippedWood);
+                addTagMember(map, ITEM_TAG_RESOURCE_LOG, strippedWood);
             }
             if (PLANKS_ENABLED) {
                 Identifier planks = id(resourceTree.getPlanks());
-                addMember(map, ITEM_TAG_PLANKS, planks);
-                addMember(map, ITEM_TAG_RESOURCE_PLANKS, planks);
+                addTagMember(map, ITEM_TAG_PLANKS, planks);
+                addTagMember(map, ITEM_TAG_RESOURCE_PLANKS, planks);
             }
 
-            addMember(map, ITEM_TAG_RESOURCE_RESIN, id(resourceTree.getResin()));
-            addMember(map, ITEM_TAG_RESOURCE_FRUIT, id(resourceTree.getFruit()));
+            addTagMember(map, ITEM_TAG_RESOURCE_RESIN, id(resourceTree.getResin()));
+            addTagMember(map, ITEM_TAG_RESOURCE_FRUIT, id(resourceTree.getFruit()));
             if (CLUMP_ENABLED) {
-                addMember(map, ITEM_TAG_RESOURCE_CLUMP, id(resourceTree.getClump()));
+                addTagMember(map, ITEM_TAG_RESOURCE_CLUMP, id(resourceTree.getClump()));
             }
         });
         return map;

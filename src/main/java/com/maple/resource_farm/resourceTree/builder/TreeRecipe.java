@@ -12,6 +12,7 @@ import com.maple.resource_farm.resourceTree.data.dataMaps.ResourceTreeConfig;
 import com.maple.resource_farm.resourceTree.data.dataMaps.ResourceTreeFertilizeSettings;
 import com.maple.resource_farm.utils.RFArrayUtils;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.ItemTags;
@@ -34,7 +35,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.maple.resource_farm.common.manager.ResourceFarmRecipesManager.treeCommonRecipeCount;
+import static com.maple.resource_farm.resourceTree.ResourceTreeAccessManagement.addTreeRecipeCount;
+import static com.maple.resource_farm.resourceTree.ResourceTreeAccessManagement.getTreeRecipeCount;
 
 /**
  * 资源树配方生成。
@@ -99,7 +101,7 @@ public class TreeRecipe {
     private static final boolean GENERATE_TREE_ITEM_RECIPES = ResourceFarmConfigHolder.treeConfigHolder.tree.recipeGeneration.generateTreeItemRecipes;
     private static final boolean GENERATE_SAPLING_RECIPES = ResourceFarmConfigHolder.treeConfigHolder.tree.recipeGeneration.generateSaplingRecipes;
 
-    public static void init(RecipeOutput consumer) {
+    public static void init(RecipeOutput consumer, HolderLookup.Provider registries) {
         ResourceTreeAccessManagement.ResourceTreeMap.forEach((name, resourceTree) -> {
 
             ResourceTreeConfig config = resourceTree.getResourceTreeConfig();
@@ -236,7 +238,7 @@ public class TreeRecipe {
                         .define('A', resourceTree.getResin())
                         .define('B', resourceTree.getFruit())
                         .save();
-                treeCommonRecipeCount.addTo(treeId, 1);
+                addTreeRecipeCount(treeId, 1);
             }
 
             if (GENERATE_SAPLING_RECIPES) {
@@ -330,9 +332,9 @@ public class TreeRecipe {
         for (IntObjectHolder<Item> item : itemSet) {
             VanillaRecipeHelper.shaped(consumer, ResourceFarm.id(treeId + "_craft_tree_" + BuiltInRegistries.ITEM.getKey(item.obj()).getPath()))
                     .output(item.obj(), item.number())
-                    .pattern(RFArrayUtils.concatenateArrays(SHAPE[treeCommonRecipeCount.getInt(treeId)], breedingOutput))
+                    .pattern(RFArrayUtils.concatenateArrays(SHAPE[getTreeRecipeCount(treeId)], breedingOutput))
                     .save();
-            treeCommonRecipeCount.addTo(treeId, 1);
+            addTreeRecipeCount(treeId, 1);
         }
     }
 
