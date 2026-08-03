@@ -10,6 +10,7 @@ import com.maple.resource_farm.plantPot.ResourcePlantPotRegister;
 import com.maple.resource_farm.resourceTree.ResourceTreeAccessManagement;
 import com.maple.resource_farm.resourceTree.builder.TreeModelRenderer;
 
+import com.maple.resource_farm.resourceTree.data.conditions.ConditionRegister;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
 
@@ -32,6 +33,7 @@ public class CommonInit {
 
     public static void init(final IEventBus modBus) {
         NeoForge.EVENT_BUS.register(ResourceFarmDynamicDataEvents.class);
+        ConditionRegister.init(modBus);
         ResourceFarmCreativeModeTabs.init();
         ResourceFarmItemTags.init();
         ResourceFarmBlockTags.init();
