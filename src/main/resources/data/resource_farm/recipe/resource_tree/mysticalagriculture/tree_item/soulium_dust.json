@@ -1,0 +1,32 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "mysticalagriculture"
+    },
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "mysticalagriculture:soulium_dust"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateTreeItemRecipes"
+    }
+  ],
+  "input": "#minecraft:saplings",
+  "ingredients": [
+    "resource_farm:mysticalagriculture_soulium_dust_resin",
+    "resource_farm:mysticalagriculture_soulium_dust_fruit",
+    "resource_farm:mysticalagriculture_soulium_dust_resin",
+    "resource_farm:mysticalagriculture_soulium_dust_fruit",
+    "resource_farm:mysticalagriculture_soulium_dust_resin",
+    "resource_farm:mysticalagriculture_soulium_dust_fruit",
+    "resource_farm:mysticalagriculture_soulium_dust_resin",
+    "resource_farm:mysticalagriculture_soulium_dust_fruit"
+  ],
+  "result": {
+    "id": "mysticalagriculture:soulium_dust",
+    "count": 16
+  }
+}

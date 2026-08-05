@@ -1,0 +1,19 @@
+{
+  "group": "mystical_agriculture",
+  "item": "mysticalagriculture:soul_dust",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:birch",
+    "ore_style": "resource_farm:nether_quartz",
+    "grower": "resource_farm:birch",
+    "light_level": 0,
+    "color": "0X554034"
+  },
+  "fertilize": {
+    "main_item": "mysticalagriculture:soul_dust",
+    "main_chance": 0.8
+  },
+  "growth_frequency": 10,
+  "custom_place_block": "mysticalagriculture:soul_glass"
+}

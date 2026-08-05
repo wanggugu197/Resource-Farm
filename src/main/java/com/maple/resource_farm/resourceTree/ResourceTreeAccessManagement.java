@@ -67,13 +67,16 @@ public class ResourceTreeAccessManagement {
         treeCommonRecipeCount.clear();
     }
 
-    // ========================= 配方计数（TreeRecipe 使用） =========================
-
     public static void addTreeRecipeCount(String treeId, int amount) {
         treeCommonRecipeCount.addTo(treeId, amount);
     }
 
     public static int getTreeRecipeCount(String treeId) {
         return treeCommonRecipeCount.getInt(treeId);
+    }
+
+    public static ResourceTree getResourceTree(String treeId) {
+        String id = (treeId.endsWith("_tree") ? treeId : treeId + "_tree").toLowerCase().replace(":", "_");
+        return ResourceTreeMap.get(id);
     }
 }

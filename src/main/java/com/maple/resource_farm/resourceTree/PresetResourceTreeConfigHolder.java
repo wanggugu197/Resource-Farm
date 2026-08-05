@@ -151,5 +151,11 @@ public class PresetResourceTreeConfigHolder {
                 "MC原版 农业？ MC original version Agriculture? Default: true"
         })
         public boolean minecraftAgriculture = true;
+
+        @Configurable
+        @Configurable.Comment({
+                "神秘农业联动？ Mystical Agriculture Linkage? Default: true"
+        })
+        public boolean mysticalAgriculture = true;
     }
 }

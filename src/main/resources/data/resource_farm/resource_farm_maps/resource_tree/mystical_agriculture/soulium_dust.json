@@ -1,0 +1,19 @@
+{
+  "group": "mystical_agriculture",
+  "item": "mysticalagriculture:soulium_dust",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:birch",
+    "ore_style": "resource_farm:gold",
+    "grower": "resource_farm:birch",
+    "light_level": 0,
+    "color": "0X4A2D1F"
+  },
+  "fertilize": {
+    "main_item": "mysticalagriculture:soulium_dust",
+    "main_chance": 0.8
+  },
+  "growth_frequency": 10,
+  "custom_place_block": "mysticalagriculture:soulium_block"
+}

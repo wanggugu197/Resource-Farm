@@ -234,6 +234,7 @@ public final class ResourceFarmMaps {
             case "mineral" -> c.minecraftMineral;
             case "biology" -> c.minecraftBiology;
             case "agriculture" -> c.minecraftAgriculture;
+            case "mystical_agriculture" -> c.mysticalAgriculture;
             default -> true;
         };
     }

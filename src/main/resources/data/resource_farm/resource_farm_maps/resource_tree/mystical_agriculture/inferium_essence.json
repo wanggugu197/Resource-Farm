@@ -1,0 +1,19 @@
+{
+  "group": "mystical_agriculture",
+  "item": "mysticalagriculture:inferium_essence",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:spruce",
+    "ore_style": "resource_farm:lapis",
+    "grower": "resource_farm:spruce",
+    "light_level": 2,
+    "color": "0X5E7100"
+  },
+  "fertilize": {
+    "main_item": "mysticalagriculture:inferium_essence",
+    "main_chance": 0.8
+  },
+  "growth_frequency": 10,
+  "custom_place_block": "mysticalagriculture:inferium_block"
+}

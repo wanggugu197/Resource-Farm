@@ -1,0 +1,19 @@
+{
+  "group": "mystical_agriculture",
+  "item": "mysticalagriculture:cognizant_dust",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:cherry",
+    "ore_style": "resource_farm:crack",
+    "grower": "resource_farm:cherry",
+    "light_level": 15,
+    "color": "0XB06600"
+  },
+  "fertilize": {
+    "main_item": "mysticalagriculture:cognizant_dust",
+    "main_chance": 0.8
+  },
+  "growth_frequency": 50,
+  "custom_place_block": "mysticalagriculture:awakened_supremium_block"
+}

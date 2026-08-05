@@ -1,0 +1,31 @@
+{
+  "type": "mysticalagriculture:infusion",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "mysticalagriculture"
+    },
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "mysticalagriculture:prosperity_shard"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
+    }
+  ],
+  "input": "#minecraft:saplings",
+  "ingredients": [
+    "mysticalagriculture:prosperity_block",
+    "mysticalagriculture:prosperity_block",
+    "mysticalagriculture:prosperity_block",
+    "mysticalagriculture:prosperity_block",
+    "mysticalagriculture:prosperity_block",
+    "mysticalagriculture:prosperity_block",
+    "mysticalagriculture:prosperity_block",
+    "mysticalagriculture:prosperity_block"
+  ],
+  "result": {
+    "id": "resource_farm:mysticalagriculture_prosperity_shard_sapling"
+  }
+}

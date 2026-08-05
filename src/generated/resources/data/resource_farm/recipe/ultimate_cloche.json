@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:config",
+      "config_id": "dev.enableBonsaiPot"
+    }
+  ],
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {

@@ -1,0 +1,19 @@
+{
+  "group": "mystical_agriculture",
+  "item": "mysticalagriculture:prosperity_shard",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:dark_oak",
+    "ore_style": "resource_farm:diamond",
+    "grower": "resource_farm:dark_oak",
+    "light_level": 0,
+    "color": "0X8FB0B0"
+  },
+  "fertilize": {
+    "main_item": "mysticalagriculture:prosperity_shard",
+    "main_chance": 0.8
+  },
+  "growth_frequency": 10,
+  "custom_place_block": "mysticalagriculture:prosperity_block"
+}

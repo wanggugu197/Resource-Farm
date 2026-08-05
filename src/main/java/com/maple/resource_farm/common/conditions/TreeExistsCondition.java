@@ -19,7 +19,7 @@ public record TreeExistsCondition(@Nullable String treeId) implements ICondition
     @Override
     public boolean test(@NonNull IContext context) {
         if (treeId == null || treeId.isBlank()) return false;
-        String id = treeId.endsWith("_tree") ? treeId : treeId + "_tree";
+        String id = (treeId.endsWith("_tree") ? treeId : treeId + "_tree").toLowerCase().replace(":", "_");
         return ResourceTreeAccessManagement.ResourceTreeMap.containsKey(id);
     }
 

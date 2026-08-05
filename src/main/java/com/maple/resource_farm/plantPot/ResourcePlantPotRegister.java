@@ -1,6 +1,7 @@
 package com.maple.resource_farm.plantPot;
 
 import com.maple.resource_farm.ResourceFarm;
+import com.maple.resource_farm.common.conditions.ConfigCondition;
 import com.maple.resource_farm.config.ResourceFarmConfigHolder;
 import com.maple.resource_farm.plantPot.block.*;
 import com.maple.resource_farm.plantPot.datamap.FertilizerData;
@@ -21,6 +22,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 
+import com.gto.registrylib.datagen.ProviderType;
 import com.gto.registrylib.tooltip.SubNode;
 import com.gto.registrylib.util.entry.BlockEntityTypeEntry;
 import com.gto.registrylib.util.entry.BlockEntry;
@@ -149,12 +151,14 @@ public final class ResourcePlantPotRegister {
     // ============================================================
     private static void registerRecipes() {
         REGISTRY.addRecipeData(prov -> {
-            VanillaRecipeHelper.shaped(prov, ResourceFarm.id(BONSAI_POT.getRegisteredName()))
+            VanillaRecipeHelper.shaped(prov.withConditions(new ConfigCondition("dev.enableBonsaiPot")),
+                    ResourceFarm.id(BONSAI_POT.getRegisteredName()))
                     .output(BONSAI_POT)
                     .pattern("   ", "A A", "AAA")
                     .define('A', Items.BRICK)
                     .save();
-            VanillaRecipeHelper.shaped(prov, ResourceFarm.id(HOPPING_BONSAI_POT.getRegisteredName()))
+            VanillaRecipeHelper.shaped(prov.withConditions(new ConfigCondition("dev.enableBonsaiPot")),
+                    ResourceFarm.id(HOPPING_BONSAI_POT.getRegisteredName()))
                     .output(HOPPING_BONSAI_POT)
                     .pattern("   ", "ABA", "DCD")
                     .define('A', Items.IRON_INGOT)
@@ -163,26 +167,30 @@ public final class ResourcePlantPotRegister {
                     .define('D', Items.BARREL)
                     .save();
 
-            VanillaRecipeHelper.shaped(prov, ResourceFarm.id(GLASS_CLOCHE.getRegisteredName()))
+            VanillaRecipeHelper.shaped(prov.withConditions(new ConfigCondition("dev.enableBonsaiPot")),
+                    ResourceFarm.id(GLASS_CLOCHE.getRegisteredName()))
                     .output(GLASS_CLOCHE)
                     .pattern("AAA", "A A", "ABA")
                     .define('A', "#c:glass_panes")
                     .define('B', "#wooden_buttons")
                     .save();
-            VanillaRecipeHelper.shaped(prov, ResourceFarm.id(ADVANCED_CLOCHE.getRegisteredName()))
+            VanillaRecipeHelper.shaped(prov.withConditions(new ConfigCondition("dev.enableBonsaiPot")),
+                    ResourceFarm.id(ADVANCED_CLOCHE.getRegisteredName()))
                     .output(ADVANCED_CLOCHE)
                     .pattern("BBB", "BAB", "BBB")
                     .define('A', GLASS_CLOCHE)
                     .define('B', Items.COPPER_BLOCK)
                     .save();
-            VanillaRecipeHelper.shaped(prov, ResourceFarm.id(ELITE_CLOCHE.getRegisteredName()))
+            VanillaRecipeHelper.shaped(prov.withConditions(new ConfigCondition("dev.enableBonsaiPot")),
+                    ResourceFarm.id(ELITE_CLOCHE.getRegisteredName()))
                     .output(ELITE_CLOCHE)
                     .pattern("BBB", "CAC", "BBB")
                     .define('A', ADVANCED_CLOCHE)
                     .define('B', Items.DIAMOND_BLOCK)
                     .define('C', Items.ENDER_EYE)
                     .save();
-            VanillaRecipeHelper.shaped(prov, ResourceFarm.id(ULTIMATE_CLOCHE.getRegisteredName()))
+            VanillaRecipeHelper.shaped(prov.withConditions(new ConfigCondition("dev.enableBonsaiPot")),
+                    ResourceFarm.id(ULTIMATE_CLOCHE.getRegisteredName()))
                     .output(ULTIMATE_CLOCHE)
                     .pattern("BCB", "EAE", "BDB")
                     .define('A', ELITE_CLOCHE)

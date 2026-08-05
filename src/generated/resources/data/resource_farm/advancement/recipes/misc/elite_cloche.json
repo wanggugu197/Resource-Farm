@@ -1,4 +1,10 @@
 {
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:config",
+      "config_id": "dev.enableBonsaiPot"
+    }
+  ],
   "parent": "minecraft:recipes/root",
   "criteria": {
     "has_the_recipe": {
