@@ -3,19 +3,27 @@
   "item": "minecraft:amethyst_shard",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:dark_oak",
-  "grower": "resource_farm:dark_oak",
-  "ore_style": "resource_farm:emerald",
+  "style": {
+    "tree_style": "resource_farm:dark_oak",
+    "ore_style": "resource_farm:emerald",
+    "grower": "resource_farm:dark_oak",
+    "light_level": 1,
+    "color": "0xFFCBFF"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 1,
-  "color": "0xFFCBFF",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:budding_amethyst", "count": 1 },
-      { "item": "minecraft:amethyst_cluster", "count": 1 }
+      {
+        "item": "minecraft:budding_amethyst",
+        "count": 1
+      },
+      {
+        "item": "minecraft:amethyst_cluster",
+        "count": 1
+      }
     ]
   }
 }

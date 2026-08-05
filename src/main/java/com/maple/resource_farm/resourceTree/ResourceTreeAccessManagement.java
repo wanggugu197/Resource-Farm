@@ -76,5 +76,4 @@ public class ResourceTreeAccessManagement {
     public static int getTreeRecipeCount(String treeId) {
         return treeCommonRecipeCount.getInt(treeId);
     }
-
 }

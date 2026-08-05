@@ -80,6 +80,21 @@ public record ResourceTreeConfig(
             Codec.INT,
             Codec.STRING.xmap(FormattingUtil::parseColorString, i -> String.format("0x%06X", i & 0xFFFFFF)));
 
+    private record StyleJson(
+                             Identifier treeStyle,
+                             Identifier oreStyle,
+                             Identifier grower,
+                             int lightLevel,
+                             int color) {
+
+        private static final Codec<StyleJson> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                STYLE_ID_CODEC.fieldOf("tree_style").forGetter(StyleJson::treeStyle),
+                STYLE_ID_CODEC.fieldOf("ore_style").forGetter(StyleJson::oreStyle),
+                STYLE_ID_CODEC.fieldOf("grower").forGetter(StyleJson::grower),
+                Codec.INT.optionalFieldOf("light_level", 0).forGetter(StyleJson::lightLevel),
+                COLOR_CODEC.optionalFieldOf("color", 0).forGetter(StyleJson::color)).apply(instance, StyleJson::new));
+    }
+
     /**
      * 数据包字段形态（仅解码用）
      */
@@ -89,15 +104,11 @@ public record ResourceTreeConfig(
                                 Optional<String> translateKey,
                                 boolean automaticBasicRecipe,
                                 int productOutput,
-                                Identifier treeStyle,
-                                Identifier oreStyle,
+                                StyleJson style,
                                 ResourceTreeFertilizeSettings fertilize,
                                 int growthFrequency,
                                 Optional<String> customPlaceBlock,
                                 Optional<String> customPlaceBlockTag,
-                                int lightLevel,
-                                int color,
-                                Identifier grower,
                                 Optional<ExtraRecipes> extraRecipes) {
 
         static final Codec<DatapackJson> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -106,16 +117,12 @@ public record ResourceTreeConfig(
                 Codec.STRING.optionalFieldOf("translate_key").forGetter(DatapackJson::translateKey),
                 Codec.BOOL.optionalFieldOf("automatic_basic_recipe", true).forGetter(DatapackJson::automaticBasicRecipe),
                 Codec.INT.optionalFieldOf("product_output", 1).forGetter(DatapackJson::productOutput),
-                STYLE_ID_CODEC.optionalFieldOf("tree_style", RLUtils.parse("oak")).forGetter(DatapackJson::treeStyle),
-                STYLE_ID_CODEC.optionalFieldOf("ore_style", RLUtils.parse("iron")).forGetter(DatapackJson::oreStyle),
+                StyleJson.CODEC.fieldOf("style").forGetter(DatapackJson::style),
                 ResourceTreeFertilizeSettings.CODEC.optionalFieldOf("fertilize", ResourceTreeFertilizeSettings.DEFAULT)
                         .forGetter(DatapackJson::fertilize),
                 Codec.INT.optionalFieldOf("growth_frequency", 10).forGetter(DatapackJson::growthFrequency),
                 Codec.STRING.optionalFieldOf("custom_place_block").forGetter(DatapackJson::customPlaceBlock),
                 Codec.STRING.optionalFieldOf("custom_place_block_tag").forGetter(DatapackJson::customPlaceBlockTag),
-                Codec.INT.optionalFieldOf("light_level", 0).forGetter(DatapackJson::lightLevel),
-                COLOR_CODEC.optionalFieldOf("color", 0).forGetter(DatapackJson::color),
-                STYLE_ID_CODEC.optionalFieldOf("grower", RLUtils.parse("oak")).forGetter(DatapackJson::grower),
                 ExtraRecipes.CODEC.optionalFieldOf("extra_recipes").forGetter(DatapackJson::extraRecipes)).apply(instance, DatapackJson::new));
 
         @Nullable
@@ -165,17 +172,17 @@ public record ResourceTreeConfig(
                     translateKey.orElse(null),
                     automaticBasicRecipe,
                     productOutput,
-                    ResourceFarmMaps.getBaseType(treeStyle),
-                    ResourceFarmMaps.getExtraType(oreStyle),
+                    ResourceFarmMaps.getBaseType(style.treeStyle()),
+                    ResourceFarmMaps.getExtraType(style.oreStyle()),
                     fertilize != null ? fertilize : ResourceTreeFertilizeSettings.DEFAULT,
                     growthFrequency,
                     Lazy.of(() -> customPlaceBlock.filter(s -> !s.isBlank())
                             .map(RegistriesUtils::getBlock)
                             .orElse(Blocks.BARRIER)),
                     placeTag,
-                    lightLevel,
-                    color,
-                    grower,
+                    style.lightLevel(),
+                    style.color(),
+                    style.grower(),
                     extraOutputs,
                     lazySapling,
                     container);

@@ -4,13 +4,15 @@
   "translate_key": "entity.minecraft.wither_skeleton",
   "automatic_basic_recipe": true,
   "product_output": 1,
-  "tree_style": "resource_farm:acacia",
-  "grower": "resource_farm:acacia",
-  "ore_style": "resource_farm:gold",
+  "style": {
+    "tree_style": "resource_farm:acacia",
+    "ore_style": "resource_farm:gold",
+    "grower": "resource_farm:acacia",
+    "light_level": 0,
+    "color": "0x3F3F3F"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0x3F3F3F"
+  "growth_frequency": 10
 }

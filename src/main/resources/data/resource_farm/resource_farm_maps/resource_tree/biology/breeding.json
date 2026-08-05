@@ -3,25 +3,51 @@
   "translate_key": "resource_farm.resource_tree.breeding",
   "automatic_basic_recipe": false,
   "product_output": 1,
-  "tree_style": "resource_farm:dark_oak",
-  "grower": "resource_farm:dark_oak",
-  "ore_style": "resource_farm:iron",
+  "style": {
+    "tree_style": "resource_farm:dark_oak",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:dark_oak",
+    "light_level": 0,
+    "color": "0xFF6C5E"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xFF6C5E",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:egg", "count": 16 },
-      { "item": "minecraft:feather", "count": 16 },
-      { "item": "minecraft:chicken", "count": 16 },
-      { "item": "minecraft:porkchop", "count": 16 },
-      { "item": "minecraft:leather", "count": 16 },
-      { "item": "minecraft:beef", "count": 16 },
-      { "item": "minecraft:white_wool", "count": 16 },
-      { "item": "minecraft:mutton", "count": 16 }
+      {
+        "item": "minecraft:egg",
+        "count": 16
+      },
+      {
+        "item": "minecraft:feather",
+        "count": 16
+      },
+      {
+        "item": "minecraft:chicken",
+        "count": 16
+      },
+      {
+        "item": "minecraft:porkchop",
+        "count": 16
+      },
+      {
+        "item": "minecraft:leather",
+        "count": 16
+      },
+      {
+        "item": "minecraft:beef",
+        "count": 16
+      },
+      {
+        "item": "minecraft:white_wool",
+        "count": 16
+      },
+      {
+        "item": "minecraft:mutton",
+        "count": 16
+      }
     ],
     "sapling_ingredients": [
       "minecraft:egg",

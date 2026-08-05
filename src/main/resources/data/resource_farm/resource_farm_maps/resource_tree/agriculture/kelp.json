@@ -3,13 +3,15 @@
   "item": "minecraft:kelp",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:spruce",
-  "grower": "resource_farm:spruce",
-  "ore_style": "resource_farm:diamond",
+  "style": {
+    "tree_style": "resource_farm:spruce",
+    "ore_style": "resource_farm:diamond",
+    "grower": "resource_farm:spruce",
+    "light_level": 0,
+    "color": "0x9DE648"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0x9DE648"
+  "growth_frequency": 10
 }

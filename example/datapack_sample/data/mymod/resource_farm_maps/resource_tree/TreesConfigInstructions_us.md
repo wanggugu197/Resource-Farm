@@ -45,38 +45,50 @@ Resource trees, wood base styles, and ore overlay styles are all defined with **
 | `group` | string | none | Preset group: `base` / `mineral` / `biology` / `agriculture`. Missing/other = **always load** (addons) |
 | `automatic_basic_recipe` | bool | `true` | Auto basic product / sapling recipes |
 | `product_output` | int | `1` | Basic craft output count |
-| `tree_style` | string | `oak` | Base style id (`oak` → `minecraft:oak`) |
-| `ore_style` | string | `iron` | Ore overlay style id |
-| `grower` | string | `oak` | Grower id; controls which vanilla/custom configured feature is used |
+| `style` | object | required | Visual/growth field group (`tree_style`, `ore_style`, `grower`, `light_level`, `color`); see the table below |
 | `fertilize` | object | bone meal default | Fertilizer settings (below) |
 | `growth_frequency` | int | `10` | ~1/N chance per random tick |
 | `custom_place_block` | string | — | Plantable block id |
 | `custom_place_block_tag` | string | — | Plantable block tag |
+| `extra_recipes` | object | Extra recipes: extra tree items, custom sapling ingredients, and container recipes; see Example E |
+
+`style` sub-fields:
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `tree_style` | string | required | Base style id (`oak` → `minecraft:oak`) |
+| `ore_style` | string | required | Ore overlay style id |
+| `grower` | string | required | Grower id; controls which vanilla/custom configured feature is used |
 | `light_level` | int | `0` | Glow 0–15 (model `light_emission`) |
 | `color` | int or string | `0` | Tint: `0x9E7255`, `#9E7255`, or decimal |
-| `extra_recipes` | object | Extra recipes: extra tree items, custom sapling ingredients, and container recipes; see Example E |
 
 ### Example A: Minimal
 
 ```json
 {
   "item": "minecraft:paper",
-  "color": "0xF5F5DC"
+  "style": {
+    "tree_style": "oak",
+    "ore_style": "iron",
+    "grower": "oak",
+    "color": "0xF5F5DC"
+  }
 }
 ```
 
-This registers `paper_tree`. Omitted fields resolve to:
+This registers `paper_tree`. Fields not written inside `style` resolve to:
 
 | Field | Runtime value |
 |-------|---------------|
-| `tree_style` | `oak` |
-| `ore_style` | `iron` |
-| `grower` | `oak` |
+| `style.tree_style` | required (example `oak`) |
+| `style.ore_style` | required (example `iron`) |
+| `style.grower` | required (example `oak`) |
+| `style.light_level` | `0` |
+| `style.color` | `0` |
 | `fertilize` | bone meal, main/secondary chance `0.35` |
 | `automatic_basic_recipe` | `true` |
 | `product_output` | `1` |
 | `growth_frequency` | `10` |
-| `light_level` | `0` |
 
 Use this first to confirm loading works, then add visuals, fertilizer, placement rules, and recipes.
 
@@ -88,17 +100,19 @@ Use this first to confirm loading works, then add visuals, fertilizer, placement
   "translate_key": "block.resource_farm.nether_star_tree",
   "automatic_basic_recipe": true,
   "product_output": 1,
-  "tree_style": "oak",
-  "ore_style": "emerald",
-  "grower": "oak",
+  "style": {
+    "tree_style": "oak",
+    "ore_style": "emerald",
+    "grower": "oak",
+    "light_level": 12,
+    "color": "0xFFFFFF"
+  },
   "fertilize": {
     "main_item": "minecraft:blaze_powder",
     "main_chance": 0.3
   },
   "growth_frequency": 100,
-  "custom_place_block": "minecraft:beacon",
-  "light_level": 12,
-  "color": "0xFFFFFF"
+  "custom_place_block": "minecraft:beacon"
 }
 ```
 
@@ -109,9 +123,12 @@ Use this first to confirm loading works, then add visuals, fertilizer, placement
   "group": "base",
   "translate_key": "resource_farm.resource_tree.wood",
   "automatic_basic_recipe": false,
-  "tree_style": "dark_oak",
-  "ore_style": "nether_quartz",
-  "color": "0xB08F55"
+  "style": {
+    "tree_style": "dark_oak",
+    "ore_style": "nether_quartz",
+    "grower": "dark_oak",
+    "color": "0xB08F55"
+  }
 }
 ```
 
@@ -124,8 +141,13 @@ Provide the translation key in lang files (built-in presets already register sev
   "item": "minecraft:amethyst_shard",
   "translate_key": "block.mymod.amethyst_shard_tree",
   "product_output": 4,
-  "tree_style": "mymod:minimal_starwood",
-  "ore_style": "mymod:minimal_gold",
+  "style": {
+    "tree_style": "mymod:minimal_starwood",
+    "ore_style": "mymod:minimal_gold",
+    "grower": "oak",
+    "light_level": 6,
+    "color": "#B985FF"
+  },
   "fertilize": {
     "main_item": "minecraft:glowstone_dust",
     "main_chance": 0.2,
@@ -133,15 +155,13 @@ Provide the translation key in lang files (built-in presets already register sev
     "secondary_chance": 0.05
   },
   "growth_frequency": 40,
-  "custom_place_block_tag": "minecraft:crystal_sound_blocks",
-  "light_level": 6,
-  "color": "#B985FF"
+  "custom_place_block_tag": "minecraft:crystal_sound_blocks"
 }
 ```
 
 - Use `custom_place_block_tag` when a tree can be planted on a set of blocks; use `custom_place_block` for a single block.
 - Higher `growth_frequency` means slower random-tick growth. `40` is roughly one quarter of the default `10` rate.
-- `tree_style` / `ore_style` reference the partial style files in the sample pack; see sections 5 and 6.
+- `style.tree_style` / `style.ore_style` reference the partial style files in the sample pack; see sections 5 and 6.
 
 ### Example E: Extra recipes `extra_recipes`
 
@@ -151,15 +171,17 @@ Provide the translation key in lang files (built-in presets already register sev
   "translate_key": "block.mymod.golden_apple_tree",
   "automatic_basic_recipe": true,
   "product_output": 1,
-  "tree_style": "oak",
-  "grower": "oak",
-  "ore_style": "gold",
+  "style": {
+    "tree_style": "oak",
+    "ore_style": "gold",
+    "grower": "oak",
+    "light_level": 0,
+    "color": "0xFFD54F"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xFFD54F",
   "extra_recipes": {
     "item_outputs": [
       {
@@ -279,7 +301,7 @@ Id rules:
 ## 5. Wood base style `tree_base_type`
 
 **Path:** `data/<namespace>/resource_farm_maps/tree_base_type/<path>.json`  
-**Use in trees:** `"tree_style": "oak"` or `"mymod:custom_wood"`
+**Use in trees:** inside `style`, `"tree_style": "oak"` or `"mymod:custom_wood"`
 
 Built-in (`minecraft:`): `oak`, `dark_oak`, `birch`, `spruce`, `jungle`, `acacia`, `cherry`, `mangrove`, `pale_oak`.
 
@@ -326,7 +348,7 @@ Structure (nested):
 
 - `models.*` — base block models  
 - `overlays.*` — tint / item layer textures  
-- Invalid `tree_style` falls back to default oak  
+- Invalid `style.tree_style` falls back to default oak  
 - `type`, `models`, `overlays`, `translate_keys`, and their child fields can be omitted. Missing values fall back to oak, built-in Resource Farm textures, and default translation keys.
 
 Copy from: `src/main/resources/data/minecraft/resource_farm_maps/tree_base_type/`.
@@ -354,7 +376,7 @@ This only changes logs, horizontal logs, planks, and the leaves overlay. Everyth
 See [`datapack_sample/data/mymod/resource_farm_maps/tree_base_type/starwood.json`](datapack_sample/data/mymod/resource_farm_maps/tree_base_type/starwood.json):
 
 - File → style id **`mymod:starwood`**
-- Reference in a tree: `"tree_style": "mymod:starwood"`
+- Reference in a tree `style`: `"tree_style": "mymod:starwood"`
 - Demo tree: [`nether_star_themed.json`](datapack_sample/data/mymod/resource_farm_maps/resource_tree/nether_star_themed.json) (also uses custom `mymod:star_ore`)
 
 Easiest workflow: copy built-in `oak.json` / `dark_oak.json`, then only change `models` paths and `type`.
@@ -364,7 +386,7 @@ Easiest workflow: copy built-in `oak.json` / `dark_oak.json`, then only change `
 ## 6. Ore overlay style `tree_extra_type`
 
 **Path:** `data/<namespace>/resource_farm_maps/tree_extra_type/<path>.json`  
-**Use:** `"ore_style": "iron"` or `"mymod:my_ore"`
+**Use:** inside `style`, `"ore_style": "iron"` or `"mymod:my_ore"`
 
 ```json
 {
@@ -406,8 +428,8 @@ src/main/resources/data/<yourmodid>/resource_farm_maps/
 ```
 
 2. Prefer **no** `group` (or a custom group name) so player preset toggles do not skip your trees.  
-3. Reuse built-in styles: `"tree_style": "oak"`, `"ore_style": "diamond"`.  
-4. For new looks, add style JSON first, then reference `"tree_style": "mymod:my_wood"`.  
+3. Reuse built-in styles inside `style`: `"tree_style": "oak"`, `"ore_style": "diamond"`.  
+4. For new looks, add style JSON first, then reference it inside `style`: `"tree_style": "mymod:my_wood"`.  
 5. Ensure `data/` is packaged into the jar. Check logs:
 
 ```text
@@ -425,6 +447,7 @@ src/main/resources/data/<yourmodid>/resource_farm_maps/
 | `resource_tree_remove_configs.json` | `resource_tree_remove/*.json` |
 | camelCase `treeStyle` / `colors` | snake_case `tree_style` / `color` |
 | `fertilizeSetting` | `fertilize` (supports `type`) |
+| Flat `tree_style` / `ore_style` / `grower` / `light_level` / `color` | Grouped under `style` (e.g. `style.tree_style`) |
 | One JSON array | **One file per tree** |
 
 Old config paths are **not** read anymore.

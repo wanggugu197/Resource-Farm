@@ -4,21 +4,35 @@
   "translate_key": "resource_farm.resource_tree.sculk",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:acacia",
-  "grower": "resource_farm:acacia",
-  "ore_style": "resource_farm:lapis",
+  "style": {
+    "tree_style": "resource_farm:acacia",
+    "ore_style": "resource_farm:lapis",
+    "grower": "resource_farm:acacia",
+    "light_level": 0,
+    "color": "0x0E2128"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0x0E2128",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:sculk_vein", "count": 8 },
-      { "item": "minecraft:sculk_catalyst", "count": 1 },
-      { "item": "minecraft:sculk_shrieker", "count": 1 },
-      { "item": "minecraft:sculk_sensor", "count": 1 }
+      {
+        "item": "minecraft:sculk_vein",
+        "count": 8
+      },
+      {
+        "item": "minecraft:sculk_catalyst",
+        "count": 1
+      },
+      {
+        "item": "minecraft:sculk_shrieker",
+        "count": 1
+      },
+      {
+        "item": "minecraft:sculk_sensor",
+        "count": 1
+      }
     ]
   }
 }

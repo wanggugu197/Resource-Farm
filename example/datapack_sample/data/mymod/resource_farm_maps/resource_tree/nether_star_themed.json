@@ -3,9 +3,13 @@
   "translate_key": "block.mymod.nether_star_tree",
   "automatic_basic_recipe": true,
   "product_output": 1,
-  "tree_style": "mymod:starwood",
-  "grower": "oak",
-  "ore_style": "mymod:star_ore",
+  "style": {
+    "tree_style": "mymod:starwood",
+    "ore_style": "mymod:star_ore",
+    "grower": "oak",
+    "light_level": 12,
+    "color": "0xFFFFFF"
+  },
   "fertilize": {
     "main_item": "minecraft:blaze_powder",
     "main_chance": 0.3,
@@ -13,7 +17,5 @@
     "secondary_chance": 0.1
   },
   "growth_frequency": 100,
-  "custom_place_block": "minecraft:beacon",
-  "light_level": 12,
-  "color": "0xFFFFFF"
+  "custom_place_block": "minecraft:beacon"
 }

@@ -3,25 +3,51 @@
   "translate_key": "resource_farm.resource_tree.cultivation",
   "automatic_basic_recipe": false,
   "product_output": 1,
-  "tree_style": "resource_farm:spruce",
-  "grower": "resource_farm:spruce",
-  "ore_style": "resource_farm:lapis",
+  "style": {
+    "tree_style": "resource_farm:spruce",
+    "ore_style": "resource_farm:lapis",
+    "grower": "resource_farm:spruce",
+    "light_level": 0,
+    "color": "0x9BFF3F"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0x9BFF3F",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:wheat", "count": 16 },
-      { "item": "minecraft:sugar_cane", "count": 16 },
-      { "item": "minecraft:potato", "count": 16 },
-      { "item": "minecraft:carrot", "count": 16 },
-      { "item": "minecraft:beetroot", "count": 16 },
-      { "item": "minecraft:cocoa_beans", "count": 6 },
-      { "item": "minecraft:melon", "count": 2 },
-      { "item": "minecraft:pumpkin", "count": 2 }
+      {
+        "item": "minecraft:wheat",
+        "count": 16
+      },
+      {
+        "item": "minecraft:sugar_cane",
+        "count": 16
+      },
+      {
+        "item": "minecraft:potato",
+        "count": 16
+      },
+      {
+        "item": "minecraft:carrot",
+        "count": 16
+      },
+      {
+        "item": "minecraft:beetroot",
+        "count": 16
+      },
+      {
+        "item": "minecraft:cocoa_beans",
+        "count": 6
+      },
+      {
+        "item": "minecraft:melon",
+        "count": 2
+      },
+      {
+        "item": "minecraft:pumpkin",
+        "count": 2
+      }
     ],
     "sapling_ingredients": [
       "minecraft:wheat",

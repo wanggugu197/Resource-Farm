@@ -3,13 +3,15 @@
   "item": "minecraft:lapis_lazuli",
   "automatic_basic_recipe": true,
   "product_output": 32,
-  "tree_style": "resource_farm:spruce",
-  "grower": "resource_farm:spruce",
-  "ore_style": "resource_farm:lapis",
+  "style": {
+    "tree_style": "resource_farm:spruce",
+    "ore_style": "resource_farm:lapis",
+    "grower": "resource_farm:spruce",
+    "light_level": 0,
+    "color": "0x4C95FF"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0x4C95FF"
+  "growth_frequency": 10
 }

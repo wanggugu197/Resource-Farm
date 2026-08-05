@@ -3,18 +3,23 @@
   "item": "minecraft:raw_iron",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:oak",
-  "grower": "resource_farm:oak",
-  "ore_style": "resource_farm:iron",
+  "style": {
+    "tree_style": "resource_farm:oak",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:oak",
+    "light_level": 0,
+    "color": "0xFFEFCA"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xFFEFCA",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:iron_block", "count": 1 }
+      {
+        "item": "minecraft:iron_block",
+        "count": 1
+      }
     ]
   }
 }

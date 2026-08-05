@@ -3,18 +3,23 @@
   "item": "minecraft:raw_copper",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:jungle",
-  "grower": "resource_farm:jungle",
-  "ore_style": "resource_farm:copper",
+  "style": {
+    "tree_style": "resource_farm:jungle",
+    "ore_style": "resource_farm:copper",
+    "grower": "resource_farm:jungle",
+    "light_level": 0,
+    "color": "0xF7AD7E"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xF7AD7E",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:copper_block", "count": 1 }
+      {
+        "item": "minecraft:copper_block",
+        "count": 1
+      }
     ]
   }
 }

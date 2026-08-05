@@ -1,5 +1,6 @@
 package com.maple.resource_farm.common;
 
+import com.maple.resource_farm.common.conditions.ConditionRegister;
 import com.maple.resource_farm.config.ResourceFarmConfigHolder;
 import com.maple.resource_farm.data.lang.LangHandler;
 import com.maple.resource_farm.data.misc.ResourceFarmBlockTags;
@@ -9,7 +10,6 @@ import com.maple.resource_farm.plantPot.ResourcePlantPotRegister;
 import com.maple.resource_farm.resourceTree.ResourceTreeAccessManagement;
 import com.maple.resource_farm.resourceTree.builder.TreeModelRenderer;
 
-import com.maple.resource_farm.resourceTree.data.conditions.ConditionRegister;
 import net.neoforged.bus.api.IEventBus;
 
 import com.mapleutillib.api.pack.addon.AddonFinder;

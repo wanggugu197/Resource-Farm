@@ -3,15 +3,17 @@
   "item": "minecraft:dragon_egg",
   "automatic_basic_recipe": true,
   "product_output": 1,
-  "tree_style": "resource_farm:birch",
-  "grower": "resource_farm:birch",
-  "ore_style": "resource_farm:redstone",
+  "style": {
+    "tree_style": "resource_farm:birch",
+    "ore_style": "resource_farm:redstone",
+    "grower": "resource_farm:birch",
+    "light_level": 8,
+    "color": "0x0E0A12"
+  },
   "fertilize": {
     "main_item": "minecraft:chorus_fruit",
     "main_chance": 0.3
   },
   "growth_frequency": 100,
-  "custom_place_block": "minecraft:dragon_egg",
-  "light_level": 8,
-  "color": "0x0E0A12"
+  "custom_place_block": "minecraft:dragon_egg"
 }

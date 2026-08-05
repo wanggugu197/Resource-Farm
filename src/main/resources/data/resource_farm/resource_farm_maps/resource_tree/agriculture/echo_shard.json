@@ -4,13 +4,15 @@
   "translate_key": "resource_farm.resource_tree.echo",
   "automatic_basic_recipe": true,
   "product_output": 1,
-  "tree_style": "resource_farm:oak",
-  "grower": "resource_farm:oak",
-  "ore_style": "resource_farm:nether_quartz",
+  "style": {
+    "tree_style": "resource_farm:oak",
+    "ore_style": "resource_farm:nether_quartz",
+    "grower": "resource_farm:oak",
+    "light_level": 0,
+    "color": "0x125E6E"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0x125E6E"
+  "growth_frequency": 10
 }

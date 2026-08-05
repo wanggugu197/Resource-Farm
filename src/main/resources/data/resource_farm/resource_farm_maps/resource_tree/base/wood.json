@@ -3,28 +3,63 @@
   "translate_key": "resource_farm.resource_tree.wood",
   "automatic_basic_recipe": false,
   "product_output": 1,
-  "tree_style": "resource_farm:dark_oak",
-  "grower": "resource_farm:dark_oak",
-  "ore_style": "resource_farm:nether_quartz",
+  "style": {
+    "tree_style": "resource_farm:dark_oak",
+    "ore_style": "resource_farm:nether_quartz",
+    "grower": "resource_farm:dark_oak",
+    "light_level": 0,
+    "color": "0xB08F55"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xB08F55",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:oak_log", "count": 16 },
-      { "item": "minecraft:dark_oak_log", "count": 16 },
-      { "item": "minecraft:birch_log", "count": 16 },
-      { "item": "minecraft:spruce_log", "count": 16 },
-      { "item": "minecraft:jungle_log", "count": 16 },
-      { "item": "minecraft:acacia_log", "count": 16 },
-      { "item": "minecraft:cherry_log", "count": 16 },
-      { "item": "minecraft:mangrove_log", "count": 16 },
-      { "item": "minecraft:apple", "count": 32 },
-      { "item": "minecraft:bamboo", "count": 64 },
-      { "item": "minecraft:moss_block", "count": 16 }
+      {
+        "item": "minecraft:oak_log",
+        "count": 16
+      },
+      {
+        "item": "minecraft:dark_oak_log",
+        "count": 16
+      },
+      {
+        "item": "minecraft:birch_log",
+        "count": 16
+      },
+      {
+        "item": "minecraft:spruce_log",
+        "count": 16
+      },
+      {
+        "item": "minecraft:jungle_log",
+        "count": 16
+      },
+      {
+        "item": "minecraft:acacia_log",
+        "count": 16
+      },
+      {
+        "item": "minecraft:cherry_log",
+        "count": 16
+      },
+      {
+        "item": "minecraft:mangrove_log",
+        "count": 16
+      },
+      {
+        "item": "minecraft:apple",
+        "count": 32
+      },
+      {
+        "item": "minecraft:bamboo",
+        "count": 64
+      },
+      {
+        "item": "minecraft:moss_block",
+        "count": 16
+      }
     ],
     "sapling_ingredients": [
       "minecraft:oak_log",

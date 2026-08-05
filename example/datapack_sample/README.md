@@ -24,10 +24,10 @@ data/mymod/resource_farm_maps/
 
 | File | Entry id | Use in tree JSON |
 |------|----------|------------------|
-| `tree_base_type/starwood.json` | `mymod:starwood` | `"tree_style": "mymod:starwood"` |
-| `tree_base_type/minimal_starwood.json` | `mymod:minimal_starwood` | `"tree_style": "mymod:minimal_starwood"` |
-| `tree_extra_type/star_ore.json` | `mymod:star_ore` | `"ore_style": "mymod:star_ore"` |
-| `tree_extra_type/minimal_gold.json` | `mymod:minimal_gold` | `"ore_style": "mymod:minimal_gold"` |
+| `tree_base_type/starwood.json` | `mymod:starwood` | `"style": { "tree_style": "mymod:starwood" }` |
+| `tree_base_type/minimal_starwood.json` | `mymod:minimal_starwood` | `"style": { "tree_style": "mymod:minimal_starwood" }` |
+| `tree_extra_type/star_ore.json` | `mymod:star_ore` | `"style": { "ore_style": "mymod:star_ore" }` |
+| `tree_extra_type/minimal_gold.json` | `mymod:minimal_gold` | `"style": { "ore_style": "mymod:minimal_gold" }` |
 
 `starwood` is based on dark oak models + Resource Farm overlays (copy built-in
 `tree_base_type/oak.json` and swap model paths for a real custom look).
@@ -38,7 +38,7 @@ Namespace `mymod` is only an example — use your real mod id.
 
 | File | Demonstrates | Resulting tree key |
 |------|--------------|--------------------|
-| `resource_tree/paper.json` | A normal item-backed tree with explicit style, grower, fertilizer, and tint fields. | `paper_tree` |
+| `resource_tree/paper.json` | A normal item-backed tree with an explicit `style` group (tree/ore style, grower, glow, tint) and fertilizer. | `paper_tree` |
 | `resource_tree/nether_star_themed.json` | A full themed tree using custom wood/ore styles, a special plantable block, custom fertilizer, and light emission. | `nether_star_tree` |
 | `resource_tree/custom_soil_and_tag.json` | A tree that can be planted on a block tag, uses the new partial style examples, and keeps recipe generation enabled by default. | `amethyst_shard_tree` |
 | `resource_tree/extra_recipes_demo.json` | All three `extra_recipes` groups: extra item outputs, custom sapling ingredients (item + item tag), and a container recipe. | `golden_apple_tree` |
@@ -46,16 +46,21 @@ Namespace `mymod` is only an example — use your real mod id.
 
 ### Defaults and fallback examples
 
-Resource tree files only require `item` or `translate_key`. Omitted fields use runtime defaults:
+Tree files require `item` or `translate_key`, plus the `style` group with `tree_style` / `ore_style` / `grower`. Other fields use runtime defaults:
 
 ```json
 {
   "item": "minecraft:paper",
-  "color": "0xF5F5DC"
+  "style": {
+    "tree_style": "oak",
+    "ore_style": "iron",
+    "grower": "oak",
+    "color": "0xF5F5DC"
+  }
 }
 ```
 
-This still registers `paper_tree`, uses `tree_style: oak`, `ore_style: iron`, `grower: oak`, default bone meal fertilizer, `product_output: 1`, and `growth_frequency: 10`.
+This still registers `paper_tree`, uses `style.tree_style: oak`, `style.ore_style: iron`, `style.grower: oak`, `style.light_level: 0`, default bone meal fertilizer, `product_output: 1`, and `growth_frequency: 10`. Visual/glow/tint fields live inside `style`; see the config docs for the full field table.
 
 Style files can also be partial. `tree_base_type/minimal_starwood.json` intentionally only overrides a few model/overlay fields; missing `sapling_base`, `leaves_base`, item overlays, and translation keys fall back to Resource Farm's oak defaults. `tree_extra_type/minimal_gold.json` only sets `base`; missing `center` falls back to `resource_farm:block/ore/center`.
 
@@ -78,5 +83,5 @@ Style files can also be partial. `tree_base_type/minimal_starwood.json` intentio
 
 Docs:
 
-- [中文说明](../TreesConfigInstructions_cn.md)
-- [English](../TreesConfigInstructions_us.md)
+- [中文说明](data/mymod/resource_farm_maps/resource_tree/TreesConfigInstructions_cn.md)
+- [English](data/mymod/resource_farm_maps/resource_tree/TreesConfigInstructions_us.md)

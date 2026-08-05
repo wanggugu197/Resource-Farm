@@ -3,22 +3,39 @@
   "translate_key": "resource_farm.resource_tree.minor_creature",
   "automatic_basic_recipe": false,
   "product_output": 1,
-  "tree_style": "resource_farm:jungle",
-  "grower": "resource_farm:jungle",
-  "ore_style": "resource_farm:nether_quartz",
+  "style": {
+    "tree_style": "resource_farm:jungle",
+    "ore_style": "resource_farm:nether_quartz",
+    "grower": "resource_farm:jungle",
+    "light_level": 0,
+    "color": "0xDD6C34"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xDD6C34",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:rotten_flesh", "count": 16 },
-      { "item": "minecraft:gunpowder", "count": 16 },
-      { "item": "minecraft:bone", "count": 16 },
-      { "item": "minecraft:spider_eye", "count": 16 },
-      { "item": "minecraft:string", "count": 16 }
+      {
+        "item": "minecraft:rotten_flesh",
+        "count": 16
+      },
+      {
+        "item": "minecraft:gunpowder",
+        "count": 16
+      },
+      {
+        "item": "minecraft:bone",
+        "count": 16
+      },
+      {
+        "item": "minecraft:spider_eye",
+        "count": 16
+      },
+      {
+        "item": "minecraft:string",
+        "count": 16
+      }
     ],
     "sapling_ingredients": [
       "minecraft:rotten_flesh",

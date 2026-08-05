@@ -1,20 +1,22 @@
-package com.maple.resource_farm.resourceTree.data.conditions;
+package com.maple.resource_farm.common.conditions;
 
 import com.maple.resource_farm.config.ResourceFarmConfigHolder;
 import com.maple.resource_farm.resourceTree.PresetResourceTreeConfigHolder;
+
+import net.neoforged.neoforge.common.conditions.ICondition;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.neoforged.neoforge.common.conditions.ICondition;
+import org.jspecify.annotations.NonNull;
 
 public record ConfigCondition(String configId) implements ICondition {
-    public static final MapCodec<ConfigCondition> CODEC
-            = RecordCodecBuilder.mapCodec(inst -> inst.group(
-            Codec.STRING.fieldOf("config_id").forGetter(ConfigCondition::configId)
-    ).apply(inst, ConfigCondition::new));
+
+    public static final MapCodec<ConfigCondition> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+            Codec.STRING.fieldOf("config_id").forGetter(ConfigCondition::configId)).apply(inst, ConfigCondition::new));
 
     @Override
-    public boolean test(ICondition.IContext context) {
+    public boolean test(ICondition.@NonNull IContext context) {
         PresetResourceTreeConfigHolder cfg = PresetResourceTreeConfigHolder.INSTANCE.getConfigInstance();
         PresetResourceTreeConfigHolder.TreeConfigs tree = cfg.tree;
         PresetResourceTreeConfigHolder.BlockGenerationConfigs blockGen = tree.blockGeneration;
@@ -53,7 +55,7 @@ public record ConfigCondition(String configId) implements ICondition {
     }
 
     @Override
-    public MapCodec<? extends ICondition> codec() {
+    public @NonNull MapCodec<? extends ICondition> codec() {
         return CODEC;
     }
 }

@@ -3,13 +3,15 @@
   "item": "minecraft:ice",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:acacia",
-  "grower": "resource_farm:acacia",
-  "ore_style": "resource_farm:lapis",
+  "style": {
+    "tree_style": "resource_farm:acacia",
+    "ore_style": "resource_farm:lapis",
+    "grower": "resource_farm:acacia",
+    "light_level": 0,
+    "color": "0xA1CAFF"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xA1CAFF"
+  "growth_frequency": 10
 }

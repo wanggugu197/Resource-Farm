@@ -3,23 +3,43 @@
   "translate_key": "resource_farm.resource_tree.aquatic_products",
   "automatic_basic_recipe": false,
   "product_output": 1,
-  "tree_style": "resource_farm:dark_oak",
-  "grower": "resource_farm:dark_oak",
-  "ore_style": "resource_farm:redstone",
+  "style": {
+    "tree_style": "resource_farm:dark_oak",
+    "ore_style": "resource_farm:redstone",
+    "grower": "resource_farm:dark_oak",
+    "light_level": 0,
+    "color": "0x28B6EC"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0x28B6EC",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:tropical_fish", "count": 16 },
-      { "item": "minecraft:pufferfish", "count": 16 },
-      { "item": "minecraft:salmon", "count": 16 },
-      { "item": "minecraft:cod", "count": 16 },
-      { "item": "minecraft:glow_ink_sac", "count": 16 },
-      { "item": "minecraft:ink_sac", "count": 16 }
+      {
+        "item": "minecraft:tropical_fish",
+        "count": 16
+      },
+      {
+        "item": "minecraft:pufferfish",
+        "count": 16
+      },
+      {
+        "item": "minecraft:salmon",
+        "count": 16
+      },
+      {
+        "item": "minecraft:cod",
+        "count": 16
+      },
+      {
+        "item": "minecraft:glow_ink_sac",
+        "count": 16
+      },
+      {
+        "item": "minecraft:ink_sac",
+        "count": 16
+      }
     ],
     "sapling_ingredients": [
       "minecraft:tropical_fish",

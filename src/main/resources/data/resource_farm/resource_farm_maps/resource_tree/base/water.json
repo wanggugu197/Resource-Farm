@@ -3,15 +3,17 @@
   "translate_key": "block.minecraft.water",
   "automatic_basic_recipe": false,
   "product_output": 1,
-  "tree_style": "resource_farm:jungle",
-  "grower": "resource_farm:jungle",
-  "ore_style": "resource_farm:nether_gold",
+  "style": {
+    "tree_style": "resource_farm:jungle",
+    "ore_style": "resource_farm:nether_gold",
+    "grower": "resource_farm:jungle",
+    "light_level": 0,
+    "color": "0x5A82F3"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0x5A82F3",
   "extra_recipes": {
     "sapling_ingredients": [
       "minecraft:water_bucket"

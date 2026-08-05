@@ -4,13 +4,15 @@
   "translate_key": "entity.minecraft.phantom",
   "automatic_basic_recipe": true,
   "product_output": 8,
-  "tree_style": "resource_farm:mangrove",
-  "grower": "resource_farm:mangrove",
-  "ore_style": "resource_farm:nether_quartz",
+  "style": {
+    "tree_style": "resource_farm:mangrove",
+    "ore_style": "resource_farm:nether_quartz",
+    "grower": "resource_farm:mangrove",
+    "light_level": 0,
+    "color": "0xFFFFFC"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xFFFFFC"
+  "growth_frequency": 10
 }

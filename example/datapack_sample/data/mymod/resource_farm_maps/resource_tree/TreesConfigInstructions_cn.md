@@ -45,38 +45,50 @@
 | `group` | 字符串 | 无 | 预设组：`base` / `mineral` / `biology` / `agriculture`。无 group 或其它值 = **始终加载**（适合附加包） |
 | `automatic_basic_recipe` | bool | `true` | 是否自动生成基础产物/树苗配方 |
 | `product_output` | int | `1` | 基础合成产量 |
-| `tree_style` | 字符串 | `oak` | 树基底样式 ID（可写短名 `oak` → `minecraft:oak`） |
-| `ore_style` | 字符串 | `iron` | 矿叠加样式 ID（短名同理） |
-| `grower` | 字符串 | `oak` | 生长器 ID，决定使用哪套原版/自定义 configured feature |
+| `style` | 对象 | 必填 | 外观/生长字段组（`tree_style`、`ore_style`、`grower`、`light_level`、`color`），见下表 |
 | `fertilize` | 对象 | 骨粉默认 | 催熟，见下文 |
 | `growth_frequency` | int | `10` | 随机刻生长：约 1/N 概率 |
 | `custom_place_block` | 字符串 | — | 可种植的方块 ID |
 | `custom_place_block_tag` | 字符串 | — | 可种植的方块 Tag |
+| `extra_recipes` | 对象 | 额外配方：额外树物品、自定义树苗原料、容器配方，见示例 E |
+
+`style` 子字段：
+
+| 字段 | 类型 | 默认 | 说明 |
+|------|------|------|------|
+| `tree_style` | 字符串 | 必填 | 树基底样式 ID（可写短名 `oak` → `minecraft:oak`） |
+| `ore_style` | 字符串 | 必填 | 矿叠加样式 ID（短名同理） |
+| `grower` | 字符串 | 必填 | 生长器 ID，决定使用哪套原版/自定义 configured feature |
 | `light_level` | int | `0` | 发光 0–15（写入模型 light_emission） |
 | `color` | int 或字符串 | `0` | 染色，如 `0x9E7255`、`#9E7255` 或十进制 |
-| `extra_recipes` | 对象 | 额外配方：额外树物品、自定义树苗原料、容器配方，见示例 E |
 
 ### 示例 A：最简（仅物品）
 
 ```json
 {
   "item": "minecraft:paper",
-  "color": "0xF5F5DC"
+  "style": {
+    "tree_style": "oak",
+    "ore_style": "iron",
+    "grower": "oak",
+    "color": "0xF5F5DC"
+  }
 }
 ```
 
-这个文件会注册 `paper_tree`。未写字段会自动使用：
+这个文件会注册 `paper_tree`。`style` 中未写的字段会自动使用：
 
 | 字段 | 实际使用值 |
 |------|------------|
-| `tree_style` | `oak` |
-| `ore_style` | `iron` |
-| `grower` | `oak` |
+| `style.tree_style` | 必填（示例 `oak`） |
+| `style.ore_style` | 必填（示例 `iron`） |
+| `style.grower` | 必填（示例 `oak`） |
+| `style.light_level` | `0` |
+| `style.color` | `0` |
 | `fertilize` | 骨粉，主/次成功率 `0.35` |
 | `automatic_basic_recipe` | `true` |
 | `product_output` | `1` |
 | `growth_frequency` | `10` |
-| `light_level` | `0` |
 
 适合先确认加载链路正常，再逐步加外观、催熟、种植条件等配置。
 
@@ -88,17 +100,19 @@
   "translate_key": "block.resource_farm.nether_star_tree",
   "automatic_basic_recipe": true,
   "product_output": 1,
-  "tree_style": "oak",
-  "ore_style": "emerald",
-  "grower": "oak",
+  "style": {
+    "tree_style": "oak",
+    "ore_style": "emerald",
+    "grower": "oak",
+    "light_level": 12,
+    "color": "0xFFFFFF"
+  },
   "fertilize": {
     "main_item": "minecraft:blaze_powder",
     "main_chance": 0.3
   },
   "growth_frequency": 100,
-  "custom_place_block": "minecraft:beacon",
-  "light_level": 12,
-  "color": "0xFFFFFF"
+  "custom_place_block": "minecraft:beacon"
 }
 ```
 
@@ -110,9 +124,12 @@
   "translate_key": "resource_farm.resource_tree.wood",
   "automatic_basic_recipe": false,
   "product_output": 1,
-  "tree_style": "dark_oak",
-  "ore_style": "nether_quartz",
-  "color": "0xB08F55"
+  "style": {
+    "tree_style": "dark_oak",
+    "ore_style": "nether_quartz",
+    "grower": "dark_oak",
+    "color": "0xB08F55"
+  }
 }
 ```
 
@@ -125,8 +142,13 @@
   "item": "minecraft:amethyst_shard",
   "translate_key": "block.mymod.amethyst_shard_tree",
   "product_output": 4,
-  "tree_style": "mymod:minimal_starwood",
-  "ore_style": "mymod:minimal_gold",
+  "style": {
+    "tree_style": "mymod:minimal_starwood",
+    "ore_style": "mymod:minimal_gold",
+    "grower": "oak",
+    "light_level": 6,
+    "color": "#B985FF"
+  },
   "fertilize": {
     "main_item": "minecraft:glowstone_dust",
     "main_chance": 0.2,
@@ -134,15 +156,13 @@
     "secondary_chance": 0.05
   },
   "growth_frequency": 40,
-  "custom_place_block_tag": "minecraft:crystal_sound_blocks",
-  "light_level": 6,
-  "color": "#B985FF"
+  "custom_place_block_tag": "minecraft:crystal_sound_blocks"
 }
 ```
 
 - `custom_place_block_tag` 适合允许一组方块承载树苗；如果只允许一个方块，用 `custom_place_block`。
 - `growth_frequency` 数值越大，随机刻成功越慢；`40` 大约是默认 `10` 的四分之一频率。
-- `tree_style` / `ore_style` 使用的是示例目录里的部分字段样式文件，见第 5、6 节。
+- `style.tree_style` / `style.ore_style` 使用的是示例目录里的部分字段样式文件，见第 5、6 节。
 
 ### 示例 E：额外配方 `extra_recipes`
 
@@ -152,15 +172,17 @@
   "translate_key": "block.mymod.golden_apple_tree",
   "automatic_basic_recipe": true,
   "product_output": 1,
-  "tree_style": "oak",
-  "grower": "oak",
-  "ore_style": "gold",
+  "style": {
+    "tree_style": "oak",
+    "ore_style": "gold",
+    "grower": "oak",
+    "light_level": 0,
+    "color": "0xFFD54F"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xFFD54F",
   "extra_recipes": {
     "item_outputs": [
       {
@@ -283,7 +305,7 @@
 ## 5. 自定义树基底样式 `tree_base_type`
 
 **路径：** `data/<namespace>/resource_farm_maps/tree_base_type/<path>.json`  
-**引用：** 树定义里 `"tree_style": "oak"` 或 `"mymod:custom_wood"`
+**引用：** 树定义 `style` 里 `"tree_style": "oak"` 或 `"mymod:custom_wood"`
 
 内置样式（`minecraft` 命名空间）：`oak`, `dark_oak`, `birch`, `spruce`, `jungle`, `acacia`, `cherry`, `mangrove`, `pale_oak`。
 
@@ -331,7 +353,7 @@ JSON 结构（嵌套，字段较多）：
 - `models.*`：方块基底模型 ID（multipart 底层）。  
 - `overlays.*`：着色层 / 物品叠图纹理路径。  
 - `type`：生长器等逻辑用的种类名（如 `oak`）。  
-- 无效 `tree_style` 会回退到默认橡木样式。
+- 无效 `style.tree_style` 会回退到默认橡木样式。
 - `type`、`models`、`overlays`、`translate_keys` 以及它们的子字段都可以省略；省略时使用橡木/内置贴图/默认翻译键兜底。
 
 完整内置文件可直接复制改路径：  
@@ -360,7 +382,7 @@ JSON 结构（嵌套，字段较多）：
 见 [`datapack_sample/data/mymod/resource_farm_maps/tree_base_type/starwood.json`](datapack_sample/data/mymod/resource_farm_maps/tree_base_type/starwood.json)：
 
 - 文件 → 样式 ID **`mymod:starwood`**
-- 在树定义中引用：`"tree_style": "mymod:starwood"`
+- 在树定义 `style` 中引用：`"tree_style": "mymod:starwood"`
 - 示例树：[`nether_star_themed.json`](datapack_sample/data/mymod/resource_farm_maps/resource_tree/nether_star_themed.json)（同时引用自定义 `mymod:star_ore`）
 
 可把内置 `oak.json` / `dark_oak.json` 整份复制后只改 `models` 路径与 `type`，即可做出新木头外观。
@@ -370,7 +392,7 @@ JSON 结构（嵌套，字段较多）：
 ## 6. 自定义矿叠加样式 `tree_extra_type`
 
 **路径：** `data/<namespace>/resource_farm_maps/tree_extra_type/<path>.json`  
-**引用：** `"ore_style": "iron"` 或 `"mymod:my_ore"`
+**引用：** 树定义 `style` 里 `"ore_style": "iron"` 或 `"mymod:my_ore"`
 
 ```json
 {
@@ -412,8 +434,8 @@ src/main/resources/data/<你的modid>/resource_farm_maps/
 ```
 
 2. **不要**写 `group: base|mineral|...`，除非你希望受玩家预设开关控制。  
-3. 引用本模组已有样式时可直接写 `"tree_style": "oak"`、`"ore_style": "diamond"`。  
-4. 需要新外观时，先加 `tree_base_type` / `tree_extra_type`，再在树定义里用完整 ID：`"tree_style": "mymod:my_wood"`。  
+3. 引用本模组已有样式时，在 `style` 里直接写 `"tree_style": "oak"`、`"ore_style": "diamond"`。  
+4. 需要新外观时，先加 `tree_base_type` / `tree_extra_type`，再在树定义 `style` 里用完整 ID：`"tree_style": "mymod:my_wood"`。  
 5. 保证 jar 打进 `data/` 资源；启动游戏后看日志：
 
 ```text
@@ -431,6 +453,7 @@ src/main/resources/data/<你的modid>/resource_farm_maps/
 | `resource_tree_remove_configs.json` | `resource_tree_remove/*.json` |
 | 驼峰 `treeStyle` / `colors` | 蛇形 `tree_style` / `color` |
 | `fertilizeSetting` | `fertilize`（支持 `type`） |
+| 扁平 `tree_style` / `ore_style` / `grower` / `light_level` / `color` | 归入 `style` 对象（如 `style.tree_style`） |
 | 单文件数组 | **一树一文件** |
 
 旧 config 文件**不再读取**。请迁移到数据包格式。

@@ -3,13 +3,15 @@
   "item": "minecraft:obsidian",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:birch",
-  "grower": "resource_farm:birch",
-  "ore_style": "resource_farm:copper",
+  "style": {
+    "tree_style": "resource_farm:birch",
+    "ore_style": "resource_farm:copper",
+    "grower": "resource_farm:birch",
+    "light_level": 0,
+    "color": "0x100C1C"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0x100C1C"
+  "growth_frequency": 10
 }

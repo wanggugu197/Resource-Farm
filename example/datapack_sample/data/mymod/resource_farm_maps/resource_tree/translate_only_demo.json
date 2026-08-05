@@ -2,11 +2,13 @@
   "translate_key": "mymod.resource_tree.demo",
   "automatic_basic_recipe": false,
   "product_output": 1,
-  "tree_style": "cherry",
-  "grower": "cherry",
-  "ore_style": "diamond",
+  "style": {
+    "tree_style": "cherry",
+    "ore_style": "diamond",
+    "grower": "cherry",
+    "color": "0xFF69B4"
+  },
   "fertilize": {
     "type": "null"
-  },
-  "color": "0xFF69B4"
+  }
 }

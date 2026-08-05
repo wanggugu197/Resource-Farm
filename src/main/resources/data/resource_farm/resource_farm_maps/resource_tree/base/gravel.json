@@ -3,13 +3,15 @@
   "item": "minecraft:gravel",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:cherry",
-  "grower": "resource_farm:cherry",
-  "ore_style": "resource_farm:copper",
+  "style": {
+    "tree_style": "resource_farm:cherry",
+    "ore_style": "resource_farm:copper",
+    "grower": "resource_farm:cherry",
+    "light_level": 0,
+    "color": "0x918C8C"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0x918C8C"
+  "growth_frequency": 10
 }

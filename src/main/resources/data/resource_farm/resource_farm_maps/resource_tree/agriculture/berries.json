@@ -3,19 +3,27 @@
   "translate_key": "resource_farm.resource_tree.berries",
   "automatic_basic_recipe": false,
   "product_output": 1,
-  "tree_style": "resource_farm:cherry",
-  "grower": "resource_farm:cherry",
-  "ore_style": "resource_farm:copper",
+  "style": {
+    "tree_style": "resource_farm:cherry",
+    "ore_style": "resource_farm:copper",
+    "grower": "resource_farm:cherry",
+    "light_level": 0,
+    "color": "0xDC457D"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xDC457D",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:sweet_berries", "count": 16 },
-      { "item": "minecraft:glow_berries", "count": 16 }
+      {
+        "item": "minecraft:sweet_berries",
+        "count": 16
+      },
+      {
+        "item": "minecraft:glow_berries",
+        "count": 16
+      }
     ],
     "sapling_ingredients": [
       "minecraft:sweet_berries",

@@ -3,13 +3,15 @@
   "item": "minecraft:end_stone",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:cherry",
-  "grower": "resource_farm:cherry",
-  "ore_style": "resource_farm:iron",
+  "style": {
+    "tree_style": "resource_farm:cherry",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:cherry",
+    "light_level": 0,
+    "color": "0xF2F5AE"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xF2F5AE"
+  "growth_frequency": 10
 }

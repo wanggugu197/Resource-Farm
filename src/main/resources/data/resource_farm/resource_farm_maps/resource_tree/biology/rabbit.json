@@ -3,20 +3,31 @@
   "translate_key": "entity.minecraft.rabbit",
   "automatic_basic_recipe": false,
   "product_output": 1,
-  "tree_style": "resource_farm:birch",
-  "grower": "resource_farm:birch",
-  "ore_style": "resource_farm:copper",
+  "style": {
+    "tree_style": "resource_farm:birch",
+    "ore_style": "resource_farm:copper",
+    "grower": "resource_farm:birch",
+    "light_level": 0,
+    "color": "0xFFC885"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xFFC885",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:rabbit", "count": 16 },
-      { "item": "minecraft:rabbit_hide", "count": 16 },
-      { "item": "minecraft:rabbit_foot", "count": 1 }
+      {
+        "item": "minecraft:rabbit",
+        "count": 16
+      },
+      {
+        "item": "minecraft:rabbit_hide",
+        "count": 16
+      },
+      {
+        "item": "minecraft:rabbit_foot",
+        "count": 1
+      }
     ],
     "sapling_ingredients": [
       "minecraft:rabbit",

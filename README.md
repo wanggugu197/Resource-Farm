@@ -69,6 +69,7 @@ Each resource tree is **not just a recolored oak**. It is a full set of blocks a
 - **Light emission** — optional self-glow on tint overlay models (`0–15`), for ethereal forests that shine in the dark *(visual glow; not necessarily world light)*.
 
 Creative tabs: **Resource Farm** and **Resource Farm \| Resource Tree**.
+In datapack JSON these visuals are grouped under the `style` object (`tree_style`, `ore_style`, `grower`, `light_level`, `color`).
 
 ---
 
@@ -171,8 +172,8 @@ Trees, wood styles, ore overlays, and optional grower presets are built from **d
 
 Full field docs and migration notes:
 
-- [Datapack guide (English)](example/TreesConfigInstructions_us.md)
-- [数据包说明（中文）](example/TreesConfigInstructions_cn.md)
+- [Datapack guide (English)](example/datapack_sample/data/mymod/resource_farm_maps/resource_tree/TreesConfigInstructions_us.md)
+- [数据包说明（中文）](example/datapack_sample/data/mymod/resource_farm_maps/resource_tree/TreesConfigInstructions_cn.md)
 - Copy-paste sample: [`example/datapack_sample/`](example/datapack_sample/)
 
 #### Quick tree definition
@@ -182,25 +183,33 @@ Full field docs and migration notes:
 ```json
 {
   "item": "minecraft:paper",
-  "color": "0xF5F5DC"
+  "style": {
+    "tree_style": "oak",
+    "ore_style": "iron",
+    "grower": "oak",
+    "color": "0xF5F5DC"
+  }
 }
 ```
 
-This minimal file still registers `paper_tree`: omitted fields fall back to `tree_style: oak`, `ore_style: iron`, `grower: oak`, default bone meal fertilizer, `product_output: 1`, `growth_frequency: 10`, and `light_level: 0`.
+This minimal file still registers `paper_tree`: the `style` group requires `tree_style` / `ore_style` / `grower`; omitted `light_level` and `color` fall back to `0`, plus default bone meal fertilizer, `product_output: 1`, and `growth_frequency: 10`.
 
 More explicit item-backed tree:
 
 ```json
 {
   "item": "minecraft:paper",
-  "tree_style": "birch",
-  "ore_style": "iron",
-  "grower": "birch",
+  "style": {
+    "tree_style": "birch",
+    "ore_style": "iron",
+    "grower": "birch",
+    "light_level": 0,
+    "color": "0xF5F5DC"
+  },
   "product_output": 16,
   "fertilize": {
     "type": "default"
-  },
-  "color": "0xF5F5DC"
+  }
 }
 ```
 
@@ -210,8 +219,13 @@ Themed tree with custom style ids and planting rules:
 {
   "item": "minecraft:amethyst_shard",
   "translate_key": "block.mymod.amethyst_shard_tree",
-  "tree_style": "mymod:minimal_starwood",
-  "ore_style": "mymod:minimal_gold",
+  "style": {
+    "tree_style": "mymod:minimal_starwood",
+    "ore_style": "mymod:minimal_gold",
+    "grower": "oak",
+    "light_level": 6,
+    "color": "#B985FF"
+  },
   "product_output": 4,
   "fertilize": {
     "main_item": "minecraft:glowstone_dust",
@@ -220,9 +234,7 @@ Themed tree with custom style ids and planting rules:
     "secondary_chance": 0.05
   },
   "growth_frequency": 40,
-  "custom_place_block_tag": "minecraft:crystal_sound_blocks",
-  "light_level": 6,
-  "color": "#B985FF"
+  "custom_place_block_tag": "minecraft:crystal_sound_blocks"
 }
 ```
 
@@ -306,8 +318,8 @@ Requirements track **Minecraft 26.1.2** and **NeoForge 26.1.x** (see `gradle.pro
 - **CurseForge:** [Resource Farm](https://www.curseforge.com/minecraft/mc-mods/resource-farm)  
 - **Source:** [wanggugu197/Resource-Farm](https://github.com/wanggugu197/Resource-Farm)  
 - **Issues:** [GitHub Issues](https://github.com/wanggugu197/Resource-Farm/issues)  
-- **Datapack guide (EN):** [example/TreesConfigInstructions_us.md](https://github.com/wanggugu197/Resource-Farm/blob/26.1.2/example/TreesConfigInstructions_us.md)
-- **数据包说明（中文）:** [example/TreesConfigInstructions_cn.md](https://github.com/wanggugu197/Resource-Farm/blob/26.1.2/example/TreesConfigInstructions_cn.md)
+- **Datapack guide (EN):** [example/TreesConfigInstructions_us.md](https://github.com/wanggugu197/Resource-Farm/blob/26.1.2/example/datapack_sample/data/mymod/resource_farm_maps/resource_tree/TreesConfigInstructions_us.md)
+- **数据包说明（中文）:** [example/TreesConfigInstructions_cn.md](https://github.com/wanggugu197/Resource-Farm/blob/26.1.2/example/datapack_sample/data/mymod/resource_farm_maps/resource_tree/TreesConfigInstructions_cn.md)
 
 ---
 

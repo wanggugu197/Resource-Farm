@@ -3,13 +3,15 @@
   "item": "minecraft:glowstone_dust",
   "automatic_basic_recipe": true,
   "product_output": 32,
-  "tree_style": "resource_farm:cherry",
-  "grower": "resource_farm:cherry",
-  "ore_style": "resource_farm:copper",
+  "style": {
+    "tree_style": "resource_farm:cherry",
+    "ore_style": "resource_farm:copper",
+    "grower": "resource_farm:cherry",
+    "light_level": 14,
+    "color": "0xFFE17A"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 14,
-  "color": "0xFFE17A"
+  "growth_frequency": 10
 }

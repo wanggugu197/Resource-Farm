@@ -3,13 +3,15 @@
   "item": "minecraft:netherrack",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:oak",
-  "grower": "resource_farm:oak",
-  "ore_style": "resource_farm:iron",
+  "style": {
+    "tree_style": "resource_farm:oak",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:oak",
+    "light_level": 0,
+    "color": "0x6C2A2A"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0x6C2A2A"
+  "growth_frequency": 10
 }

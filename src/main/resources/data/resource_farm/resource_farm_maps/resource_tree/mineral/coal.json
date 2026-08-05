@@ -3,18 +3,23 @@
   "item": "minecraft:coal",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:spruce",
-  "grower": "resource_farm:spruce",
-  "ore_style": "resource_farm:iron",
+  "style": {
+    "tree_style": "resource_farm:spruce",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:spruce",
+    "light_level": 0,
+    "color": "0x413D43"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0x413D43",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:charcoal", "count": 1 }
+      {
+        "item": "minecraft:charcoal",
+        "count": 1
+      }
     ]
   }
 }

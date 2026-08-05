@@ -4,13 +4,15 @@
   "translate_key": "entity.minecraft.shulker",
   "automatic_basic_recipe": true,
   "product_output": 4,
-  "tree_style": "resource_farm:cherry",
-  "grower": "resource_farm:cherry",
-  "ore_style": "resource_farm:crack",
+  "style": {
+    "tree_style": "resource_farm:cherry",
+    "ore_style": "resource_farm:crack",
+    "grower": "resource_farm:cherry",
+    "light_level": 0,
+    "color": "0xCA87D4"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xCA87D4"
+  "growth_frequency": 10
 }

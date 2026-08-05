@@ -3,15 +3,17 @@
   "translate_key": "block.mymod.golden_apple_tree",
   "automatic_basic_recipe": true,
   "product_output": 1,
-  "tree_style": "oak",
-  "grower": "oak",
-  "ore_style": "gold",
+  "style": {
+    "tree_style": "oak",
+    "ore_style": "gold",
+    "grower": "oak",
+    "light_level": 0,
+    "color": "0xFFD54F"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xFFD54F",
   "extra_recipes": {
     "item_outputs": [
       {

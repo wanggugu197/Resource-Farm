@@ -3,18 +3,23 @@
   "item": "minecraft:raw_gold",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:birch",
-  "grower": "resource_farm:birch",
-  "ore_style": "resource_farm:gold",
+  "style": {
+    "tree_style": "resource_farm:birch",
+    "ore_style": "resource_farm:gold",
+    "grower": "resource_farm:birch",
+    "light_level": 0,
+    "color": "0xFFFF58"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xFFFF58",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:gold_block", "count": 1 }
+      {
+        "item": "minecraft:gold_block",
+        "count": 1
+      }
     ]
   }
 }

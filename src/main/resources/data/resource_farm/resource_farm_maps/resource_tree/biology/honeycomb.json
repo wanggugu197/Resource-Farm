@@ -4,15 +4,17 @@
   "translate_key": "entity.minecraft.bee",
   "automatic_basic_recipe": true,
   "product_output": 8,
-  "tree_style": "resource_farm:cherry",
-  "grower": "resource_farm:cherry",
-  "ore_style": "resource_farm:nether_gold",
+  "style": {
+    "tree_style": "resource_farm:cherry",
+    "ore_style": "resource_farm:nether_gold",
+    "grower": "resource_farm:cherry",
+    "light_level": 0,
+    "color": "0xFFCF40"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xFFCF40",
   "extra_recipes": {
     "container_output": {
       "container": "minecraft:glass_bottle",

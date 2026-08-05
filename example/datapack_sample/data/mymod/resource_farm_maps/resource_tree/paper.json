@@ -2,13 +2,15 @@
   "item": "minecraft:paper",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "birch",
-  "grower": "birch",
-  "ore_style": "iron",
+  "style": {
+    "tree_style": "birch",
+    "ore_style": "iron",
+    "grower": "birch",
+    "light_level": 0,
+    "color": "0xF5F5DC"
+  },
   "fertilize": {
     "type": "default"
   },
-  "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xF5F5DC"
+  "growth_frequency": 10
 }

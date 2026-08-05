@@ -4,18 +4,23 @@
   "translate_key": "resource_farm.resource_tree.chorus",
   "automatic_basic_recipe": true,
   "product_output": 16,
-  "tree_style": "resource_farm:cherry",
-  "grower": "resource_farm:cherry",
-  "ore_style": "resource_farm:crack",
+  "style": {
+    "tree_style": "resource_farm:cherry",
+    "ore_style": "resource_farm:crack",
+    "grower": "resource_farm:cherry",
+    "light_level": 0,
+    "color": "0xE3A7E1"
+  },
   "fertilize": {
     "type": "default"
   },
   "growth_frequency": 10,
-  "light_level": 0,
-  "color": "0xE3A7E1",
   "extra_recipes": {
     "item_outputs": [
-      { "item": "minecraft:chorus_flower", "count": 1 }
+      {
+        "item": "minecraft:chorus_flower",
+        "count": 1
+      }
     ]
   }
 }
