@@ -224,7 +224,7 @@ public final class ResourceFarmMaps {
         String g = group.toLowerCase(Locale.ROOT);
         if (!holder.enablePresetTreeGroups) {
             return switch (g) {
-                case "base", "mineral", "biology", "agriculture" -> false;
+                case "base", "mineral", "biology", "agriculture", "mystical_agriculture", "ae2" -> false;
                 default -> true;
             };
         }
@@ -234,7 +234,8 @@ public final class ResourceFarmMaps {
             case "mineral" -> c.minecraftMineral;
             case "biology" -> c.minecraftBiology;
             case "agriculture" -> c.minecraftAgriculture;
-            case "mystical_agriculture" -> c.mysticalAgriculture;
+            case "mystical_agriculture" -> c.mysticalAgriculture();
+            case "ae2" -> c.ae2();
             default -> true;
         };
     }

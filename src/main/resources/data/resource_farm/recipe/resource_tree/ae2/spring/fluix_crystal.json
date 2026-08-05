@@ -1,0 +1,22 @@
+{
+  "type": "ae2:inscriber",
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "ae2:fluix_crystal"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
+    }
+  ],
+  "ingredients": {
+    "bottom": "ae2:fluix_block",
+    "middle": "#minecraft:saplings",
+    "top": "ae2:fluix_block"
+  },
+  "mode": "press",
+  "result": {
+    "id": "resource_farm:ae2_fluix_crystal_sapling"
+  }
+}

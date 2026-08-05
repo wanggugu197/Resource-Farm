@@ -1,0 +1,19 @@
+{
+  "group": "ae2",
+  "item": "ae2:singularity",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:cherry",
+    "ore_style": "resource_farm:emerald",
+    "grower": "resource_farm:cherry",
+    "light_level": 12,
+    "color": "0X7155C2"
+  },
+  "fertilize": {
+    "main_item": "ae2:singularity",
+    "main_chance": 0.8
+  },
+  "growth_frequency": 25,
+  "custom_place_block": "ae2:condenser"
+}

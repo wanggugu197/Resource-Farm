@@ -49,7 +49,8 @@ public record ConfigCondition(String configId) implements ICondition {
             case "tree.presetTreeGeneration.minecraftMineral" -> presetGen.minecraftMineral;
             case "tree.presetTreeGeneration.minecraftBiology" -> presetGen.minecraftBiology;
             case "tree.presetTreeGeneration.minecraftAgriculture" -> presetGen.minecraftAgriculture;
-            case "tree.presetTreeGeneration.mysticalAgriculture" -> presetGen.mysticalAgriculture;
+            case "tree.presetTreeGeneration.mysticalAgriculture" -> presetGen.mysticalAgriculture();
+            case "tree.presetTreeGeneration.ae2" -> presetGen.ae2();
 
             default -> false;
         };

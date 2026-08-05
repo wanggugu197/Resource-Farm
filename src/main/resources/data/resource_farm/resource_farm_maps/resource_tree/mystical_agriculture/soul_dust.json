@@ -8,7 +8,7 @@
     "ore_style": "resource_farm:nether_quartz",
     "grower": "resource_farm:birch",
     "light_level": 0,
-    "color": "0X554034"
+    "color": "0X794A32"
   },
   "fertilize": {
     "main_item": "mysticalagriculture:soul_dust",

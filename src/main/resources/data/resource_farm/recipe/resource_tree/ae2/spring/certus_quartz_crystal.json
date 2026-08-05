@@ -1,0 +1,22 @@
+{
+  "type": "ae2:inscriber",
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "ae2:certus_quartz_crystal"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
+    }
+  ],
+  "ingredients": {
+    "bottom": "ae2:quartz_block",
+    "middle": "#minecraft:saplings",
+    "top": "ae2:quartz_block"
+  },
+  "mode": "press",
+  "result": {
+    "id": "resource_farm:ae2_certus_quartz_crystal_sapling"
+  }
+}

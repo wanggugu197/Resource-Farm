@@ -1,0 +1,19 @@
+{
+  "group": "ae2",
+  "item": "ae2:fluix_crystal",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:acacia",
+    "ore_style": "resource_farm:diamond",
+    "grower": "resource_farm:acacia",
+    "light_level": 4,
+    "color": "0X7356AD"
+  },
+  "fertilize": {
+    "main_item": "ae2:fluix_dust",
+    "main_chance": 0.8
+  },
+  "growth_frequency": 15,
+  "custom_place_block": "ae2:fluix_block"
+}

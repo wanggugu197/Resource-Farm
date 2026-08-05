@@ -8,7 +8,7 @@
     "ore_style": "resource_farm:crack",
     "grower": "resource_farm:cherry",
     "light_level": 15,
-    "color": "0XB06600"
+    "color": "0XFFA700"
   },
   "fertilize": {
     "main_item": "mysticalagriculture:cognizant_dust",

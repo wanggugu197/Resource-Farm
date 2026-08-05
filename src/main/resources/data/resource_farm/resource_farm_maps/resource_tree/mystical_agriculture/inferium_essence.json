@@ -8,7 +8,7 @@
     "ore_style": "resource_farm:lapis",
     "grower": "resource_farm:spruce",
     "light_level": 2,
-    "color": "0X5E7100"
+    "color": "0X99B900"
   },
   "fertilize": {
     "main_item": "mysticalagriculture:inferium_essence",

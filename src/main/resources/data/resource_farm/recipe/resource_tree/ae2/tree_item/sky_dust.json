@@ -1,0 +1,29 @@
+{
+  "type": "ae2:transform",
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "ae2:sky_dust"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateTreeItemRecipes"
+    }
+  ],
+  "circumstance": {
+    "type": "fluid",
+    "tag": "minecraft:lava"
+  },
+  "ingredients": [
+    "resource_farm:ae2_sky_dust_resin",
+    "resource_farm:ae2_sky_dust_fruit",
+    "resource_farm:ae2_sky_dust_resin",
+    "resource_farm:ae2_sky_dust_resin",
+    "resource_farm:ae2_sky_dust_fruit",
+    "resource_farm:ae2_sky_dust_resin"
+  ],
+  "result": {
+    "count": 16,
+    "id": "ae2:sky_dust"
+  }
+}

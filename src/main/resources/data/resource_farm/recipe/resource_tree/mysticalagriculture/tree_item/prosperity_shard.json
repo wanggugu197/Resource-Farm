@@ -2,10 +2,6 @@
   "type": "mysticalagriculture:infusion",
   "neoforge:conditions": [
     {
-      "type": "neoforge:mod_loaded",
-      "modid": "mysticalagriculture"
-    },
-    {
       "type": "resource_farm:tree_exists",
       "tree_id": "mysticalagriculture:prosperity_shard"
     },

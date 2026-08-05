@@ -1,0 +1,29 @@
+{
+  "type": "ae2:transform",
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "ae2:certus_quartz_crystal"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateTreeItemRecipes"
+    }
+  ],
+  "circumstance": {
+    "type": "fluid",
+    "tag": "minecraft:lava"
+  },
+  "ingredients": [
+    "resource_farm:ae2_certus_quartz_crystal_resin",
+    "resource_farm:ae2_certus_quartz_crystal_fruit",
+    "resource_farm:ae2_certus_quartz_crystal_resin",
+    "resource_farm:ae2_certus_quartz_crystal_resin",
+    "resource_farm:ae2_certus_quartz_crystal_fruit",
+    "resource_farm:ae2_certus_quartz_crystal_resin"
+  ],
+  "result": {
+    "count": 4,
+    "id": "ae2:quartz_block"
+  }
+}

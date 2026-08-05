@@ -1,0 +1,19 @@
+{
+  "group": "ae2",
+  "item": "ae2:matter_ball",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:spruce",
+    "ore_style": "resource_farm:nether_quartz",
+    "grower": "resource_farm:spruce",
+    "light_level": 0,
+    "color": "0XFDFFFF"
+  },
+  "fertilize": {
+    "main_item": "ae2:matter_ball",
+    "main_chance": 0.8
+  },
+  "growth_frequency": 15,
+  "custom_place_block": "ae2:condenser"
+}

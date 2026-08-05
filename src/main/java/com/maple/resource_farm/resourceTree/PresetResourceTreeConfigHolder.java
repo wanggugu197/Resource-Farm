@@ -157,5 +157,19 @@ public class PresetResourceTreeConfigHolder {
                 "神秘农业联动？ Mystical Agriculture Linkage? Default: true"
         })
         public boolean mysticalAgriculture = true;
+
+        public boolean mysticalAgriculture() {
+            return mysticalAgriculture && ResourceFarm.isModLoaded("mysticalagriculture");
+        }
+
+        @Configurable
+        @Configurable.Comment({
+                "AE2联动？ AE2 Linkage? Default: true"
+        })
+        public boolean ae2 = true;
+
+        public boolean ae2() {
+            return ae2 && ResourceFarm.isModLoaded("ae2");
+        }
     }
 }

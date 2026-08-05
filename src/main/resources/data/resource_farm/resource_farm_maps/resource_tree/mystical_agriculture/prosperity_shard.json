@@ -8,7 +8,7 @@
     "ore_style": "resource_farm:diamond",
     "grower": "resource_farm:dark_oak",
     "light_level": 0,
-    "color": "0X8FB0B0"
+    "color": "0XEAFFFF"
   },
   "fertilize": {
     "main_item": "mysticalagriculture:prosperity_shard",

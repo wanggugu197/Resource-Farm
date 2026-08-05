@@ -13,6 +13,8 @@ mysticalagriculture = "26.1.2-9.0.4"
 mysticalagradditions = "26.1.2-9.0.1"
 mysticalautomation = "26.1.2-2.0.6"
 
+ae2 = "26.1.10-beta"
+
 [libraries]
 configuration       = { module = "dev.toma.configuration:configuration-neoforge", version.ref = "configuration" }
 
@@ -38,6 +40,8 @@ mysticalagradditions = { group = "com.blakebr0.mysticalagradditions", name = "My
 # https://maven.blakesmods.com/#/releases/com/blakebr0/mysticalautomation/MysticalAutomation
 mysticalautomation = { group = "com.blakebr0.mysticalautomation", name = "MysticalAutomation", version.ref = "mysticalautomation" }
 
+# https://central.sonatype.com/artifact/org.appliedenergistics/appliedenergistics2
+ae2 = { group = "org.appliedenergistics", name = "appliedenergistics2", version.ref = "ae2" }
 
 [bundles]
 jei = ["jei-neoforge-api", "jei-neoforge-impl"]

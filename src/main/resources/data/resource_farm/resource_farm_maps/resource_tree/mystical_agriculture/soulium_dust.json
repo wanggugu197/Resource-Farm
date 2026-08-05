@@ -8,7 +8,7 @@
     "ore_style": "resource_farm:gold",
     "grower": "resource_farm:birch",
     "light_level": 0,
-    "color": "0X4A2D1F"
+    "color": "0X8B6855"
   },
   "fertilize": {
     "main_item": "mysticalagriculture:soulium_dust",

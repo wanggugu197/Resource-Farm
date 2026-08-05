@@ -1,0 +1,19 @@
+{
+  "group": "ae2",
+  "item": "ae2:certus_quartz_crystal",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:dark_oak",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:dark_oak",
+    "light_level": 4,
+    "color": "0XBFFFFF"
+  },
+  "fertilize": {
+    "main_item": "ae2:certus_quartz_dust",
+    "main_chance": 0.8
+  },
+  "growth_frequency": 10,
+  "custom_place_block": "ae2:quartz_block"
+}
