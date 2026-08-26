@@ -47,6 +47,7 @@ public class TreeTagInsert {
     private static final Identifier ITEM_TAG_STRIPPED_LOGS = RLUtils.parse("c:stripped_logs");
     private static final Identifier ITEM_TAG_STRIPPED_WOODS = RLUtils.parse("c:stripped_woods");
     private static final Identifier ITEM_TAG_PLANKS = ItemTags.PLANKS.location();
+    private static final Identifier ITEM_TAG_WOODEN_TOOL_MATERIALS = ItemTags.WOODEN_TOOL_MATERIALS.location();
 
     private static final Identifier ITEM_TAG_RESOURCE_SAPLING = ResourceFarmItemTags.RESOURCE_SAPLING.location();
     private static final Identifier ITEM_TAG_RESOURCE_LEAVES = ResourceFarmItemTags.RESOURCE_LEAVES.location();
@@ -158,6 +159,7 @@ public class TreeTagInsert {
             if (PLANKS_ENABLED) {
                 Identifier planks = id(resourceTree.getPlanks());
                 addTagMember(map, ITEM_TAG_PLANKS, planks);
+                addTagMember(map, ITEM_TAG_WOODEN_TOOL_MATERIALS, planks);
                 addTagMember(map, ITEM_TAG_RESOURCE_PLANKS, planks);
             }
 
