@@ -26,8 +26,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:redwood_sapling",
-  "soils": [
-    "#resource_farm:tree_soils"
-  ]
+  "seed": {"item": "biomesoplenty:redwood_sapling"},
+  "soils": [{"tag": "resource_farm:tree_soils"}]
 }

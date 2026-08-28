@@ -19,15 +19,8 @@
       "item": "mysticalagriculture:cow_seeds"
     }
   ],
-  "seed": "mysticalagriculture:cow_seeds",
-  "soils": [
-    "#resource_farm:farmland_soils",
-    "#resource_farm:tier_1_soils",
-    "#resource_farm:tier_2_soils",
-    "#resource_farm:tier_3_soils",
-    "#resource_farm:tier_4_soils",
-    "#resource_farm:tier_5_soils"
-  ],
+  "seed": {"item": "mysticalagriculture:cow_seeds"},
+  "soils": [{"tag": "resource_farm:farmland_soils"}, {"tag": "resource_farm:tier_1_soils"}, {"tag": "resource_farm:tier_2_soils"}, {"tag": "resource_farm:tier_3_soils"}, {"tag": "resource_farm:tier_4_soils"}, {"tag": "resource_farm:tier_5_soils"}],
   "duration": 1500,
   "fertilizable": true
 }

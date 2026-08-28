@@ -1,0 +1,19 @@
+{
+  "group": "create",
+  "item": "create:precision_mechanism",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:acacia",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:acacia",
+    "light_level": 0,
+    "color": "0xD09F54"
+  },
+  "fertilize": {
+    "main_item": "minecraft:gold_ingot",
+    "main_chance": 0.6
+  },
+  "growth_frequency": 50,
+  "custom_place_block": "create:rotation_speed_controller"
+}

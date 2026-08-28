@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:sunflower",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "minecraft:sunflower"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

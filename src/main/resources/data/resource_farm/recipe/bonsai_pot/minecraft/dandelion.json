@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:dandelion",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "minecraft:dandelion"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:torchflower_seeds",
-  "soils": [
-    "#resource_farm:farmland_soils"
-  ]
+  "seed": {"item": "minecraft:torchflower_seeds"},
+  "soils": [{"tag": "resource_farm:farmland_soils"}]
 }

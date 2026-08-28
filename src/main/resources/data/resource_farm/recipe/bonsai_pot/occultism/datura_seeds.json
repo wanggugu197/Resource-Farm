@@ -7,10 +7,8 @@
   ],
   "type": "resource_farm:growth",
   "renderer": "crop",
-  "seed": "occultism:datura_seeds",
-  "soils": [
-    "#resource_farm:farmland_soils"
-  ],
+  "seed": {"item": "occultism:datura_seeds"},
+  "soils": [{"tag": "resource_farm:farmland_soils"}],
   "output": [
     {
       "item": "occultism:datura",

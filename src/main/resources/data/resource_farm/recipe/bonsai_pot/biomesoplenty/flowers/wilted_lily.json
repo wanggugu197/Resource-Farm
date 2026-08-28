@@ -15,8 +15,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:wilted_lily",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "biomesoplenty:wilted_lily"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

@@ -5,8 +5,8 @@ import com.maple.resource_farm.resourceTree.data.dataMaps.ResourceFarmMaps;
 
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryOps;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -33,20 +33,20 @@ import static com.maple.resource_farm.resourceTree.ResourceTreeAccessManagement.
  */
 public final class ResourceTreeFeatures {
 
-    private static final Identifier FALLBACK = Identifier.withDefaultNamespace("oak");
+    private static final ResourceLocation FALLBACK = ResourceLocation.withDefaultNamespace("oak");
 
     /** 已成功解析的结构缓存：configured_feature id → 结构骨架 */
-    private static final Object2ObjectOpenHashMap<Identifier, ResourceTreeConfiguration> CONFIG_CACHE = new Object2ObjectOpenHashMap<>();
+    private static final Object2ObjectOpenHashMap<ResourceLocation, ResourceTreeConfiguration> CONFIG_CACHE = new Object2ObjectOpenHashMap<>();
 
     /** 确认不存在或解析失败的 id，避免重复读盘 */
-    private static final ObjectOpenHashSet<Identifier> MISSING = new ObjectOpenHashSet<>();
+    private static final ObjectOpenHashSet<ResourceLocation> MISSING = new ObjectOpenHashSet<>();
 
     private ResourceTreeFeatures() {}
 
     /**
      * 是否可解析为树结构配置（会触发懒加载并缓存结果）。
      */
-    public static boolean isAvailable(Identifier featureId) {
+    public static boolean isAvailable(ResourceLocation featureId) {
         return featureId != null && getOrLoad(featureId) != null;
     }
 
@@ -54,7 +54,7 @@ public final class ResourceTreeFeatures {
      * 按需加载并返回结构骨架；失败返回 null（并记入缺失缓存）。
      */
     @Nullable
-    public static ResourceTreeConfiguration getOrLoad(Identifier featureId) {
+    public static ResourceTreeConfiguration getOrLoad(ResourceLocation featureId) {
         if (featureId == null) {
             return null;
         }
@@ -78,7 +78,7 @@ public final class ResourceTreeFeatures {
     /**
      * 为指定资源树构建可放置的 {@link ConfiguredFeature}（注入该树的原木/树叶）。
      */
-    public static ConfiguredFeature<?, ?> getResourceTreeConfiguredFeature(String treeId, Identifier styleId) {
+    public static ConfiguredFeature<?, ?> getResourceTreeConfiguredFeature(String treeId, ResourceLocation styleId) {
         ResourceTreeConfiguration structure = resolveStructure(styleId);
 
         var treeHolder = ResourceTreeMap.get(treeId);
@@ -94,7 +94,7 @@ public final class ResourceTreeFeatures {
         return new ConfiguredFeature<>(Feature.TREE, config);
     }
 
-    private static ResourceTreeConfiguration resolveStructure(Identifier styleId) {
+    private static ResourceTreeConfiguration resolveStructure(ResourceLocation styleId) {
         ResourceTreeConfiguration structure = getOrLoad(styleId);
         if (structure != null) {
             return structure;
@@ -115,7 +115,7 @@ public final class ResourceTreeFeatures {
      * 仅接受 {@code type = minecraft:tree}（或其 config 直接是 TreeConfiguration）。
      */
     @Nullable
-    private static ResourceTreeConfiguration loadFromConfiguredFeatureJson(Identifier id) {
+    private static ResourceTreeConfiguration loadFromConfiguredFeatureJson(ResourceLocation id) {
         String relativePath = "data/" + id.getNamespace() + "/" + id.getPath() + ".json";
         try (InputStream in = ResourceFarmMaps.openRelative(relativePath)) {
             if (in == null) {
@@ -135,7 +135,7 @@ public final class ResourceTreeFeatures {
     }
 
     @Nullable
-    private static TreeConfiguration parseTreeConfiguration(InputStream in, Identifier id) {
+    private static TreeConfiguration parseTreeConfiguration(InputStream in, ResourceLocation id) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
             JsonElement json = JsonParser.parseReader(reader);
             if (!json.isJsonObject()) {
@@ -146,10 +146,10 @@ public final class ResourceTreeFeatures {
             JsonElement configElement;
             if (obj.has("config")) {
                 if (obj.has("type")) {
-                    Identifier typeId = Identifier.CODEC.parse(JsonOps.INSTANCE, obj.get("type"))
+                    ResourceLocation typeId = ResourceLocation.CODEC.parse(JsonOps.INSTANCE, obj.get("type"))
                             .result()
                             .orElse(null);
-                    if (typeId != null && !typeId.equals(Identifier.withDefaultNamespace("tree"))) {
+                    if (typeId != null && !typeId.equals(ResourceLocation.withDefaultNamespace("tree"))) {
                         ResourceFarm.LOGGER.error(
                                 "[ResourceFarm] configured_feature {} type is {}, expected minecraft:tree",
                                 id, typeId);

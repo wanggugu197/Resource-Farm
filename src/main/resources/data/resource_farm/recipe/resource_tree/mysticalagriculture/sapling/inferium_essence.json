@@ -1,27 +1,45 @@
 {
-  "type": "mysticalagriculture:infusion",
-  "neoforge:conditions": [
-    {
-      "type": "resource_farm:tree_exists",
-      "tree_id": "mysticalagriculture:inferium_essence"
-    },
-    {
-      "type": "resource_farm:config",
-      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
-    }
-  ],
-  "input": "#minecraft:saplings",
-  "ingredients": [
-    "mysticalagriculture:inferium_block",
-    "mysticalagriculture:inferium_block",
-    "mysticalagriculture:inferium_block",
-    "mysticalagriculture:inferium_block",
-    "mysticalagriculture:inferium_block",
-    "mysticalagriculture:inferium_block",
-    "mysticalagriculture:inferium_block",
-    "mysticalagriculture:inferium_block"
-  ],
-  "result": {
-    "id": "resource_farm:mysticalagriculture_inferium_essence_sapling"
-  }
+    "type":  "mysticalagriculture:infusion",
+    "neoforge:conditions":  [
+                                {
+                                    "type":  "resource_farm:tree_exists",
+                                    "tree_id":  "mysticalagriculture:inferium_essence"
+                                },
+                                {
+                                    "type":  "resource_farm:config",
+                                    "config_id":  "tree.recipeGeneration.generateSaplingRecipes"
+                                }
+                            ],
+    "input":  {
+                  "tag":  "minecraft:saplings"
+              },
+    "ingredients":  [
+                        {
+                            "item":  "mysticalagriculture:inferium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:inferium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:inferium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:inferium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:inferium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:inferium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:inferium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:inferium_block"
+                        }
+                    ],
+    "result":  {
+                   "id":  "resource_farm:mysticalagriculture_inferium_essence_sapling"
+               }
 }

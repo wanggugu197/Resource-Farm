@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:pitcher_pod",
-  "soils": [
-    "#resource_farm:farmland_soils"
-  ]
+  "seed": {"item": "minecraft:pitcher_pod"},
+  "soils": [{"tag": "resource_farm:farmland_soils"}]
 }

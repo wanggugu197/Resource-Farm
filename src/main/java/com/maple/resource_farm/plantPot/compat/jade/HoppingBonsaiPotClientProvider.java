@@ -3,9 +3,9 @@ package com.maple.resource_farm.plantPot.compat.jade;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -16,18 +16,18 @@ public enum HoppingBonsaiPotClientProvider implements IBlockComponentProvider {
     INSTANCE;
 
     @Override
-    public @NonNull Identifier getUid() {
+    public @NotNull ResourceLocation getUid() {
         return HoppingBonsaiPotProvider.UID;
     }
 
     @Override
-    public void appendTooltip(@NonNull ITooltip tooltip, BlockAccessor accessor, @NonNull IPluginConfig config) {
+    public void appendTooltip(@NotNull ITooltip tooltip, BlockAccessor accessor, @NotNull IPluginConfig config) {
         CompoundTag data = accessor.getServerData();
-        int isCloched = data.getIntOr("isCloched", 0);
+        int isCloched = data.getInt("isCloched");
         if (isCloched != 0) {
-            String clocheName = data.getStringOr("clocheName", "");
-            float clocheSpeed = data.getFloatOr("clocheSpeedModifier", 1f);
-            float clocheYield = data.getFloatOr("clocheYieldModifier", 1f);
+            String clocheName = data.getString("clocheName");
+            float clocheSpeed = data.contains("clocheSpeedModifier") ? data.getFloat("clocheSpeedModifier") : 1f;
+            float clocheYield = data.contains("clocheYieldModifier") ? data.getFloat("clocheYieldModifier") : 1f;
             tooltip.add(Component.translatable("jade.resource_farm.cloche_installed",
                     clocheName,
                     String.format("%.2f", clocheSpeed),

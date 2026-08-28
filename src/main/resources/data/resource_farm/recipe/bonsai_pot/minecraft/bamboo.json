@@ -9,8 +9,6 @@
       "min": 2
     }
   ],
-  "seed": "minecraft:bamboo",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "minecraft:bamboo"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

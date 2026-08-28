@@ -2,7 +2,7 @@ package com.maple.resource_farm.resourceTree.data;
 
 import com.maple.resource_farm.resourceTree.data.dataMaps.ResourceTreeConfig;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.util.Lazy;
@@ -29,7 +29,7 @@ public class ResourceTree {
     private Lazy<String> translateKey;
 
     @Setter
-    private Identifier treeConfigKey;
+    private ResourceLocation treeConfigKey;
     @Setter
     private BlockEntry<? extends Block> sapling;
     @Setter

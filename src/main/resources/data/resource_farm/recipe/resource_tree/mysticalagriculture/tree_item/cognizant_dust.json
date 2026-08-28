@@ -1,27 +1,45 @@
 {
-  "type": "mysticalagriculture:infusion",
-  "neoforge:conditions": [
-    {
-      "type": "resource_farm:tree_exists",
-      "tree_id": "mysticalagriculture:cognizant_dust"
-    },
-    {
-      "type": "resource_farm:config",
-      "config_id": "tree.recipeGeneration.generateTreeItemRecipes"
-    }
-  ],
-  "input": "#minecraft:saplings",
-  "ingredients": [
-    "resource_farm:mysticalagriculture_cognizant_dust_resin",
-    "resource_farm:mysticalagriculture_cognizant_dust_fruit",
-    "resource_farm:mysticalagriculture_cognizant_dust_resin",
-    "resource_farm:mysticalagriculture_cognizant_dust_fruit",
-    "resource_farm:mysticalagriculture_cognizant_dust_resin",
-    "resource_farm:mysticalagriculture_cognizant_dust_fruit",
-    "resource_farm:mysticalagriculture_cognizant_dust_resin",
-    "resource_farm:mysticalagriculture_cognizant_dust_fruit"
-  ],
-  "result": {
-    "id": "mysticalagriculture:cognizant_dust"
-  }
+    "type":  "mysticalagriculture:infusion",
+    "neoforge:conditions":  [
+                                {
+                                    "type":  "resource_farm:tree_exists",
+                                    "tree_id":  "mysticalagriculture:cognizant_dust"
+                                },
+                                {
+                                    "type":  "resource_farm:config",
+                                    "config_id":  "tree.recipeGeneration.generateTreeItemRecipes"
+                                }
+                            ],
+    "input":  {
+                  "tag":  "minecraft:saplings"
+              },
+    "ingredients":  [
+                        {
+                            "item":  "resource_farm:mysticalagriculture_cognizant_dust_resin"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_cognizant_dust_fruit"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_cognizant_dust_resin"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_cognizant_dust_fruit"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_cognizant_dust_resin"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_cognizant_dust_fruit"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_cognizant_dust_resin"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_cognizant_dust_fruit"
+                        }
+                    ],
+    "result":  {
+                   "id":  "mysticalagriculture:cognizant_dust"
+               }
 }

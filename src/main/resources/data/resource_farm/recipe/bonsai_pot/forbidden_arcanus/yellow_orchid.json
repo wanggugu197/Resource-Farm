@@ -7,11 +7,8 @@
   ],
   "type": "resource_farm:growth",
   "renderer": "crop",
-  "seed": "forbidden_arcanus:yellow_orchid",
-  "soils": [
-    "#resource_farm:farmland_soils",
-    "#resource_farm:dirt_soils"
-  ],
+  "seed": {"item": "forbidden_arcanus:yellow_orchid"},
+  "soils": [{"tag": "resource_farm:farmland_soils"}, {"tag": "resource_farm:dirt_soils"}],
   "output": [
     {
       "item": "forbidden_arcanus:yellow_orchid",

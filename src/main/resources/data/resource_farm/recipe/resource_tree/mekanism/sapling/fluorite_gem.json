@@ -1,0 +1,25 @@
+{
+  "type": "mekanism:combining",
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "mekanism:fluorite_gem"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
+    }
+  ],
+  "main_input": {
+    "count": 1,
+    "tag": "minecraft:saplings"
+  },
+  "extra_input": {
+    "count": 1,
+    "item": "mekanism:block_fluorite"
+  },
+  "output": {
+    "count": 1,
+    "id": "resource_farm:mekanism_fluorite_gem_sapling"
+  }
+}

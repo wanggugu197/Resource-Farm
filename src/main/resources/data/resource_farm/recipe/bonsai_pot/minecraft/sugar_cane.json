@@ -9,9 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:sugar_cane",
-  "soils": [
-    "#resource_farm:dirt_soils",
-    "#resource_farm:sand_soils"
-  ]
+  "seed": {"item": "minecraft:sugar_cane"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}, {"tag": "resource_farm:sand_soils"}]
 }

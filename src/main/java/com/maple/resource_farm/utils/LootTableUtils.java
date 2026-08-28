@@ -2,19 +2,16 @@ package com.maple.resource_farm.utils;
 
 import com.maple.resource_farm.api.ItemWeightCountHolder;
 
-import net.minecraft.advancements.criterion.DataComponentMatchers;
-import net.minecraft.advancements.criterion.EnchantmentPredicate;
-import net.minecraft.advancements.criterion.ItemPredicate;
-import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.predicates.DataComponentPredicates;
-import net.minecraft.core.component.predicates.EnchantmentsPredicate;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.component.DataComponentPredicate;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -40,16 +37,15 @@ import static net.minecraft.world.level.storage.loot.providers.number.ConstantVa
 
 public class LootTableUtils {
 
-    protected static final LootItemCondition.Builder HAS_SHEARS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(BuiltInRegistries.ITEM, Items.SHEARS));
+    protected static final LootItemCondition.Builder HAS_SHEARS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS));
 
     private static LootItemCondition.Builder hasSilkTouch(HolderLookup.Provider registries) {
         Holder<Enchantment> silkTouch = registries.lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH);
+        ItemEnchantments.Mutable enchantments = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+        enchantments.set(silkTouch, 1);
         return MatchTool.toolMatches(ItemPredicate.Builder.item()
-                .withComponents(DataComponentMatchers.Builder.components()
-                        .partial(
-                                DataComponentPredicates.ENCHANTMENTS,
-                                EnchantmentsPredicate.enchantments(
-                                        List.of(new EnchantmentPredicate(silkTouch, MinMaxBounds.Ints.atLeast(1)))))
+                .hasComponents(DataComponentPredicate.builder()
+                        .expect(DataComponents.ENCHANTMENTS, enchantments.toImmutable())
                         .build()));
     }
 

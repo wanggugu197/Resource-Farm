@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:lily_of_the_valley",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "minecraft:lily_of_the_valley"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

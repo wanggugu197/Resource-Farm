@@ -15,8 +15,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:orange_cosmos",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "biomesoplenty:orange_cosmos"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

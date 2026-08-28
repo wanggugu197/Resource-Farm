@@ -1,0 +1,26 @@
+// 1.21.1	2026-08-28T20:47:44.5295409	RegistryCore Provider for resource_farm [RegistryLib Recipe Runner for resource_farm, Loot Tables, Advancements, Datapack Registries, Tags (enchantments), Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), RegistryLib Model Provider for resource_farm, Lang (Languages: en_us for mod: resource_farm), resource_farm, Lang (Languages: en_ud for mod: resource_farm), Lang (Languages: zh_cn for mod: resource_farm), Lang (Languages: zh_tw for mod: resource_farm), Lang (Languages: ja_jp for mod: resource_farm), Lang (Languages: ru_ru for mod: resource_farm), Lang (Languages: fr_fr for mod: resource_farm), Lang (Languages: de_de for mod: resource_farm), Lang (Languages: es_es for mod: resource_farm), Lang (Languages: pt_pt for mod: resource_farm), Lang (Languages: it_it for mod: resource_farm), Lang (Languages: ko_kr for mod: resource_farm)]
+bd4180f1ebc650b7134968cbfbda1ccfc9fb06e6 assets/resource_farm/blockstates/bonsai_pot.json
+22cb7521475f4f5d5ec66a5695821509834b1253 assets/resource_farm/blockstates/hopping_bonsai_pot.json
+8349cc44939f715a38835e2e02c568f891d537ed assets/resource_farm/lang/en_us.json
+f70e7d8ba8c877c38932c0235865d01461170cb5 assets/resource_farm/lang/zh_cn.json
+b76f79ba58cfd82682e9bc91fe951bf59a1f2ce2 assets/resource_farm/models/item/advanced_cloche.json
+bd46d357bb720053c8df029b21fe2e11d03ef304 assets/resource_farm/models/item/bonsai_pot.json
+b76f79ba58cfd82682e9bc91fe951bf59a1f2ce2 assets/resource_farm/models/item/elite_cloche.json
+b76f79ba58cfd82682e9bc91fe951bf59a1f2ce2 assets/resource_farm/models/item/glass_cloche.json
+345bdf99d09e618905f961e974626102aacd5137 assets/resource_farm/models/item/hopping_bonsai_pot.json
+b76f79ba58cfd82682e9bc91fe951bf59a1f2ce2 assets/resource_farm/models/item/ultimate_cloche.json
+e33d7ee975152d8d88781c29128e58725867dd21 data/minecraft/tags/block/mineable/pickaxe.json
+b70f781bcf5ac2183a2c0e91e1821eaa162652a5 data/resource_farm/advancement/recipes/misc/advanced_cloche.json
+77484dd59dfa0f0a35fe6a0b7d6222ea21fec8bc data/resource_farm/advancement/recipes/misc/bonsai_pot.json
+e2479fe1fc505090c25c008acf7a91b0376b730f data/resource_farm/advancement/recipes/misc/elite_cloche.json
+d1724b5c75428a87984dc0b4e86c5d69d768c985 data/resource_farm/advancement/recipes/misc/glass_cloche.json
+81b5fcc275f3f66e5070efafa2d9fc18b66acdfd data/resource_farm/advancement/recipes/misc/hopping_bonsai_pot.json
+825e636961d5ca1530b04d54d87fa67d53daeb59 data/resource_farm/advancement/recipes/misc/ultimate_cloche.json
+406d4a13d0249c2e197e3c749886ce0fb51881c0 data/resource_farm/loot_table/blocks/bonsai_pot.json
+772b2aae0871b38c6344b7e10de352a22feceb16 data/resource_farm/loot_table/blocks/hopping_bonsai_pot.json
+51d14c5509e6bc5a79334f3f7909d901e22c924a data/resource_farm/recipe/advanced_cloche.json
+be587b4bee6243030ef9d8d21739c96a12cd56fe data/resource_farm/recipe/bonsai_pot.json
+2cd789f14c8983100726edda667b3da5ba55c9c2 data/resource_farm/recipe/elite_cloche.json
+c762606a6d53be4f1fd2e6d97bd86a9aa84849cf data/resource_farm/recipe/glass_cloche.json
+2d91b4e616c9b083692907b3460400e4f5ff4f09 data/resource_farm/recipe/hopping_bonsai_pot.json
+4836c3c5ff4599676d56b8460557a05ca64b415e data/resource_farm/recipe/ultimate_cloche.json

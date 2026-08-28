@@ -9,12 +9,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -117,10 +117,10 @@ public class ResourceSaplingBlock extends SaplingBlock {
     }
 
     @Override
-    protected @NotNull InteractionResult useItemOn(ItemStack stack, @NotNull BlockState state, @NotNull Level level,
-                                                   @NotNull BlockPos pos, @NotNull Player player,
-                                                   @NotNull InteractionHand hand,
-                                                   @NotNull BlockHitResult hitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack stack, @NotNull BlockState state, @NotNull Level level,
+                                                       @NotNull BlockPos pos, @NotNull Player player,
+                                                       @NotNull InteractionHand hand,
+                                                       @NotNull BlockHitResult hitResult) {
         Item heldItem = stack.getItem();
         double successChance;
 
@@ -129,7 +129,7 @@ public class ResourceSaplingBlock extends SaplingBlock {
         } else if (heldItem == fertilizeSetting.secondaryRipeningItem().get()) {
             successChance = fertilizeSetting.secondaryChance();
         } else {
-            return InteractionResult.TRY_WITH_EMPTY_HAND;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (!level.isClientSide()) {
@@ -139,11 +139,11 @@ public class ResourceSaplingBlock extends SaplingBlock {
                 this.advanceTree(serverLevel, pos, state, random);
                 if (!player.isCreative()) stack.shrink(1);
                 level.levelEvent(player, 2005, pos, 0);
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(level.isClientSide());
             }
         }
 
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override
@@ -164,7 +164,7 @@ public class ResourceSaplingBlock extends SaplingBlock {
                     customPlaceBlock.get().getName().copy().withStyle(ChatFormatting.YELLOW))));
         }
         if (customPlaceBlockTag != null) {
-            Identifier tagRL = customPlaceBlockTag.location();
+            ResourceLocation tagRL = customPlaceBlockTag.location();
             collector.node(new SubNode.Basic(Component.translatable(
                     "tooltip.resource_farm.sapling.placed_on_block_tag",
                     Component.translatable(String.format("tag.block.%s.%s", tagRL.getNamespace(), tagRL.getPath()))

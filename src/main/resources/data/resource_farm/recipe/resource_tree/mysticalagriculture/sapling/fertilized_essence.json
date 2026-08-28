@@ -1,27 +1,45 @@
 {
-  "type": "mysticalagriculture:infusion",
-  "neoforge:conditions": [
-    {
-      "type": "resource_farm:tree_exists",
-      "tree_id": "mysticalagriculture:fertilized_essence"
-    },
-    {
-      "type": "resource_farm:config",
-      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
-    }
-  ],
-  "input": "#minecraft:saplings",
-  "ingredients": [
-    "mysticalagriculture:mystical_fertilizer",
-    "mysticalagriculture:fertilized_essence",
-    "mysticalagriculture:mystical_fertilizer",
-    "mysticalagriculture:fertilized_essence",
-    "mysticalagriculture:mystical_fertilizer",
-    "mysticalagriculture:fertilized_essence",
-    "mysticalagriculture:mystical_fertilizer",
-    "mysticalagriculture:fertilized_essence"
-  ],
-  "result": {
-    "id": "resource_farm:mysticalagriculture_fertilized_essence_sapling"
-  }
+    "type":  "mysticalagriculture:infusion",
+    "neoforge:conditions":  [
+                                {
+                                    "type":  "resource_farm:tree_exists",
+                                    "tree_id":  "mysticalagriculture:fertilized_essence"
+                                },
+                                {
+                                    "type":  "resource_farm:config",
+                                    "config_id":  "tree.recipeGeneration.generateSaplingRecipes"
+                                }
+                            ],
+    "input":  {
+                  "tag":  "minecraft:saplings"
+              },
+    "ingredients":  [
+                        {
+                            "item":  "mysticalagriculture:mystical_fertilizer"
+                        },
+                        {
+                            "item":  "mysticalagriculture:fertilized_essence"
+                        },
+                        {
+                            "item":  "mysticalagriculture:mystical_fertilizer"
+                        },
+                        {
+                            "item":  "mysticalagriculture:fertilized_essence"
+                        },
+                        {
+                            "item":  "mysticalagriculture:mystical_fertilizer"
+                        },
+                        {
+                            "item":  "mysticalagriculture:fertilized_essence"
+                        },
+                        {
+                            "item":  "mysticalagriculture:mystical_fertilizer"
+                        },
+                        {
+                            "item":  "mysticalagriculture:fertilized_essence"
+                        }
+                    ],
+    "result":  {
+                   "id":  "resource_farm:mysticalagriculture_fertilized_essence_sapling"
+               }
 }

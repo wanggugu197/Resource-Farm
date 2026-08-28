@@ -1,22 +1,28 @@
 {
-  "type": "ae2:inscriber",
-  "neoforge:conditions": [
-    {
-      "type": "resource_farm:tree_exists",
-      "tree_id": "ae2:sky_dust"
-    },
-    {
-      "type": "resource_farm:config",
-      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
-    }
-  ],
-  "ingredients": {
-    "bottom": "ae2:smooth_sky_stone_block",
-    "middle": "#minecraft:saplings",
-    "top": "ae2:smooth_sky_stone_block"
-  },
-  "mode": "press",
-  "result": {
-    "id": "resource_farm:ae2_sky_dust_sapling"
-  }
+    "type":  "ae2:inscriber",
+    "neoforge:conditions":  [
+                                {
+                                    "tree_id":  "ae2:sky_dust",
+                                    "type":  "resource_farm:tree_exists"
+                                },
+                                {
+                                    "config_id":  "tree.recipeGeneration.generateSaplingRecipes",
+                                    "type":  "resource_farm:config"
+                                }
+                            ],
+    "ingredients":  {
+                        "bottom":  {
+                                       "item":  "ae2:smooth_sky_stone_block"
+                                   },
+                        "top":  {
+                                    "item":  "ae2:smooth_sky_stone_block"
+                                },
+                        "middle":  {
+                                       "tag":  "minecraft:saplings"
+                                   }
+                    },
+    "mode":  "press",
+    "result":  {
+                   "id":  "resource_farm:ae2_sky_dust_sapling"
+               }
 }

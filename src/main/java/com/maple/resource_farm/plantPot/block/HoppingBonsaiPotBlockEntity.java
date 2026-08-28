@@ -1,7 +1,6 @@
 package com.maple.resource_farm.plantPot.block;
 
 import com.maple.resource_farm.plantPot.ResourcePlantPotRegister;
-import com.maple.resource_farm.utils.DelegatingResourceHandlers;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,17 +13,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.transfer.CombinedResourceHandler;
-import net.neoforged.neoforge.transfer.ResourceHandler;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
+import net.neoforged.neoforge.items.IItemHandler;
 
 import com.lowdragmc.lowdraglib2.syncdata.annotation.DescSynced;
 import com.lowdragmc.lowdraglib2.syncdata.annotation.Persisted;
 import com.mapleutillib.api.resource.ObservableItemResourceHandler;
 import lombok.Getter;
 import lombok.Setter;
-import org.jspecify.annotations.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,14 +48,57 @@ public class HoppingBonsaiPotBlockEntity extends BonsaiPotBlockEntity {
     private int clochedTier = 0;
 
     @Getter
-    private final ResourceHandler<ItemResource> itemCapability;
+    private final IItemHandler itemCapability = new IItemHandler() {
+
+        private final ObservableItemResourceHandler fertilizer = HoppingBonsaiPotBlockEntity.this.fertilizerInventory;
+        private final ObservableItemResourceHandler output = HoppingBonsaiPotBlockEntity.this.outputInventory;
+
+        @Override
+        public int getSlots() {
+            return fertilizer.size() + output.size();
+        }
+
+        @Override
+        public ItemStack getStackInSlot(int slot) {
+            if (slot < fertilizer.size()) {
+                return fertilizer.getStackInSlot(slot);
+            }
+            return output.getStackInSlot(slot - fertilizer.size());
+        }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
+            if (slot < fertilizer.size()) {
+                return fertilizer.insertItem(slot, stack, simulate);
+            }
+            return stack; // 输出槽：只允许提取
+        }
+
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            if (slot < fertilizer.size()) {
+                return ItemStack.EMPTY; // 肥料槽：只允许插入
+            }
+            return output.extractItem(slot - fertilizer.size(), amount, simulate);
+        }
+
+        @Override
+        public int getSlotLimit(int slot) {
+            if (slot < fertilizer.size()) {
+                return fertilizer.getSlotLimit(slot);
+            }
+            return output.getSlotLimit(slot - fertilizer.size());
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return slot < fertilizer.size() && fertilizer.isItemValid(slot, stack);
+        }
+    };
 
     // ========== 构造 ==========
     public HoppingBonsaiPotBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
-        this.itemCapability = new CombinedResourceHandler<>(
-                new DelegatingResourceHandlers.InsertOnly<>(fertilizerInventory),
-                new DelegatingResourceHandlers.ExtractOnly<>(outputInventory));
     }
 
     // ============================================================
@@ -70,15 +108,10 @@ public class HoppingBonsaiPotBlockEntity extends BonsaiPotBlockEntity {
     public ItemStack getStack(int slot) {
         return switch (slot) {
             case 0, 1 -> super.getStack(slot);
-            case FERTILIZER_SLOT -> {
-                ItemResource res = fertilizerInventory.getResource(0);
-                yield res.isEmpty() ? ItemStack.EMPTY : res.toStack(fertilizerInventory.getAmountAsInt(0));
-            }
+            case FERTILIZER_SLOT -> fertilizerInventory.getStackInSlot(0);
             default -> {
                 if (slot >= OUTPUT_SLOT_START && slot <= OUTPUT_SLOT_END) {
-                    int idx = slot - OUTPUT_SLOT_START;
-                    ItemResource res = outputInventory.getResource(idx);
-                    yield res.isEmpty() ? ItemStack.EMPTY : res.toStack(outputInventory.getAmountAsInt(idx));
+                    yield outputInventory.getStackInSlot(slot - OUTPUT_SLOT_START);
                 }
                 yield ItemStack.EMPTY;
             }
@@ -99,13 +132,12 @@ public class HoppingBonsaiPotBlockEntity extends BonsaiPotBlockEntity {
 
         for (ItemStack drop : drops) {
             int remaining = drop.getCount();
-            ItemResource resource = ItemResource.of(drop);
 
             // 1. 尝试插入已有同种物品的槽位
-            remaining = tryInsertIntoExistingSlots(resource, drop.getItem(), remaining);
+            remaining = tryInsertIntoExistingSlots(drop, drop.getItem(), remaining);
 
             // 2. 尝试插入空槽位
-            remaining = tryInsertIntoEmptySlots(resource, drop, remaining);
+            remaining = tryInsertIntoEmptySlots(drop, remaining);
 
             // 3. 剩余部分掉落为物品实体
             if (remaining > 0) {
@@ -121,7 +153,7 @@ public class HoppingBonsaiPotBlockEntity extends BonsaiPotBlockEntity {
     /**
      * 尝试将剩余物品插入已有同种物品的槽位（优先填满已有堆）
      */
-    private int tryInsertIntoExistingSlots(ItemResource resource, Item item, int amount) {
+    private int tryInsertIntoExistingSlots(ItemStack drop, Item item, int amount) {
         int remaining = amount;
         for (int slot = OUTPUT_SLOT_START; slot <= OUTPUT_SLOT_END && remaining > 0; slot++) {
             ItemStack existing = getStack(slot);
@@ -131,11 +163,8 @@ public class HoppingBonsaiPotBlockEntity extends BonsaiPotBlockEntity {
             if (space <= 0) continue;
 
             int toAdd = Math.min(space, remaining);
-            try (Transaction tx = Transaction.openRoot()) {
-                int inserted = outputInventory.insert(slot - OUTPUT_SLOT_START, resource, toAdd, tx);
-                tx.commit();
-                remaining -= inserted;
-            }
+            ItemStack leftover = outputInventory.insertItem(slot - OUTPUT_SLOT_START, drop.copyWithCount(toAdd), false);
+            remaining -= toAdd - leftover.getCount();
         }
         return remaining;
     }
@@ -143,17 +172,14 @@ public class HoppingBonsaiPotBlockEntity extends BonsaiPotBlockEntity {
     /**
      * 尝试将剩余物品插入第一个空槽位
      */
-    private int tryInsertIntoEmptySlots(ItemResource resource, ItemStack drop, int amount) {
+    private int tryInsertIntoEmptySlots(ItemStack drop, int amount) {
         int remaining = amount;
         for (int slot = OUTPUT_SLOT_START; slot <= OUTPUT_SLOT_END && remaining > 0; slot++) {
             if (!getStack(slot).isEmpty()) continue;
 
             int toPlace = Math.min(remaining, drop.getMaxStackSize());
-            try (Transaction tx = Transaction.openRoot()) {
-                int inserted = outputInventory.insert(slot - OUTPUT_SLOT_START, resource, toPlace, tx);
-                tx.commit();
-                remaining -= inserted;
-            }
+            ItemStack leftover = outputInventory.insertItem(slot - OUTPUT_SLOT_START, drop.copyWithCount(toPlace), false);
+            remaining -= toPlace - leftover.getCount();
         }
         return remaining;
     }
@@ -178,7 +204,7 @@ public class HoppingBonsaiPotBlockEntity extends BonsaiPotBlockEntity {
     private float getFertilizerYieldModifier() {
         ItemStack stack = getStack(FERTILIZER_SLOT);
         if (stack.isEmpty()) return 1.0F;
-        var data = stack.typeHolder().getData(ResourcePlantPotRegister.FERTILIZERS);
+        var data = stack.getItemHolder().getData(ResourcePlantPotRegister.FERTILIZERS);
         return data != null ? data.yieldMultiplier() : 1.0F;
     }
 
@@ -203,10 +229,7 @@ public class HoppingBonsaiPotBlockEntity extends BonsaiPotBlockEntity {
     private void consumeFertilizer() {
         ItemStack stack = getStack(FERTILIZER_SLOT);
         if (stack.isEmpty()) return;
-        try (Transaction tx = Transaction.openRoot()) {
-            fertilizerInventory.extract(0, ItemResource.of(stack), 1, tx);
-            tx.commit();
-        }
+        fertilizerInventory.extractItem(0, 1, false);
         setChanged();
     }
 
@@ -239,24 +262,24 @@ public class HoppingBonsaiPotBlockEntity extends BonsaiPotBlockEntity {
     // 输出到下方容器
     // ============================================================
     private void tryOutputItemsBelow(Level level, BlockPos pos) {
-        ResourceHandler<ItemResource> target = level.getCapability(Capabilities.Item.BLOCK, pos.below(), Direction.UP);
+        IItemHandler target = level.getCapability(Capabilities.ItemHandler.BLOCK, pos.below(), Direction.UP);
         if (target == null) return;
 
         boolean changed = false;
         for (int slot = 0; slot < OUTPUT_SLOT_COUNT; slot++) {
-            ItemResource res = outputInventory.getResource(slot);
-            if (res.isEmpty()) continue;
-            int available = outputInventory.getAmountAsInt(slot);
-            if (available <= 0) continue;
+            ItemStack stack = outputInventory.getStackInSlot(slot);
+            if (stack.isEmpty()) continue;
 
-            try (Transaction tx = Transaction.openRoot()) {
-                int insertable = target.insert(res, available, tx);
-                if (insertable <= 0) continue;
-                int extracted = outputInventory.extract(slot, res, insertable, tx);
-                if (extracted != insertable) continue;
-                tx.commit();
-                changed = true;
+            // 尝试将整组物品插入目标容器的任意可用槽位
+            ItemStack toInsert = stack.copy();
+            for (int i = 0; i < target.getSlots() && !toInsert.isEmpty(); i++) {
+                toInsert = target.insertItem(i, toInsert, false);
             }
+            int inserted = stack.getCount() - toInsert.getCount();
+            if (inserted <= 0) continue;
+
+            outputInventory.extractItem(slot, inserted, false);
+            changed = true;
         }
 
         if (changed) {
@@ -288,13 +311,14 @@ public class HoppingBonsaiPotBlockEntity extends BonsaiPotBlockEntity {
     // 掉落
     // ============================================================
     @Override
-    public void preRemoveSideEffects(@NonNull BlockPos pos, @NonNull BlockState state) {
-        if (level == null) return;
-        // 掉落玻璃罩
-        ItemStack cloche = ClocheHelper.getClocheItem(clochedTier);
-        if (!cloche.isEmpty())
-            level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, cloche));
-        drops();
+    public void setRemoved() {
+        if (level != null && !chunkUnloaded) {
+            // 掉落玻璃罩
+            ItemStack cloche = ClocheHelper.getClocheItem(clochedTier);
+            if (!cloche.isEmpty())
+                level.addFreshEntity(new ItemEntity(level, worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5, cloche));
+        }
+        super.setRemoved();
     }
 
     @Override
@@ -304,18 +328,18 @@ public class HoppingBonsaiPotBlockEntity extends BonsaiPotBlockEntity {
         if (level != null) {
             SimpleContainer fertInv = new SimpleContainer(fertilizerInventory.size());
             for (int i = 0; i < fertilizerInventory.size(); i++) {
-                ItemResource res = fertilizerInventory.getResource(i);
+                ItemStack res = fertilizerInventory.getStackInSlot(i);
                 if (!res.isEmpty()) {
-                    fertInv.setItem(i, res.toStack(fertilizerInventory.getAmountAsInt(i)));
+                    fertInv.setItem(i, res);
                 }
             }
             Containers.dropContents(level, worldPosition, fertInv);
             // 掉落输出槽
             SimpleContainer outInv = new SimpleContainer(outputInventory.size());
             for (int i = 0; i < outputInventory.size(); i++) {
-                ItemResource res = outputInventory.getResource(i);
+                ItemStack res = outputInventory.getStackInSlot(i);
                 if (!res.isEmpty()) {
-                    outInv.setItem(i, res.toStack(outputInventory.getAmountAsInt(i)));
+                    outInv.setItem(i, res);
                 }
             }
             Containers.dropContents(level, worldPosition, outInv);

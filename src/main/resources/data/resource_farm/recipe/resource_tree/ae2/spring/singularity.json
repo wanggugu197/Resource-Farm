@@ -1,22 +1,28 @@
 {
-  "type": "ae2:inscriber",
-  "neoforge:conditions": [
-    {
-      "type": "resource_farm:tree_exists",
-      "tree_id": "ae2:singularity"
-    },
-    {
-      "type": "resource_farm:config",
-      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
-    }
-  ],
-  "ingredients": {
-    "bottom": "ae2:singularity",
-    "middle": "#minecraft:saplings",
-    "top": "ae2:singularity"
-  },
-  "mode": "press",
-  "result": {
-    "id": "resource_farm:ae2_singularity_sapling"
-  }
+    "type":  "ae2:inscriber",
+    "neoforge:conditions":  [
+                                {
+                                    "tree_id":  "ae2:singularity",
+                                    "type":  "resource_farm:tree_exists"
+                                },
+                                {
+                                    "config_id":  "tree.recipeGeneration.generateSaplingRecipes",
+                                    "type":  "resource_farm:config"
+                                }
+                            ],
+    "ingredients":  {
+                        "bottom":  {
+                                       "item":  "ae2:singularity"
+                                   },
+                        "top":  {
+                                    "item":  "ae2:singularity"
+                                },
+                        "middle":  {
+                                       "tag":  "minecraft:saplings"
+                                   }
+                    },
+    "mode":  "press",
+    "result":  {
+                   "id":  "resource_farm:ae2_singularity_sapling"
+               }
 }

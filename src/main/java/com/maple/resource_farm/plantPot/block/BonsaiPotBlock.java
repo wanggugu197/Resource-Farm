@@ -11,7 +11,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -32,11 +32,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.ItemAbilities;
-import net.neoforged.neoforge.transfer.item.ItemResource;
-import net.neoforged.neoforge.transfer.transaction.Transaction;
 
 import com.mojang.serialization.MapCodec;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -60,24 +58,24 @@ public class BonsaiPotBlock extends BaseEntityBlock {
     }
 
     @Override
-    protected @NonNull VoxelShape getShape(@NonNull BlockState state, @NonNull BlockGetter level,
-                                           @NonNull BlockPos pos, @NonNull CollisionContext context) {
+    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level,
+                                           @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    protected @NonNull MapCodec<? extends BaseEntityBlock> codec() {
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
         return CODEC;
     }
 
     @Override
-    protected @NonNull RenderShape getRenderShape(@NonNull BlockState state) {
+    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
         return RenderShape.MODEL;
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(@NonNull BlockPos pos, @NonNull BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new BonsaiPotBlockEntity(ResourcePlantPotRegister.BONSAI_POT_BLOCK_ENTITY.get(), pos, state);
     }
 
@@ -85,12 +83,12 @@ public class BonsaiPotBlock extends BaseEntityBlock {
     // 右键交互
     // ============================================================
     @Override
-    protected @NonNull InteractionResult useItemOn(@NonNull ItemStack stack, @NonNull BlockState state,
-                                                   @NonNull Level level, @NonNull BlockPos pos,
-                                                   @NonNull Player player, @NonNull InteractionHand hand,
-                                                   @NonNull BlockHitResult hitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state,
+                                                       @NotNull Level level, @NotNull BlockPos pos,
+                                                       @NotNull Player player, @NotNull InteractionHand hand,
+                                                       @NotNull BlockHitResult hitResult) {
         if (!(level.getBlockEntity(pos) instanceof BonsaiPotBlockEntity planter)) {
-            return InteractionResult.FAIL;
+            return ItemInteractionResult.FAIL;
         }
 
         // 优先级1: 成熟时收获（不消耗任何物品）
@@ -110,34 +108,34 @@ public class BonsaiPotBlock extends BaseEntityBlock {
     }
 
     // ---------- 交互子方法 ----------
-    private InteractionResult handleHarvest(Level level, BlockPos pos, BonsaiPotBlockEntity planter) {
+    private ItemInteractionResult handleHarvest(Level level, BlockPos pos, BonsaiPotBlockEntity planter) {
         if (!level.isClientSide()) {
             planter.harvestPlant(level, pos);
         }
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
-    private InteractionResult handleExtract(Level level, BlockPos pos, Player player, BonsaiPotBlockEntity planter) {
+    private ItemInteractionResult handleExtract(Level level, BlockPos pos, Player player, BonsaiPotBlockEntity planter) {
         boolean hasExtractable = !planter.getStack(SEED_SLOT).isEmpty() || !planter.getStack(SOIL_SLOT).isEmpty();
         if (!hasExtractable) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (level.isClientSide()) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(true);
         }
 
         // 尝试提取种子
         if (tryExtractSlot(level, pos, player, planter, SEED_SLOT)) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(false);
         }
 
         // 种子为空，尝试提取土壤
         if (tryExtractSlot(level, pos, player, planter, SOIL_SLOT)) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(false);
         }
 
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     private boolean tryExtractSlot(Level level, BlockPos pos, Player player,
@@ -145,15 +143,11 @@ public class BonsaiPotBlock extends BaseEntityBlock {
         ItemStack stack = planter.getStack(slot);
         if (stack.isEmpty()) return false;
 
-        ItemResource resource = ItemResource.of(stack);
-        try (Transaction tx = Transaction.openRoot()) {
-            int extracted = planter.inventory.extract(slot, resource, 1, tx);
-            if (extracted > 0) {
-                tx.commit();
-                giveItemToPlayer(player, resource.toStack(extracted));
-                level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, 1.0F);
-                return true;
-            }
+        ItemStack extracted = planter.inventory.extractItem(slot, 1, false);
+        if (!extracted.isEmpty()) {
+            giveItemToPlayer(player, extracted);
+            level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 0.2F, 1.0F);
+            return true;
         }
         return false;
     }
@@ -164,9 +158,9 @@ public class BonsaiPotBlock extends BaseEntityBlock {
         }
     }
 
-    private InteractionResult handleNormalInteraction(Level level, BlockPos pos, Player player,
-                                                      BonsaiPotBlockEntity planter, ItemStack heldItem,
-                                                      InteractionHand hand, BlockHitResult hitResult) {
+    private ItemInteractionResult handleNormalInteraction(Level level, BlockPos pos, Player player,
+                                                          BonsaiPotBlockEntity planter, ItemStack heldItem,
+                                                          InteractionHand hand, BlockHitResult hitResult) {
         // 插入植物（种子/树苗）
         if (!planter.getStack(SOIL_SLOT).isEmpty() && planter.isValidPlant(heldItem)) {
             return handlePlantInsert(level, pos, player, planter, heldItem);
@@ -187,62 +181,61 @@ public class BonsaiPotBlock extends BaseEntityBlock {
             return handleHoeTill(level, pos, player, planter, heldItem, hand, hitResult);
         }
 
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    private InteractionResult handlePlantInsert(Level level, BlockPos pos, Player player,
-                                                BonsaiPotBlockEntity planter, ItemStack heldItem) {
+    private ItemInteractionResult handlePlantInsert(Level level, BlockPos pos, Player player,
+                                                    BonsaiPotBlockEntity planter, ItemStack heldItem) {
         if (!planter.getStack(SEED_SLOT).isEmpty()) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (level.isClientSide()) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(true);
         }
 
         ItemStack existingSoil = planter.getStack(SOIL_SLOT);
         if (!existingSoil.isEmpty() && !planter.isValidPlantSoilCombination(heldItem, existingSoil)) {
-            player.sendOverlayMessage(
+            player.displayClientMessage(
                     Component.translatable("message.resource_farm.invalid_seed_soil_combination")
-                            .withStyle(ChatFormatting.GOLD));
-            return InteractionResult.SUCCESS;
+                            .withStyle(ChatFormatting.GOLD),
+                    true);
+            return ItemInteractionResult.sidedSuccess(false);
         }
 
         insertItemIntoSlot(planter, SEED_SLOT, heldItem, level, pos, player,
                 SoundEvents.CROP_PLANTED, 1.0F);
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(false);
     }
 
-    private InteractionResult handleSoilInsert(Level level, BlockPos pos, Player player,
-                                               BonsaiPotBlockEntity planter, ItemStack heldItem) {
+    private ItemInteractionResult handleSoilInsert(Level level, BlockPos pos, Player player,
+                                                   BonsaiPotBlockEntity planter, ItemStack heldItem) {
         if (!planter.getStack(SOIL_SLOT).isEmpty()) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (level.isClientSide()) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(true);
         }
 
         ItemStack existingPlant = planter.getStack(SEED_SLOT);
         if (!existingPlant.isEmpty() && !planter.isValidPlantSoilCombination(existingPlant, heldItem)) {
-            player.sendOverlayMessage(
+            player.displayClientMessage(
                     Component.translatable("message.resource_farm.invalid_seed_soil_combination")
-                            .withStyle(ChatFormatting.GOLD));
-            return InteractionResult.SUCCESS;
+                            .withStyle(ChatFormatting.GOLD),
+                    true);
+            return ItemInteractionResult.sidedSuccess(false);
         }
 
         insertItemIntoSlot(planter, SOIL_SLOT, heldItem, level, pos, player,
                 SoundEvents.GRAVEL_PLACE, 0.8F);
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(false);
     }
 
     private void insertItemIntoSlot(BonsaiPotBlockEntity planter, int slot, ItemStack heldItem,
                                     Level level, BlockPos pos, Player player,
                                     SoundEvent sound, float pitch) {
-        try (Transaction tx = Transaction.openRoot()) {
-            planter.inventory.insert(slot, ItemResource.of(heldItem), 1, tx);
-            tx.commit();
-        }
+        planter.inventory.insertItem(slot, heldItem.copyWithCount(1), false);
 
         if (!player.getAbilities().instabuild) {
             heldItem.shrink(1);
@@ -253,23 +246,23 @@ public class BonsaiPotBlock extends BaseEntityBlock {
         planter.setChanged();
     }
 
-    private InteractionResult handleFertilizer(Level level, BlockPos pos, Player player,
-                                               BonsaiPotBlockEntity planter, ItemStack heldItem) {
+    private ItemInteractionResult handleFertilizer(Level level, BlockPos pos, Player player,
+                                                   BonsaiPotBlockEntity planter, ItemStack heldItem) {
         if (planter.getStack(SEED_SLOT).isEmpty() || planter.getStack(SOIL_SLOT).isEmpty()) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (level.isClientSide()) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(true);
         }
 
-        var data = heldItem.typeHolder().getData(ResourcePlantPotRegister.FERTILIZERS);
+        var data = heldItem.getItemHolder().getData(ResourcePlantPotRegister.FERTILIZERS);
         if (data == null) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (!planter.applyManualFertilizer(data.speedMultiplier())) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (!player.getAbilities().instabuild) {
@@ -279,7 +272,7 @@ public class BonsaiPotBlock extends BaseEntityBlock {
         spawnFertilizerParticles(level, pos);
         level.sendBlockUpdated(pos, planter.getBlockState(), planter.getBlockState(), 3);
         planter.setChanged();
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(false);
     }
 
     private void spawnFertilizerParticles(Level level, BlockPos pos) {
@@ -290,12 +283,12 @@ public class BonsaiPotBlock extends BaseEntityBlock {
         }
     }
 
-    private InteractionResult handleHoeTill(Level level, BlockPos pos, Player player,
-                                            BonsaiPotBlockEntity planter, ItemStack heldItem,
-                                            InteractionHand hand, BlockHitResult hitResult) {
+    private ItemInteractionResult handleHoeTill(Level level, BlockPos pos, Player player,
+                                                BonsaiPotBlockEntity planter, ItemStack heldItem,
+                                                InteractionHand hand, BlockHitResult hitResult) {
         ItemStack soilStack = planter.getStack(SOIL_SLOT);
         if (soilStack.isEmpty() || !(soilStack.getItem() instanceof BlockItem soilBlockItem)) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         BlockState soilState = soilBlockItem.getBlock().defaultBlockState();
@@ -304,18 +297,15 @@ public class BonsaiPotBlock extends BaseEntityBlock {
                 ItemAbilities.HOE_TILL, false);
 
         if (result == null) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (level.isClientSide()) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(true);
         }
 
-        try (Transaction tx = Transaction.openRoot()) {
-            planter.inventory.extract(SOIL_SLOT, ItemResource.of(soilStack), 1, tx);
-            planter.inventory.insert(SOIL_SLOT, ItemResource.of(new ItemStack(result.getBlock())), 1, tx);
-            tx.commit();
-        }
+        planter.inventory.extractItem(SOIL_SLOT, 1, false);
+        planter.inventory.insertItem(SOIL_SLOT, new ItemStack(result.getBlock()), false);
 
         level.playSound(player, pos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
 
@@ -324,20 +314,20 @@ public class BonsaiPotBlock extends BaseEntityBlock {
             heldItem.hurtAndBreak(1, player, slot);
         }
 
-        return InteractionResult.SUCCESS_SERVER;
+        return ItemInteractionResult.sidedSuccess(false);
     }
 
     private static boolean isFertilizer(ItemStack stack) {
-        return !stack.isEmpty() && stack.typeHolder().getData(ResourcePlantPotRegister.FERTILIZERS) != null;
+        return !stack.isEmpty() && stack.getItemHolder().getData(ResourcePlantPotRegister.FERTILIZERS) != null;
     }
 
     // ============================================================
     // Ticker
     // ============================================================
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NonNull Level level, @NonNull BlockState state,
-                                                                  @NonNull BlockEntityType<T> type) {
-        return (lvl, _, _, be) -> {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state,
+                                                                  @NotNull BlockEntityType<T> type) {
+        return (lvl, ignoredState, ignoredType, be) -> {
             if (be instanceof BonsaiPotBlockEntity station) {
                 BonsaiPotBlockEntity.tick(lvl, station);
             }

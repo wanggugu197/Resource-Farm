@@ -15,8 +15,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:icy_iris",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "biomesoplenty:icy_iris"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

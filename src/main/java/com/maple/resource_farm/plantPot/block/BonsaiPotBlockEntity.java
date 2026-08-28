@@ -6,7 +6,6 @@ import com.maple.resource_farm.plantPot.recipe.GrowthRecipe;
 import com.maple.resource_farm.plantPot.recipe.OutputEntry;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.transfer.item.ItemResource;
 
 import com.lowdragmc.lowdraglib2.syncdata.annotation.DescSynced;
 import com.lowdragmc.lowdraglib2.syncdata.annotation.Persisted;
@@ -29,7 +27,6 @@ import com.lowdragmc.lowdraglib2.syncdata.holder.blockentity.ISyncPersistRPCBloc
 import com.lowdragmc.lowdraglib2.syncdata.storage.FieldManagedStorage;
 import com.mapleutillib.api.resource.ObservableItemResourceHandler;
 import lombok.Getter;
-import org.jspecify.annotations.NonNull;
 
 import java.util.*;
 
@@ -93,9 +90,7 @@ public class BonsaiPotBlockEntity extends BlockEntity implements ISyncPersistRPC
     // 库存访问
     // ============================================================
     public ItemStack getStack(int slot) {
-        ItemResource res = inventory.getResource(slot);
-        if (res.isEmpty()) return ItemStack.EMPTY;
-        return res.toStack(inventory.getAmountAsInt(slot));
+        return inventory.getStackInSlot(slot);
     }
 
     // ============================================================
@@ -110,7 +105,7 @@ public class BonsaiPotBlockEntity extends BlockEntity implements ISyncPersistRPC
 
     private @Nullable RecipeManager getRecipeManager() {
         if (level instanceof ServerLevel serverLevel) {
-            return serverLevel.recipeAccess();
+            return serverLevel.getRecipeManager();
         }
         return null;
     }
@@ -134,9 +129,7 @@ public class BonsaiPotBlockEntity extends BlockEntity implements ISyncPersistRPC
 
         cachedSeedItem = seedItem;
         ItemStack soil = getStack(SOIL_SLOT);
-        var recipeHolder = rm.recipeMap()
-                .getRecipesFor(ResourcePlantPotRegister.GROWTH.get(), new SingleRecipeInput(seed), level)
-                .toList()
+        var recipeHolder = rm.getRecipesFor(ResourcePlantPotRegister.GROWTH.get(), new SingleRecipeInput(seed), level)
                 .stream()
                 .filter(holder -> holder.value().matchesSoil(soil))
                 .findFirst()
@@ -174,7 +167,9 @@ public class BonsaiPotBlockEntity extends BlockEntity implements ISyncPersistRPC
             if (holder.value().getType() == ResourcePlantPotRegister.GROWTH.get()) {
                 GrowthRecipe recipe = (GrowthRecipe) holder.value();
                 for (Ingredient ing : recipe.soils()) {
-                    ing.getValues().stream().map(Holder::value).forEach(soils::add);
+                    for (ItemStack stack : ing.getItems()) {
+                        soils.add(stack.getItem());
+                    }
                 }
             }
         }
@@ -275,13 +270,13 @@ public class BonsaiPotBlockEntity extends BlockEntity implements ISyncPersistRPC
     public float getSkyDayModifier() {
         if (level == null) return 1;
         boolean canSeeSky = level.canSeeSky(getBlockPos().above());
-        boolean isDay = level.isBrightOutside();
+        boolean isDay = level.isDay();
         return (canSeeSky && isDay) ? SKY_DAY_MODIFIER : 1;
     }
 
     public float getSoilGrowthModifier(ItemStack soilStack) {
         if (soilStack.isEmpty()) return 1.0F;
-        var data = soilStack.typeHolder().getData(ResourcePlantPotRegister.SOIL_MODIFIERS);
+        var data = soilStack.getItemHolder().getData(ResourcePlantPotRegister.SOIL_MODIFIERS);
         return data != null ? data.growthModifier() : 1.0F;
     }
 
@@ -378,9 +373,20 @@ public class BonsaiPotBlockEntity extends BlockEntity implements ISyncPersistRPC
     // ============================================================
     // 掉落
     // ============================================================
+    /** 记录是否因区块卸载而被移除，避免在区块卸载时重复掉落物品。 */
+    protected boolean chunkUnloaded = false;
+
     @Override
-    public void preRemoveSideEffects(@NonNull BlockPos pos, @NonNull BlockState state) {
-        drops();
+    public void onChunkUnloaded() {
+        chunkUnloaded = true;
+    }
+
+    @Override
+    public void setRemoved() {
+        if (!chunkUnloaded) {
+            drops();
+        }
+        super.setRemoved();
     }
 
     public void drops() {

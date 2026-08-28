@@ -1,0 +1,15 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:raw_uranium",
+  "automatic_basic_recipe": false,
+  "product_output": 32,
+  "style": {
+    "tree_style": "resource_farm:dark_oak",
+    "ore_style": "resource_farm:nether_gold",
+    "grower": "resource_farm:dark_oak",
+    "light_level": 0,
+    "color": "0x96E66B"
+  },
+  "growth_frequency": 15,
+  "custom_place_block_tag": "c:ores/uranium"
+}

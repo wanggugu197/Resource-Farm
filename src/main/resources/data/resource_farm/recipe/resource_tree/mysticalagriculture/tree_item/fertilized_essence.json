@@ -1,28 +1,46 @@
 {
-  "type": "mysticalagriculture:infusion",
-  "neoforge:conditions": [
-    {
-      "type": "resource_farm:tree_exists",
-      "tree_id": "mysticalagriculture:fertilized_essence"
-    },
-    {
-      "type": "resource_farm:config",
-      "config_id": "tree.recipeGeneration.generateTreeItemRecipes"
-    }
-  ],
-  "input": "#minecraft:saplings",
-  "ingredients": [
-    "resource_farm:mysticalagriculture_fertilized_essence_resin",
-    "resource_farm:mysticalagriculture_fertilized_essence_fruit",
-    "resource_farm:mysticalagriculture_fertilized_essence_resin",
-    "resource_farm:mysticalagriculture_fertilized_essence_fruit",
-    "resource_farm:mysticalagriculture_fertilized_essence_resin",
-    "resource_farm:mysticalagriculture_fertilized_essence_fruit",
-    "resource_farm:mysticalagriculture_fertilized_essence_resin",
-    "resource_farm:mysticalagriculture_fertilized_essence_fruit"
-  ],
-  "result": {
-    "id": "mysticalagriculture:fertilized_essence",
-    "count": 8
-  }
+    "type":  "mysticalagriculture:infusion",
+    "neoforge:conditions":  [
+                                {
+                                    "type":  "resource_farm:tree_exists",
+                                    "tree_id":  "mysticalagriculture:fertilized_essence"
+                                },
+                                {
+                                    "type":  "resource_farm:config",
+                                    "config_id":  "tree.recipeGeneration.generateTreeItemRecipes"
+                                }
+                            ],
+    "input":  {
+                  "tag":  "minecraft:saplings"
+              },
+    "ingredients":  [
+                        {
+                            "item":  "resource_farm:mysticalagriculture_fertilized_essence_resin"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_fertilized_essence_fruit"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_fertilized_essence_resin"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_fertilized_essence_fruit"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_fertilized_essence_resin"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_fertilized_essence_fruit"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_fertilized_essence_resin"
+                        },
+                        {
+                            "item":  "resource_farm:mysticalagriculture_fertilized_essence_fruit"
+                        }
+                    ],
+    "result":  {
+                   "id":  "mysticalagriculture:fertilized_essence",
+                   "count":  8
+               }
 }

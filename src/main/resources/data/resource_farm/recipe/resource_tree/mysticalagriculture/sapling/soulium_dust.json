@@ -1,27 +1,45 @@
 {
-  "type": "mysticalagriculture:infusion",
-  "neoforge:conditions": [
-    {
-      "type": "resource_farm:tree_exists",
-      "tree_id": "mysticalagriculture:soulium_dust"
-    },
-    {
-      "type": "resource_farm:config",
-      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
-    }
-  ],
-  "input": "#minecraft:saplings",
-  "ingredients": [
-    "mysticalagriculture:soulium_block",
-    "mysticalagriculture:soulium_block",
-    "mysticalagriculture:soulium_block",
-    "mysticalagriculture:soulium_block",
-    "mysticalagriculture:soulium_block",
-    "mysticalagriculture:soulium_block",
-    "mysticalagriculture:soulium_block",
-    "mysticalagriculture:soulium_block"
-  ],
-  "result": {
-    "id": "resource_farm:mysticalagriculture_soulium_dust_sapling"
-  }
+    "type":  "mysticalagriculture:infusion",
+    "neoforge:conditions":  [
+                                {
+                                    "type":  "resource_farm:tree_exists",
+                                    "tree_id":  "mysticalagriculture:soulium_dust"
+                                },
+                                {
+                                    "type":  "resource_farm:config",
+                                    "config_id":  "tree.recipeGeneration.generateSaplingRecipes"
+                                }
+                            ],
+    "input":  {
+                  "tag":  "minecraft:saplings"
+              },
+    "ingredients":  [
+                        {
+                            "item":  "mysticalagriculture:soulium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:soulium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:soulium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:soulium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:soulium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:soulium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:soulium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:soulium_block"
+                        }
+                    ],
+    "result":  {
+                   "id":  "resource_farm:mysticalagriculture_soulium_dust_sapling"
+               }
 }

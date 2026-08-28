@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:allium",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "minecraft:allium"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

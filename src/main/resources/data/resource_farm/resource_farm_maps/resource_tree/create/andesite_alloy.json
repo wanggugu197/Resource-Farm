@@ -1,0 +1,21 @@
+{
+  "group": "create",
+  "item": "create:andesite_alloy",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:oak",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:oak",
+    "light_level": 0,
+    "color": "0xA7AD9F"
+  },
+  "fertilize": {
+    "main_item": "create:zinc_nugget",
+    "main_chance": 0.8,
+    "secondary_item": "minecraft:iron_nugget",
+    "secondary_chance": 0.6
+  },
+  "growth_frequency": 50,
+  "custom_place_block": "create:andesite_casing"
+}

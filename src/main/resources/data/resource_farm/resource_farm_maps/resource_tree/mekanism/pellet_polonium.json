@@ -1,0 +1,19 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:pellet_polonium",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:oak",
+    "ore_style": "resource_farm:diamond",
+    "grower": "resource_farm:oak",
+    "light_level": 5,
+    "color": "0xBDF7D3"
+  },
+  "fertilize": {
+    "main_item": "mekanism:pellet_polonium",
+    "main_chance": 1
+  },
+  "growth_frequency": 500,
+  "custom_place_block": "mekanism:sps_casing"
+}

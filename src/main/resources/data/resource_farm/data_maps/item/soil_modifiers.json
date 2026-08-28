@@ -6,7 +6,6 @@
     "minecraft:mycelium": { "growth_modifier": 0.475 },
     "minecraft:rooted_dirt": { "growth_modifier": 0.475 },
     "minecraft:moss_block": { "growth_modifier": 0.475 },
-    "minecraft:pale_moss_block": { "growth_modifier": 0.475 },
     "minecraft:grass_block": { "growth_modifier": 0.475 },
     "minecraft:mud": { "growth_modifier": 0.5 },
     "minecraft:muddy_mangrove_roots": { "growth_modifier": 0.5 },

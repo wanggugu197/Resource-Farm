@@ -1,0 +1,19 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:salt",
+  "automatic_basic_recipe": false,
+  "product_output": 32,
+  "style": {
+    "tree_style": "resource_farm:spruce",
+    "ore_style": "resource_farm:lapis",
+    "grower": "resource_farm:spruce",
+    "light_level": 0,
+    "color": "0xF8F8F7"
+  },
+  "fertilize": {
+    "main_item": "mekanism:salt",
+    "main_chance": 0.9
+  },
+  "growth_frequency": 50,
+  "custom_place_block": "mekanism:thermal_evaporation_block"
+}

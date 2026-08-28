@@ -2,7 +2,7 @@ package com.maple.resource_farm.resourceTree.data.dataMaps;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Items;
@@ -36,23 +36,23 @@ public record ResourceTreeConfig(
                                  @Nullable TagKey<Block> customPlaceBlockTag,
                                  int lightLevel,
                                  int color,
-                                 Identifier growerId,
+                                 ResourceLocation growerId,
                                  List<ExtraItemOutput> extraItemOutputs,
                                  Lazy<List<Ingredient>> saplingIngredients,    // Lazy 包装延迟解析
                                  @Nullable ContainerOutput containerOutput) {
 
     // ---------- 额外配方相关记录 ----------
-    public record ExtraItemOutput(Identifier item, int count) {
+    public record ExtraItemOutput(ResourceLocation item, int count) {
 
         public static final Codec<ExtraItemOutput> CODEC = RecordCodecBuilder.create(ins -> ins.group(
-                Identifier.CODEC.fieldOf("item").forGetter(ExtraItemOutput::item),
+                ResourceLocation.CODEC.fieldOf("item").forGetter(ExtraItemOutput::item),
                 Codec.INT.fieldOf("count").forGetter(ExtraItemOutput::count)).apply(ins, ExtraItemOutput::new));
     }
 
-    public record ContainerOutput(Identifier container, int containerCount, ExtraItemOutput output) {
+    public record ContainerOutput(ResourceLocation container, int containerCount, ExtraItemOutput output) {
 
         public static final Codec<ContainerOutput> CODEC = RecordCodecBuilder.create(ins -> ins.group(
-                Identifier.CODEC.fieldOf("container").forGetter(ContainerOutput::container),
+                ResourceLocation.CODEC.fieldOf("container").forGetter(ContainerOutput::container),
                 Codec.INT.fieldOf("container_count").forGetter(ContainerOutput::containerCount),
                 ExtraItemOutput.CODEC.fieldOf("output").forGetter(ContainerOutput::output)).apply(ins, ContainerOutput::new));
     }
@@ -72,18 +72,18 @@ public record ResourceTreeConfig(
     }
     // ----------------------------------------
 
-    private static final Codec<Identifier> STYLE_ID_CODEC = Codec.STRING.xmap(
+    private static final Codec<ResourceLocation> STYLE_ID_CODEC = Codec.STRING.xmap(
             s -> RLUtils.parse(s.toLowerCase(Locale.ROOT)),
-            Identifier::toString);
+            ResourceLocation::toString);
 
     private static final Codec<Integer> COLOR_CODEC = Codec.withAlternative(
             Codec.INT,
             Codec.STRING.xmap(FormattingUtil::parseColorString, i -> String.format("0x%06X", i & 0xFFFFFF)));
 
     private record StyleJson(
-                             Identifier treeStyle,
-                             Identifier oreStyle,
-                             Identifier grower,
+                             ResourceLocation treeStyle,
+                             ResourceLocation oreStyle,
+                             ResourceLocation grower,
                              int lightLevel,
                              int color) {
 
@@ -156,7 +156,7 @@ public record ResourceTreeConfig(
                 List<Ingredient> saplings = new ArrayList<>();
                 for (String sapling : saplingStrings) {
                     if (sapling.startsWith("#")) {
-                        saplings.add(Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(TagKey.create(Registries.ITEM, RLUtils.parse(sapling.substring(1))))));
+                        saplings.add(Ingredient.of(TagKey.create(Registries.ITEM, RLUtils.parse(sapling.substring(1)))));
                     } else {
                         saplings.add(Ingredient.of(BuiltInRegistries.ITEM.getOptional(RLUtils.parse(sapling)).orElse(Items.BARRIER)));
                     }
@@ -236,7 +236,7 @@ public record ResourceTreeConfig(
                                             @Nullable TagKey<Block> customPlaceBlockTag,
                                             int lightLevel,
                                             int colors,
-                                            Identifier growerId,
+                                            ResourceLocation growerId,
                                             List<ExtraItemOutput> extraItemOutputs,
                                             Lazy<List<Ingredient>> saplingIngredients,
                                             @Nullable ContainerOutput containerOutput) {

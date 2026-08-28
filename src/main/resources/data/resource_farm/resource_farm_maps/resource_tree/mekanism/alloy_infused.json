@@ -1,0 +1,19 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:alloy_infused",
+  "automatic_basic_recipe": false,
+  "product_output": 32,
+  "style": {
+    "tree_style": "resource_farm:birch",
+    "ore_style": "resource_farm:emerald",
+    "grower": "resource_farm:birch",
+    "light_level": 1,
+    "color": "0xF5564E"
+  },
+  "fertilize": {
+    "main_item": "minecraft:copper_ingot",
+    "main_chance": 0.9
+  },
+  "growth_frequency": 50,
+  "custom_place_block": "mekanism:steel_casing"
+}

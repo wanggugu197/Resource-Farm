@@ -1,0 +1,21 @@
+{
+  "type": "mekanism:enriching",
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "mekanism:pellet_polonium"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateTreeItemRecipes"
+    }
+  ],
+  "input": {
+    "count": 1,
+    "item": "resource_farm:mekanism_pellet_polonium_resin"
+  },
+  "output": {
+    "count": 2,
+    "id": "mekanism:pellet_polonium"
+  }
+}

@@ -29,9 +29,9 @@ public record ResourceTreeFertilizeSettings(
     public static final ResourceTreeFertilizeSettings NULL = new ResourceTreeFertilizeSettings(null, 0, null, 0);
 
     private static final Codec<ResourceTreeFertilizeSettings> FIELDS_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codec.STRING.optionalFieldOf("main_item").forGetter(_ -> Optional.empty()),
+            Codec.STRING.optionalFieldOf("main_item").forGetter(ignored -> Optional.empty()),
             Codec.DOUBLE.optionalFieldOf("main_chance", 0.0).forGetter(ResourceTreeFertilizeSettings::mainChance),
-            Codec.STRING.optionalFieldOf("secondary_item").forGetter(_ -> Optional.empty()),
+            Codec.STRING.optionalFieldOf("secondary_item").forGetter(ignored -> Optional.empty()),
             Codec.DOUBLE.optionalFieldOf("secondary_chance", 0.0).forGetter(ResourceTreeFertilizeSettings::secondaryChance)).apply(instance, (mainItem, mainChance, secondaryItem, secondaryChance) -> ofItems(mainItem.orElse(null), mainChance, secondaryItem.orElse(null), secondaryChance)));
 
     public static final Codec<ResourceTreeFertilizeSettings> CODEC = new Codec<>() {

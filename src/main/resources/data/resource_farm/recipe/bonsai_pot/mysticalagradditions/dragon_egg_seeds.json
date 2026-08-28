@@ -19,10 +19,8 @@
       "item": "mysticalagriculture:dragon_egg_seeds"
     }
   ],
-  "seed": "mysticalagriculture:dragon_egg_seeds",
-  "soils": [
-    "mysticalagradditions:dragon_egg_crux"
-  ],
+  "seed": {"item": "mysticalagriculture:dragon_egg_seeds"},
+  "soils": [{"item": "mysticalagradditions:dragon_egg_crux"}],
   "duration": 1500,
   "fertilizable": true
 }

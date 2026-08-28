@@ -22,22 +22,19 @@ public final class ResourceTreeConfiguration {
     private final FeatureSize minimumSize;
     private final List<TreeDecorator> decorators;
     private final boolean ignoreVines;
-    private final BlockStateProvider belowTrunkProvider;
 
     public ResourceTreeConfiguration(TrunkPlacer trunkPlacer,
                                      FoliagePlacer foliagePlacer,
                                      Optional<RootPlacer> rootPlacer,
                                      FeatureSize minimumSize,
                                      List<TreeDecorator> decorators,
-                                     boolean ignoreVines,
-                                     BlockStateProvider belowTrunkProvider) {
+                                     boolean ignoreVines) {
         this.trunkPlacer = trunkPlacer;
         this.foliagePlacer = foliagePlacer;
         this.rootPlacer = rootPlacer;
         this.minimumSize = minimumSize;
         this.decorators = List.copyOf(decorators);
         this.ignoreVines = ignoreVines;
-        this.belowTrunkProvider = belowTrunkProvider;
     }
 
     /** 从已解析的原版树配置提取结构（忽略 trunk/foliage provider）。 */
@@ -48,8 +45,7 @@ public final class ResourceTreeConfiguration {
                 treeConfig.rootPlacer,
                 treeConfig.minimumSize,
                 treeConfig.decorators,
-                treeConfig.ignoreVines,
-                treeConfig.belowTrunkProvider);
+                treeConfig.ignoreVines);
     }
 
     /**
@@ -63,8 +59,7 @@ public final class ResourceTreeConfiguration {
                 foliageProvider,
                 foliagePlacer,
                 rootPlacer,
-                minimumSize,
-                belowTrunkProvider);
+                minimumSize);
         builder.decorators(decorators);
         if (ignoreVines) {
             builder.ignoreVines();

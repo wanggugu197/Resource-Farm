@@ -19,10 +19,8 @@
       "item": "mysticalagriculture:neutronium_seeds"
     }
   ],
-  "seed": "mysticalagriculture:neutronium_seeds",
-  "soils": [
-    "mysticalagradditions:neutronium_crux"
-  ],
+  "seed": {"item": "mysticalagriculture:neutronium_seeds"},
+  "soils": [{"item": "mysticalagradditions:neutronium_crux"}],
   "duration": 1500,
   "fertilizable": true
 }

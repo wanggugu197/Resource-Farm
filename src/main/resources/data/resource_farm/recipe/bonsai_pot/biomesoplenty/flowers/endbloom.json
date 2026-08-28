@@ -15,8 +15,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:endbloom",
-  "soils": [
-    "#resource_farm:end_soils"
-  ]
+  "seed": {"item": "biomesoplenty:endbloom"},
+  "soils": [{"tag": "resource_farm:end_soils"}]
 }

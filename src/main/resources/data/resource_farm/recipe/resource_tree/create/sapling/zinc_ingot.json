@@ -1,0 +1,33 @@
+{
+  "type": "create:mechanical_crafting",
+  "accept_mirrored": true,
+  "category": "misc",
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "create:zinc_ingot"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
+    }
+  ],
+  "pattern": [
+    " A ",
+    "ASA",
+    " A "
+  ],
+  "key": {
+    "A": {
+      "item": "create:zinc_ingot"
+    },
+    "S": {
+      "tag": "minecraft:saplings"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "resource_farm:create_zinc_ingot_sapling"
+  },
+  "show_notification": false
+}

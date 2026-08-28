@@ -1,0 +1,15 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:fluorite_gem",
+  "automatic_basic_recipe": false,
+  "product_output": 32,
+  "style": {
+    "tree_style": "resource_farm:spruce",
+    "ore_style": "resource_farm:lapis",
+    "grower": "resource_farm:spruce",
+    "light_level": 0,
+    "color": "0xE5F8F5"
+  },
+  "growth_frequency": 15,
+  "custom_place_block_tag": "c:ores/fluorite"
+}

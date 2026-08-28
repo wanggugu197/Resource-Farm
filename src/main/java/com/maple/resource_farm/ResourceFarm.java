@@ -3,7 +3,7 @@ package com.maple.resource_farm;
 import com.maple.resource_farm.common.CommonInit;
 import com.maple.resource_farm.config.ResourceFarmConfigHolder;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
@@ -24,7 +24,7 @@ import java.nio.file.Path;
 public class ResourceFarm {
 
     public static final String MOD_ID = "resource_farm";
-    private static final Identifier TEMPLATE_LOCATION = RLUtils.get(MOD_ID, "");
+    private static final ResourceLocation TEMPLATE_LOCATION = RLUtils.get(MOD_ID, "");
     public static final ModRegistryCore REGISTRY = ModRegistryCore.create(MOD_ID);
 
     public static final String NAME = "Resource Farm";
@@ -51,14 +51,14 @@ public class ResourceFarm {
         return ModList.get().isLoaded(modId);
     }
 
-    public static Identifier id(String path) {
+    public static ResourceLocation id(String path) {
         if (path.isBlank()) {
             return TEMPLATE_LOCATION;
         }
 
         int i = path.indexOf(':');
         if (i > 0) {
-            return Identifier.tryParse(path);
+            return ResourceLocation.tryParse(path);
         } else if (i == 0) {
             path = path.substring(i + 1);
         }

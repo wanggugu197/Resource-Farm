@@ -11,7 +11,7 @@ import com.maple.resource_farm.resourceTree.item.ResourceClumpItem;
 import com.maple.resource_farm.resourceTree.item.ResourceFruitItem;
 import com.maple.resource_farm.resourceTree.item.ResourceResinItem;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -19,6 +19,7 @@ import net.minecraft.world.level.material.PushReaction;
 
 import static com.maple.resource_farm.ResourceFarm.REGISTRY;
 import static com.maple.resource_farm.data.misc.ResourceFarmCreativeModeTabs.TREE_TAB;
+import static com.maple.resource_farm.resourceTree.builder.TreeBuilderClientHelper.layered;
 import static com.maple.resource_farm.resourceTree.builder.TreeBuilderClientHelper.leavesLayers;
 import static com.maple.resource_farm.resourceTree.builder.TreeBuilderClientHelper.overlayOnlyLayers;
 
@@ -37,7 +38,7 @@ public class TreeBuilder {
 
             resourceTree.setTreeConfigKey(com.maple.resource_farm.ResourceFarm.id(treeId));
 
-            Identifier growerKey = resourceTreeConfig.growerId();
+            ResourceLocation growerKey = resourceTreeConfig.growerId();
             ResourceTreeGrower grower = ResourceFarmMaps.getGrower(growerKey);
             if (grower == null) {
                 throw new IllegalStateException(
@@ -48,14 +49,14 @@ public class TreeBuilder {
                     REGISTRY.block(name + "_sapling", props -> ResourceSaplingBlock.create(
                             treeId,
                             grower,
-                            props.noCollision().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY),
+                            props.noCollission().randomTicks().instabreak().sound(SoundType.GRASS).pushReaction(PushReaction.DESTROY),
                             resourceTreeConfig.fertilizeSetting(),
                             resourceTreeConfig.growthFrequency(),
                             resourceTreeConfig.customPlaceBlock(),
                             resourceTreeConfig.customPlaceBlockTag()))
                             .initialProperties(() -> Blocks.OAK_SAPLING)
                             .noBlockstate()
-                            .blockTintSource(() -> () -> overlayOnlyLayers(resourceTreeConfig.color()))
+                            .blockTintSource(() -> () -> layered(overlayOnlyLayers(resourceTreeConfig.color())))
                             .item(
                                     ResourceBlockItem::new,
                                     item -> item
@@ -71,7 +72,7 @@ public class TreeBuilder {
                     REGISTRY.block(name + "_leaves", props -> ResourceLeavesBlock.create(treeId, props))
                             .initialProperties(() -> Blocks.OAK_LEAVES)
                             .noBlockstate()
-                            .blockTintSource(() -> () -> leavesLayers(resourceTreeConfig.color(), resourceTreeConfig.treeType()))
+                            .blockTintSource(() -> () -> layered(leavesLayers(resourceTreeConfig.color(), resourceTreeConfig.treeType())))
                             .item(
                                     ResourceBlockItem::new,
                                     item -> item.addTab(TREE_TAB.getKey()))
@@ -81,7 +82,7 @@ public class TreeBuilder {
                     REGISTRY.block(name + "_log", props -> ResourceLogBlock.create(treeId, props))
                             .initialProperties(() -> Blocks.OAK_LOG)
                             .noBlockstate()
-                            .blockTintSource(() -> () -> overlayOnlyLayers(resourceTreeConfig.color()))
+                            .blockTintSource(() -> () -> layered(overlayOnlyLayers(resourceTreeConfig.color())))
                             .item(
                                     ResourceBlockItem::new,
                                     item -> item.addTab(TREE_TAB.getKey()))
@@ -92,7 +93,7 @@ public class TreeBuilder {
                         REGISTRY.block("stripped_" + name + "_log", props -> ResourceStrippedLogBlock.create(treeId, props))
                                 .initialProperties(() -> Blocks.STRIPPED_OAK_LOG)
                                 .noBlockstate()
-                                .blockTintSource(() -> () -> overlayOnlyLayers(resourceTreeConfig.color()))
+                                .blockTintSource(() -> () -> layered(overlayOnlyLayers(resourceTreeConfig.color())))
                                 .item(
                                         ResourceBlockItem::new,
                                         item -> item.addTab(TREE_TAB.getKey()))
@@ -104,7 +105,7 @@ public class TreeBuilder {
                         REGISTRY.block(name + "_wood", props -> ResourceWoodBlock.create(treeId, props))
                                 .initialProperties(() -> Blocks.OAK_WOOD)
                                 .noBlockstate()
-                                .blockTintSource(() -> () -> overlayOnlyLayers(resourceTreeConfig.color()))
+                                .blockTintSource(() -> () -> layered(overlayOnlyLayers(resourceTreeConfig.color())))
                                 .item(
                                         ResourceBlockItem::new,
                                         item -> item.addTab(TREE_TAB.getKey()))
@@ -116,7 +117,7 @@ public class TreeBuilder {
                         REGISTRY.block("stripped_" + name + "_wood", props -> ResourceStrippedWoodBlock.create(treeId, props))
                                 .initialProperties(() -> Blocks.STRIPPED_OAK_WOOD)
                                 .noBlockstate()
-                                .blockTintSource(() -> () -> overlayOnlyLayers(resourceTreeConfig.color()))
+                                .blockTintSource(() -> () -> layered(overlayOnlyLayers(resourceTreeConfig.color())))
                                 .item(
                                         ResourceBlockItem::new,
                                         item -> item.addTab(TREE_TAB.getKey()))
@@ -128,7 +129,7 @@ public class TreeBuilder {
                         REGISTRY.block(name + "_planks", props -> ResourcePlanksBlock.create(treeId, props))
                                 .initialProperties(() -> Blocks.OAK_PLANKS)
                                 .noBlockstate()
-                                .blockTintSource(() -> () -> overlayOnlyLayers(resourceTreeConfig.color()))
+                                .blockTintSource(() -> () -> layered(overlayOnlyLayers(resourceTreeConfig.color())))
                                 .item(
                                         ResourceBlockItem::new,
                                         item -> item.addTab(TREE_TAB.getKey()))

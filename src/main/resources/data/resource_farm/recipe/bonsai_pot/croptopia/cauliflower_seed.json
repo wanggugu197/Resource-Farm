@@ -7,10 +7,8 @@
   ],
   "type": "resource_farm:growth",
   "renderer": "crop",
-  "seed": "croptopia:cauliflower_seed",
-  "soils": [
-    "#resource_farm:farmland_soils"
-  ],
+  "seed": {"item": "croptopia:cauliflower_seed"},
+  "soils": [{"tag": "resource_farm:farmland_soils"}],
   "output": [
     {
       "item": "croptopia:cauliflower",

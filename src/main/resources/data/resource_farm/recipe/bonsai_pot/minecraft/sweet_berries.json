@@ -9,8 +9,6 @@
       "min": 2
     }
   ],
-  "seed": "minecraft:sweet_berries",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "minecraft:sweet_berries"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

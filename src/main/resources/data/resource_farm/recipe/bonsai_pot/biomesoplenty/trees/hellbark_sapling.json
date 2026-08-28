@@ -26,8 +26,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:hellbark_sapling",
-  "soils": [
-    "#resource_farm:tree_soils"
-  ]
+  "seed": {"item": "biomesoplenty:hellbark_sapling"},
+  "soils": [{"tag": "resource_farm:tree_soils"}]
 }

@@ -15,8 +15,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:potato",
-  "soils": [
-    "#resource_farm:farmland_soils"
-  ]
+  "seed": {"item": "minecraft:potato"},
+  "soils": [{"tag": "resource_farm:farmland_soils"}]
 }

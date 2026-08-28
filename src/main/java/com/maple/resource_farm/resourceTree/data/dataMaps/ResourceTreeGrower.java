@@ -4,7 +4,7 @@ import com.maple.resource_farm.resourceTree.ResourceTreeAccessManagement;
 import com.maple.resource_farm.resourceTree.data.grower.ResourceTreeFeatures;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
@@ -32,12 +32,12 @@ public class ResourceTreeGrower {
 
     public static final Codec<ResourceTreeGrower> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.optionalFieldOf("secondary_chance", 0.0F).forGetter(ResourceTreeGrower::secondaryChance),
-            Identifier.CODEC.optionalFieldOf("mega_tree").forGetter(g -> Optional.ofNullable(g.megaTree)),
-            Identifier.CODEC.optionalFieldOf("secondary_mega_tree").forGetter(g -> Optional.ofNullable(g.secondaryMegaTree)),
-            Identifier.CODEC.optionalFieldOf("tree").forGetter(g -> Optional.ofNullable(g.tree)),
-            Identifier.CODEC.optionalFieldOf("secondary_tree").forGetter(g -> Optional.ofNullable(g.secondaryTree)),
-            Identifier.CODEC.optionalFieldOf("flowers").forGetter(g -> Optional.ofNullable(g.flowers)),
-            Identifier.CODEC.optionalFieldOf("secondary_flowers").forGetter(g -> Optional.ofNullable(g.secondaryFlowers))).apply(instance,
+            ResourceLocation.CODEC.optionalFieldOf("mega_tree").forGetter(g -> Optional.ofNullable(g.megaTree)),
+            ResourceLocation.CODEC.optionalFieldOf("secondary_mega_tree").forGetter(g -> Optional.ofNullable(g.secondaryMegaTree)),
+            ResourceLocation.CODEC.optionalFieldOf("tree").forGetter(g -> Optional.ofNullable(g.tree)),
+            ResourceLocation.CODEC.optionalFieldOf("secondary_tree").forGetter(g -> Optional.ofNullable(g.secondaryTree)),
+            ResourceLocation.CODEC.optionalFieldOf("flowers").forGetter(g -> Optional.ofNullable(g.flowers)),
+            ResourceLocation.CODEC.optionalFieldOf("secondary_flowers").forGetter(g -> Optional.ofNullable(g.secondaryFlowers))).apply(instance,
                     (secondaryChance, megaTree, secondaryMegaTree, tree, secondaryTree, flowers, secondaryFlowers) -> new ResourceTreeGrower(
                             secondaryChance,
                             megaTree.orElse(null),
@@ -48,20 +48,20 @@ public class ResourceTreeGrower {
                             secondaryFlowers.orElse(null))));
 
     private final float secondaryChance;
-    private final Identifier megaTree;
-    private final Identifier secondaryMegaTree;
-    private final Identifier tree;
-    private final Identifier secondaryTree;
-    private final Identifier flowers;
-    private final Identifier secondaryFlowers;
+    private final ResourceLocation megaTree;
+    private final ResourceLocation secondaryMegaTree;
+    private final ResourceLocation tree;
+    private final ResourceLocation secondaryTree;
+    private final ResourceLocation flowers;
+    private final ResourceLocation secondaryFlowers;
 
     public ResourceTreeGrower(float secondaryChance,
-                              Identifier megaTree,
-                              Identifier secondaryMegaTree,
-                              Identifier tree,
-                              Identifier secondaryTree,
-                              Identifier flowers,
-                              Identifier secondaryFlowers) {
+                              ResourceLocation megaTree,
+                              ResourceLocation secondaryMegaTree,
+                              ResourceLocation tree,
+                              ResourceLocation secondaryTree,
+                              ResourceLocation flowers,
+                              ResourceLocation secondaryFlowers) {
         this.secondaryChance = secondaryChance;
         this.megaTree = megaTree;
         this.secondaryMegaTree = secondaryMegaTree;
@@ -75,7 +75,7 @@ public class ResourceTreeGrower {
         return secondaryChance;
     }
 
-    private Identifier getConfiguredFeatureKey(RandomSource random, boolean hasFlowers) {
+    private ResourceLocation getConfiguredFeatureKey(RandomSource random, boolean hasFlowers) {
         if (random.nextFloat() < this.secondaryChance) {
             if (hasFlowers && this.secondaryFlowers != null) return this.secondaryFlowers;
             if (this.secondaryTree != null) return this.secondaryTree;
@@ -83,7 +83,7 @@ public class ResourceTreeGrower {
         return (hasFlowers && this.flowers != null) ? this.flowers : this.tree;
     }
 
-    private Identifier getConfiguredMegaFeatureKey(RandomSource random) {
+    private ResourceLocation getConfiguredMegaFeatureKey(RandomSource random) {
         return (this.secondaryMegaTree != null && random.nextFloat() < this.secondaryChance) ? this.secondaryMegaTree : this.megaTree;
     }
 
@@ -97,7 +97,7 @@ public class ResourceTreeGrower {
                             BlockPos pos,
                             BlockState state,
                             RandomSource random) {
-        Identifier megaFeatureKey = this.getConfiguredMegaFeatureKey(random);
+        ResourceLocation megaFeatureKey = this.getConfiguredMegaFeatureKey(random);
         if (ResourceTreeFeatures.isAvailable(megaFeatureKey)) {
             ConfiguredFeature<?, ?> configuredMegaFeature = ResourceTreeFeatures.getResourceTreeConfiguredFeature(treeId, megaFeatureKey);
 
@@ -131,7 +131,7 @@ public class ResourceTreeGrower {
             }
         }
 
-        Identifier featureKey = this.getConfiguredFeatureKey(random, this.hasFlowers(level, pos));
+        ResourceLocation featureKey = this.getConfiguredFeatureKey(random, this.hasFlowers(level, pos));
         if (!ResourceTreeFeatures.isAvailable(featureKey)) {
             return false;
         }

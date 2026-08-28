@@ -111,6 +111,18 @@ public class PresetResourceTreeConfigHolder {
                 "是否生成盆栽盆配方？ Whether to generate Bonsai Pot recipes? Default: true"
         })
         public boolean generateBonsaiPotRecipes = true;
+
+        @Configurable
+        @Configurable.Comment({
+                "是否生成机械动力联动配方？ Whether to generate Create collaboration recipes? Default: true"
+        })
+        public boolean generateCreateRecipe = true;
+
+        @Configurable
+        @Configurable.Comment({
+                "是否生成Mek联动配方？ Whether to generate Mek collaboration recipes? Default: true"
+        })
+        public boolean generateMekanismRecipe = true;
     }
 
     @Configurable
@@ -157,7 +169,6 @@ public class PresetResourceTreeConfigHolder {
                 "神秘农业联动？ Mystical Agriculture Linkage? Default: true"
         })
         public boolean mysticalAgriculture = true;
-
         public boolean mysticalAgriculture() {
             return mysticalAgriculture && ResourceFarm.isModLoaded("mysticalagriculture");
         }
@@ -167,9 +178,26 @@ public class PresetResourceTreeConfigHolder {
                 "AE2联动？ AE2 Linkage? Default: true"
         })
         public boolean ae2 = true;
-
         public boolean ae2() {
             return ae2 && ResourceFarm.isModLoaded("ae2");
+        }
+
+        @Configurable
+        @Configurable.Comment({
+                "机械动力联动？ Create Linkage? Default: true"
+        })
+        public boolean create = true;
+        public boolean create() {
+            return create && ResourceFarm.isModLoaded("create");
+        }
+
+        @Configurable
+        @Configurable.Comment({
+                "Mek联动？ Mek Linkage? Default: true"
+        })
+        public boolean mekanism = true;
+        public boolean mekanism() {
+            return mekanism && ResourceFarm.isModLoaded("mekanism");
         }
     }
 }

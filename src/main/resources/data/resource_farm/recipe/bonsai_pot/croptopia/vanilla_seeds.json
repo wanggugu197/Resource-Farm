@@ -7,10 +7,8 @@
   ],
   "type": "resource_farm:growth",
   "renderer": "crop",
-  "seed": "croptopia:vanilla_seeds",
-  "soils": [
-    "#resource_farm:farmland_soils"
-  ],
+  "seed": {"item": "croptopia:vanilla_seeds"},
+  "soils": [{"tag": "resource_farm:farmland_soils"}],
   "output": [
     {
       "item": "croptopia:vanilla",

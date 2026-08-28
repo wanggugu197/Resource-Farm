@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:oxeye_daisy",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "minecraft:oxeye_daisy"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

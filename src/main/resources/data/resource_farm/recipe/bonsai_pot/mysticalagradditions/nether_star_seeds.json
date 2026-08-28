@@ -19,10 +19,8 @@
       "item": "mysticalagriculture:nether_star_seeds"
     }
   ],
-  "seed": "mysticalagriculture:nether_star_seeds",
-  "soils": [
-    "mysticalagradditions:nether_star_crux"
-  ],
+  "seed": {"item": "mysticalagriculture:nether_star_seeds"},
+  "soils": [{"item": "mysticalagradditions:nether_star_crux"}],
   "duration": 1500,
   "fertilizable": true
 }

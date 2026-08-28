@@ -15,8 +15,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:white_lavender",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "biomesoplenty:white_lavender"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

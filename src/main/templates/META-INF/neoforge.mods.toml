@@ -1,4 +1,5 @@
 modLoader = "javafml"
+loaderVersion = "[4,)"
 minecraftVersion = "${minecraft_version}"
 neoVersion = "${neo_version}"
 issueTrackerURL = "${mod_issue_tracker}"

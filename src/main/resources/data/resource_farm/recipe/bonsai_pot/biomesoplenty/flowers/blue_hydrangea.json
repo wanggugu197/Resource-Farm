@@ -15,8 +15,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:blue_hydrangea",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "biomesoplenty:blue_hydrangea"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

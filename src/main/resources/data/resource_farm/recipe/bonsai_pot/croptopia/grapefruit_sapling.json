@@ -6,10 +6,8 @@
     }
   ],
   "type": "resource_farm:growth",
-  "seed": "croptopia:grapefruit_sapling",
-  "soils": [
-    "#resource_farm:tree_soils"
-  ],
+  "seed": {"item": "croptopia:grapefruit_sapling"},
+  "soils": [{"tag": "resource_farm:tree_soils"}],
   "output": [
     {
       "item": "minecraft:jungle_log",

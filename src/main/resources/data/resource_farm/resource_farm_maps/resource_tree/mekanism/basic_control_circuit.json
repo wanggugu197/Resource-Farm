@@ -1,0 +1,19 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:basic_control_circuit",
+  "automatic_basic_recipe": false,
+  "product_output": 32,
+  "style": {
+    "tree_style": "resource_farm:cherry",
+    "ore_style": "resource_farm:nether_quartz",
+    "grower": "resource_farm:cherry",
+    "light_level": 1,
+    "color": "0x18F8A2"
+  },
+  "fertilize": {
+    "main_item": "mekanism:ingot_osmium",
+    "main_chance": 0.9
+  },
+  "growth_frequency": 50,
+  "custom_place_block": "mekanism:steel_casing"
+}

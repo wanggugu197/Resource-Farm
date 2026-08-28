@@ -6,9 +6,8 @@ import com.maple.resource_farm.resourceTree.PresetResourceTreeConfigHolder;
 import com.maple.resource_farm.resourceTree.ResourceTreeAccessManagement;
 import com.maple.resource_farm.resourceTree.data.ResourceTree;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.fml.ModList;
-import net.neoforged.fml.jarcontents.JarContents;
 import net.neoforged.neoforgespi.language.IModFileInfo;
 import net.neoforged.neoforgespi.locating.IModFile;
 
@@ -25,6 +24,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 
@@ -50,11 +51,11 @@ public final class ResourceFarmMaps {
     private static final String REMOVE_MARKER = MAPS_ROOT + "resource_tree_remove/";
 
     /** 树样式表 */
-    public static final Object2ObjectOpenHashMap<Identifier, ResourceTreeBaseType> BASE_TYPES = new Object2ObjectOpenHashMap<>();
+    public static final Object2ObjectOpenHashMap<ResourceLocation, ResourceTreeBaseType> BASE_TYPES = new Object2ObjectOpenHashMap<>();
     /** 矿/叠加样式表 */
-    public static final Object2ObjectOpenHashMap<Identifier, ResourceTreeExtraType> EXTRA_TYPES = new Object2ObjectOpenHashMap<>();
+    public static final Object2ObjectOpenHashMap<ResourceLocation, ResourceTreeExtraType> EXTRA_TYPES = new Object2ObjectOpenHashMap<>();
     /** 共享生长器表（键 = grower JSON id，无 treeId 绑定） */
-    public static final Object2ObjectOpenHashMap<Identifier, ResourceTreeGrower> GROWERS = new Object2ObjectOpenHashMap<>();
+    public static final Object2ObjectOpenHashMap<ResourceLocation, ResourceTreeGrower> GROWERS = new Object2ObjectOpenHashMap<>();
 
     private static boolean loaded;
 
@@ -64,18 +65,18 @@ public final class ResourceFarmMaps {
     // 查询
     // -------------------------------------------------------------------------
 
-    public static ResourceTreeBaseType getBaseType(Identifier id) {
+    public static ResourceTreeBaseType getBaseType(ResourceLocation id) {
         ResourceTreeBaseType type = BASE_TYPES.get(id);
         return type != null ? type : ResourceTreeBaseType.DEFAULT;
     }
 
-    public static ResourceTreeExtraType getExtraType(Identifier id) {
+    public static ResourceTreeExtraType getExtraType(ResourceLocation id) {
         ResourceTreeExtraType type = EXTRA_TYPES.get(id);
         return type != null ? type : ResourceTreeExtraType.DEFAULT;
     }
 
     @Nullable
-    public static ResourceTreeGrower getGrower(Identifier id) {
+    public static ResourceTreeGrower getGrower(ResourceLocation id) {
         return id == null ? null : GROWERS.get(id);
     }
 
@@ -97,7 +98,7 @@ public final class ResourceFarmMaps {
         visitDataJsonContaining(MAPS_ROOT, (path, opener) -> {
             // remove 必须先于 tree 判断（路径含 resource_tree 前缀）
             if (path.contains(REMOVE_MARKER)) {
-                Identifier id = parseEntryId(path, REMOVE_MARKER);
+                ResourceLocation id = parseEntryId(path, REMOVE_MARKER);
                 try (InputStream in = opener.open()) {
                     String rid = parseRemoval(in, id);
                     if (rid != null && !rid.isBlank()) {
@@ -110,7 +111,7 @@ public final class ResourceFarmMaps {
                 return;
             }
             if (path.contains(BASE_MARKER)) {
-                Identifier id = parseEntryId(path, BASE_MARKER);
+                ResourceLocation id = parseEntryId(path, BASE_MARKER);
                 if (id == null) return;
                 try (InputStream in = opener.open()) {
                     ResourceTreeBaseType type = parseCodec(in, ResourceTreeBaseType.CODEC, id, "tree_base_type");
@@ -121,7 +122,7 @@ public final class ResourceFarmMaps {
                     ResourceFarm.LOGGER.error("[ResourceFarm] Failed reading tree_base_type {}: {}", id, e.toString());
                 }
             } else if (path.contains(EXTRA_MARKER)) {
-                Identifier id = parseEntryId(path, EXTRA_MARKER);
+                ResourceLocation id = parseEntryId(path, EXTRA_MARKER);
                 if (id == null) return;
                 try (InputStream in = opener.open()) {
                     ResourceTreeExtraType type = parseCodec(in, ResourceTreeExtraType.CODEC, id, "tree_extra_type");
@@ -132,7 +133,7 @@ public final class ResourceFarmMaps {
                     ResourceFarm.LOGGER.error("[ResourceFarm] Failed reading tree_extra_type {}: {}", id, e.toString());
                 }
             } else if (path.contains(GROWER_MARKER)) {
-                Identifier id = parseEntryId(path, GROWER_MARKER);
+                ResourceLocation id = parseEntryId(path, GROWER_MARKER);
                 if (id == null) return;
                 try (InputStream in = opener.open()) {
                     ResourceTreeGrower g = parseCodec(in, ResourceTreeGrower.CODEC, id, "resource_tree_grower");
@@ -143,7 +144,7 @@ public final class ResourceFarmMaps {
                     ResourceFarm.LOGGER.error("[ResourceFarm] Failed reading grower {}: {}", id, e.toString());
                 }
             } else if (path.contains(TREE_MARKER)) {
-                Identifier id = parseEntryId(path, TREE_MARKER);
+                ResourceLocation id = parseEntryId(path, TREE_MARKER);
                 if (id == null) return;
                 try (InputStream in = opener.open()) {
                     JsonElement json = JsonParser.parseReader(
@@ -163,11 +164,11 @@ public final class ResourceFarmMaps {
 
         if (BASE_TYPES.isEmpty()) {
             ResourceFarm.LOGGER.warn("[ResourceFarm] No tree_base_type JSON; using DEFAULT oak");
-            BASE_TYPES.put(Identifier.withDefaultNamespace("oak"), ResourceTreeBaseType.DEFAULT);
+            BASE_TYPES.put(ResourceLocation.withDefaultNamespace("oak"), ResourceTreeBaseType.DEFAULT);
         }
         if (EXTRA_TYPES.isEmpty()) {
             ResourceFarm.LOGGER.warn("[ResourceFarm] No tree_extra_type JSON; using DEFAULT iron");
-            EXTRA_TYPES.put(Identifier.withDefaultNamespace("iron"), ResourceTreeExtraType.DEFAULT);
+            EXTRA_TYPES.put(ResourceLocation.withDefaultNamespace("iron"), ResourceTreeExtraType.DEFAULT);
         }
 
         ResourceFarm.LOGGER.info(
@@ -236,6 +237,8 @@ public final class ResourceFarmMaps {
             case "agriculture" -> c.minecraftAgriculture;
             case "mystical_agriculture" -> c.mysticalAgriculture();
             case "ae2" -> c.ae2();
+            case "create" -> c.create();
+            case "mekanism" -> c.mekanism();
             default -> true;
         };
     }
@@ -262,13 +265,9 @@ public final class ResourceFarmMaps {
         for (IModFileInfo info : ModList.get().getModFiles()) {
             try {
                 IModFile file = info.getFile();
-                JarContents contents = file.getContents();
-                if (contents == null) {
-                    continue;
-                }
-                var resource = contents.get(normalized);
-                if (resource != null) {
-                    return resource.open();
+                Path resource = file.findResource(normalized);
+                if (resource != null && Files.isRegularFile(resource)) {
+                    return Files.newInputStream(resource);
                 }
             } catch (Exception e) {
                 ResourceFarm.LOGGER.error(
@@ -283,16 +282,18 @@ public final class ResourceFarmMaps {
         for (IModFileInfo info : ModList.get().getModFiles()) {
             try {
                 IModFile file = info.getFile();
-                JarContents contents = file.getContents();
-                if (contents == null) {
+                Path dataDir = file.findResource("data");
+                if (dataDir == null || !Files.isDirectory(dataDir)) {
                     continue;
                 }
-                contents.visitContent("data", (relativePath, resource) -> {
-                    String path = relativePath.replace('\\', '/');
-                    if (path.endsWith(".json") && path.contains(pathContains)) {
-                        consumer.accept(path, resource::open);
-                    }
-                });
+                try (var stream = Files.walk(dataDir)) {
+                    stream.filter(Files::isRegularFile)
+                            .filter(p -> p.toString().endsWith(".json"))
+                            .filter(p -> p.toString().replace('\\', '/').contains(pathContains))
+                            .forEach(p -> consumer.accept(
+                                    dataDir.relativize(p).toString().replace('\\', '/'),
+                                    () -> Files.newInputStream(p)));
+                }
             } catch (Exception e) {
                 ResourceFarm.LOGGER.error(
                         "[ResourceFarm] Error scanning mod file {}: {}",
@@ -302,7 +303,7 @@ public final class ResourceFarmMaps {
     }
 
     @Nullable
-    private static Identifier parseEntryId(String relativePath, String marker) {
+    private static ResourceLocation parseEntryId(String relativePath, String marker) {
         String rest = relativePath.replace('\\', '/');
         if (rest.startsWith("data/")) {
             rest = rest.substring(5);
@@ -323,7 +324,7 @@ public final class ResourceFarmMaps {
     }
 
     @Nullable
-    private static <T> T parseCodec(InputStream in, Codec<T> codec, Identifier id, String kind) {
+    private static <T> T parseCodec(InputStream in, Codec<T> codec, ResourceLocation id, String kind) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
             JsonElement json = JsonParser.parseReader(reader);
             return codec.parse(JsonOps.INSTANCE, json)
@@ -337,7 +338,7 @@ public final class ResourceFarmMaps {
     }
 
     @Nullable
-    private static String parseRemoval(InputStream in, @Nullable Identifier fileId) {
+    private static String parseRemoval(InputStream in, @Nullable ResourceLocation fileId) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
             JsonElement json = JsonParser.parseReader(reader);
             if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString()) {
@@ -367,5 +368,5 @@ public final class ResourceFarmMaps {
         InputStream open() throws Exception;
     }
 
-    private record PendingTree(Identifier fileId, JsonElement json) {}
+    private record PendingTree(ResourceLocation fileId, JsonElement json) {}
 }

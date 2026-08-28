@@ -3,15 +3,14 @@ package com.maple.resource_farm.plantPot.recipe;
 import com.maple.resource_farm.ResourceFarm;
 import com.maple.resource_farm.plantPot.ResourcePlantPotRegister;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -37,7 +36,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldDefaults;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,12 +63,22 @@ public record GrowthRecipe(
     }
 
     @Override
-    public boolean matches(SingleRecipeInput input, @NonNull Level level) {
+    public boolean matches(SingleRecipeInput input, @NotNull Level level) {
         return seed.test(input.item());
     }
 
     @Override
-    public @NonNull ItemStack assemble(@NonNull SingleRecipeInput input) {
+    public ItemStack assemble(@NotNull SingleRecipeInput input, @NotNull HolderLookup.Provider registries) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean canCraftInDimensions(int width, int height) {
+        return true;
+    }
+
+    @Override
+    public ItemStack getResultItem(@NotNull HolderLookup.Provider registries) {
         return ItemStack.EMPTY;
     }
 
@@ -79,27 +88,17 @@ public record GrowthRecipe(
     }
 
     @Override
-    public @NonNull String group() {
+    public @NotNull String getGroup() {
         return "";
     }
 
     @Override
-    public @NonNull PlacementInfo placementInfo() {
-        return PlacementInfo.create(seed);
-    }
-
-    @Override
-    public @NonNull RecipeBookCategory recipeBookCategory() {
-        return new RecipeBookCategory();
-    }
-
-    @Override
-    public @NonNull RecipeSerializer<GrowthRecipe> getSerializer() {
+    public @NotNull RecipeSerializer<GrowthRecipe> getSerializer() {
         return ResourcePlantPotRegister.GROWTH.getSerializer();
     }
 
     @Override
-    public @NonNull RecipeType<GrowthRecipe> getType() {
+    public @NotNull RecipeType<GrowthRecipe> getType() {
         return ResourcePlantPotRegister.GROWTH.get();
     }
 
@@ -141,9 +140,7 @@ public record GrowthRecipe(
                         .alignItems(AlignItems.CENTER));
 
         // 种子槽位
-        var seedItems = recipe.seed().getValues().stream()
-                .map(h -> new ItemStack(h.value()))
-                .toList();
+        var seedItems = Stream.of(recipe.seed().getItems()).toList();
         var seedSlot = new ItemSlot()
                 .setItem(seedItems.getFirst())
                 .xeiRecipeIngredient(IngredientIO.INPUT, seedItems::stream)
@@ -168,7 +165,7 @@ public record GrowthRecipe(
 
         // 土壤槽位
         var soilItems = recipe.soils().stream()
-                .flatMap(ing -> ing.getValues().stream().map(h -> new ItemStack(h.value())))
+                .flatMap(ing -> Stream.of(ing.getItems()))
                 .toList();
         var soilSlot = new ItemSlot()
                 .setItem(soilItems.getFirst())
@@ -234,7 +231,7 @@ public record GrowthRecipe(
 
         @Setter
         @Accessors(fluent = true, chain = true)
-        Identifier id;
+        ResourceLocation id;
         @Setter
         @Accessors(fluent = true, chain = true)
         String renderer = "";
@@ -280,14 +277,14 @@ public record GrowthRecipe(
                 throw new IllegalStateException("Growth recipe is incomplete: seed, soils, and outputs must be set.");
             }
             if (id == null) {
-                var values = seed.getValues();
-                var item = values.get(0).value();
+                var items = seed.getItems();
+                var item = items[0].getItem();
                 var registryName = BuiltInRegistries.ITEM.getKey(item);
                 id = RLUtils.get(registryName.getNamespace(),
                         registryName.getPath() + "_growth");
             }
             var recipe = new GrowthRecipe(renderer, duration, fertilizable, seed, List.copyOf(soils), List.copyOf(outputs));
-            provider.accept(ResourceKey.create(Registries.RECIPE, id), recipe, null);
+            provider.accept(id, recipe, null);
         }
     }
 }

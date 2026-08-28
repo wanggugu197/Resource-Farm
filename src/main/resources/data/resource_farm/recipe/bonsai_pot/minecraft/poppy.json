@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:poppy",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "minecraft:poppy"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

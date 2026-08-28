@@ -15,8 +15,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:pink_hibiscus",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "biomesoplenty:pink_hibiscus"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

@@ -15,8 +15,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:beetroot_seeds",
-  "soils": [
-    "#resource_farm:farmland_soils"
-  ]
+  "seed": {"item": "minecraft:beetroot_seeds"},
+  "soils": [{"tag": "resource_farm:farmland_soils"}]
 }

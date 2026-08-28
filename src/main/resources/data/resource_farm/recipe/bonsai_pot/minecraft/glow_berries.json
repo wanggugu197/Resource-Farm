@@ -9,8 +9,6 @@
       "min": 2
     }
   ],
-  "seed": "minecraft:glow_berries",
-  "soils": [
-    "#resource_farm:moss_soils"
-  ]
+  "seed": {"item": "minecraft:glow_berries"},
+  "soils": [{"tag": "resource_farm:moss_soils"}]
 }

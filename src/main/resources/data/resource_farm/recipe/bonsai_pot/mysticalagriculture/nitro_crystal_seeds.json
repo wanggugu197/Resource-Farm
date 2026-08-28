@@ -19,10 +19,8 @@
       "item": "mysticalagriculture:nitro_crystal_seeds"
     }
   ],
-  "seed": "mysticalagriculture:nitro_crystal_seeds",
-  "soils": [
-    "mysticalagradditions:nitro_crystal_crux"
-  ],
+  "seed": {"item": "mysticalagriculture:nitro_crystal_seeds"},
+  "soils": [{"item": "mysticalagradditions:nitro_crystal_crux"}],
   "duration": 1500,
   "fertilizable": true
 }

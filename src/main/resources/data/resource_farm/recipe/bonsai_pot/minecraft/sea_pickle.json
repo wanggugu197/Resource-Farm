@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:sea_pickle",
-  "soils": [
-    "#resource_farm:water_soils"
-  ]
+  "seed": {"item": "minecraft:sea_pickle"},
+  "soils": [{"tag": "resource_farm:water_soils"}]
 }

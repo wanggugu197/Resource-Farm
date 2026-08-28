@@ -1,7 +1,6 @@
 package com.maple.resource_farm.client;
 
 import com.maple.resource_farm.ResourceFarm;
-import com.maple.resource_farm.plantPot.ResourcePlantPotRegister;
 
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -12,8 +11,7 @@ public class RecipeSyncHandler {
 
     @SubscribeEvent
     public static void onDatapackSync(OnDatapackSyncEvent event) {
-        // 告诉 NeoForge 需要将 ResourceFarmRecipeTypes.GROWTH 类型的配方同步到客户端
-        event.sendRecipes(ResourcePlantPotRegister.GROWTH.get());
-        ResourceFarm.LOGGER.info("[ResourceFarm] Requested sync of GROWTH recipe type to client.");
+        // 1.21.1：自定义配方类型随 RecipeManager 自动同步到客户端，无需显式请求
+        ResourceFarm.LOGGER.debug("[ResourceFarm] Datapack sync; custom recipe types sync automatically.");
     }
 }

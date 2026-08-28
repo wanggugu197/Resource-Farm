@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:cocoa_beans",
-  "soils": [
-    "#resource_farm:jungle_soils"
-  ]
+  "seed": {"item": "minecraft:cocoa_beans"},
+  "soils": [{"tag": "resource_farm:jungle_soils"}]
 }

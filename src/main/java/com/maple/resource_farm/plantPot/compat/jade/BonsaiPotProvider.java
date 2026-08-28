@@ -4,11 +4,11 @@ import com.maple.resource_farm.ResourceFarm;
 import com.maple.resource_farm.plantPot.block.BonsaiPotBlockEntity;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IServerDataProvider;
 
@@ -16,15 +16,15 @@ public enum BonsaiPotProvider implements IServerDataProvider<BlockAccessor> {
 
     INSTANCE;
 
-    public static final Identifier UID = ResourceFarm.id("bonsai_pot_info");
+    public static final ResourceLocation UID = ResourceFarm.id("bonsai_pot_info");
 
     @Override
-    public @NonNull Identifier getUid() {
+    public @NotNull ResourceLocation getUid() {
         return UID;
     }
 
     @Override
-    public void appendServerData(@NonNull CompoundTag data, BlockAccessor accessor) {
+    public void appendServerData(@NotNull CompoundTag data, BlockAccessor accessor) {
         BlockEntity be = accessor.getBlockEntity();
         if (!(be instanceof BonsaiPotBlockEntity bed)) return;
 

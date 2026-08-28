@@ -15,8 +15,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:burning_blossom",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "biomesoplenty:burning_blossom"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

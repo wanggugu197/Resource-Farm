@@ -3,9 +3,9 @@ package com.maple.resource_farm.plantPot.compat.jade;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
@@ -16,23 +16,23 @@ public enum BonsaiPotClientProvider implements IBlockComponentProvider {
     INSTANCE;
 
     @Override
-    public @NonNull Identifier getUid() {
+    public @NotNull ResourceLocation getUid() {
         return BonsaiPotProvider.UID;
     }
 
     @Override
-    public void appendTooltip(@NonNull ITooltip tooltip, BlockAccessor accessor, @NonNull IPluginConfig config) {
+    public void appendTooltip(@NotNull ITooltip tooltip, BlockAccessor accessor, @NotNull IPluginConfig config) {
         CompoundTag data = accessor.getServerData();
 
-        String soilName = data.getStringOr("soilName", "");
-        float growthModifier = data.getFloatOr("growthModifier", 1f);
-        String cropName = data.getStringOr("cropName", "");
-        int currentStage = data.getIntOr("currentStage", 0);
-        int maxStage = data.getIntOr("maxStage", 0);
-        int progressPercent = data.getIntOr("progressPercent", 0);
-        float skyBoostModifier = data.getFloatOr("skyBoostModifier", 1f);
+        String soilName = data.getString("soilName");
+        float growthModifier = data.contains("growthModifier") ? data.getFloat("growthModifier") : 1f;
+        String cropName = data.getString("cropName");
+        int currentStage = data.getInt("currentStage");
+        int maxStage = data.getInt("maxStage");
+        int progressPercent = data.getInt("progressPercent");
+        float skyBoostModifier = data.contains("skyBoostModifier") ? data.getFloat("skyBoostModifier") : 1f;
 
-        if (!data.getBooleanOr("hasCrop", false)) {
+        if (!data.getBoolean("hasCrop")) {
             tooltip.add(Component.translatable("jade.resource_farm.no_crop").withStyle(ChatFormatting.GRAY));
             if (!soilName.isEmpty()) {
                 tooltip.add(Component.translatable("jade.resource_farm.soil_info",

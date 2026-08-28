@@ -1,0 +1,25 @@
+{
+  "type": "mekanism:combining",
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "mekanism:ingot_refined_glowstone"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
+    }
+  ],
+  "main_input": {
+    "count": 1,
+    "tag": "minecraft:saplings"
+  },
+  "extra_input": {
+    "count": 1,
+    "item": "mekanism:block_refined_glowstone"
+  },
+  "output": {
+    "count": 1,
+    "id": "resource_farm:mekanism_ingot_refined_glowstone_sapling"
+  }
+}

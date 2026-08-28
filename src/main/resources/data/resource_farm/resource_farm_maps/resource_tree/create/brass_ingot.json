@@ -1,0 +1,19 @@
+{
+  "group": "create",
+  "item": "create:brass_ingot",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:cherry",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:cherry",
+    "light_level": 0,
+    "color": "0xF8CA67"
+  },
+  "fertilize": {
+    "main_item": "create:brass_nugget",
+    "main_chance": 0.8
+  },
+  "growth_frequency": 50,
+  "custom_place_block": "create:brass_casing"
+}

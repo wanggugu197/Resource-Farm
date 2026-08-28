@@ -1,27 +1,45 @@
 {
-  "type": "mysticalagriculture:infusion",
-  "neoforge:conditions": [
-    {
-      "type": "resource_farm:tree_exists",
-      "tree_id": "mysticalagriculture:cognizant_dust"
-    },
-    {
-      "type": "resource_farm:config",
-      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
-    }
-  ],
-  "input": "#minecraft:saplings",
-  "ingredients": [
-    "mysticalagriculture:awakened_supremium_block",
-    "mysticalagriculture:cognizant_dust",
-    "mysticalagriculture:awakened_supremium_block",
-    "mysticalagriculture:cognizant_dust",
-    "mysticalagriculture:awakened_supremium_block",
-    "mysticalagriculture:cognizant_dust",
-    "mysticalagriculture:awakened_supremium_block",
-    "mysticalagriculture:cognizant_dust"
-  ],
-  "result": {
-    "id": "resource_farm:mysticalagriculture_cognizant_dust_sapling"
-  }
+    "type":  "mysticalagriculture:infusion",
+    "neoforge:conditions":  [
+                                {
+                                    "type":  "resource_farm:tree_exists",
+                                    "tree_id":  "mysticalagriculture:cognizant_dust"
+                                },
+                                {
+                                    "type":  "resource_farm:config",
+                                    "config_id":  "tree.recipeGeneration.generateSaplingRecipes"
+                                }
+                            ],
+    "input":  {
+                  "tag":  "minecraft:saplings"
+              },
+    "ingredients":  [
+                        {
+                            "item":  "mysticalagriculture:awakened_supremium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:cognizant_dust"
+                        },
+                        {
+                            "item":  "mysticalagriculture:awakened_supremium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:cognizant_dust"
+                        },
+                        {
+                            "item":  "mysticalagriculture:awakened_supremium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:cognizant_dust"
+                        },
+                        {
+                            "item":  "mysticalagriculture:awakened_supremium_block"
+                        },
+                        {
+                            "item":  "mysticalagriculture:cognizant_dust"
+                        }
+                    ],
+    "result":  {
+                   "id":  "resource_farm:mysticalagriculture_cognizant_dust_sapling"
+               }
 }

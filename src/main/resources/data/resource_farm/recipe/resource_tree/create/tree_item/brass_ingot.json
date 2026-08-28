@@ -1,0 +1,25 @@
+{
+  "type": "create:milling",
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "create:brass_ingot"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateTreeItemRecipes"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "resource_farm:create_brass_ingot_resin"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "create:brass_ingot"
+    }
+  ],
+  "processing_time": 50
+}

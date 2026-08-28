@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:wither_rose",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "minecraft:wither_rose"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

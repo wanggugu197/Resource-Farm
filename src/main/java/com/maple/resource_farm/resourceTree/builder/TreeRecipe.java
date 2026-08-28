@@ -21,6 +21,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.crafting.BlockTagIngredient;
 
 import com.gto.registrylib.util.entry.BlockEntry;
@@ -28,6 +29,15 @@ import com.gto.registrylib.util.entry.ItemEntry;
 import com.mapleutillib.utils.RegistriesUtils;
 import com.mapleutillib.utils.recipe.RecipeHelper;
 import com.mapleutillib.utils.recipe.VanillaRecipeHelper;
+import com.simibubi.create.content.kinetics.fan.processing.SplashingRecipe;
+import com.simibubi.create.content.kinetics.mixer.MixingRecipe;
+import com.simibubi.create.content.processing.recipe.HeatCondition;
+import mekanism.api.datagen.recipe.builder.ItemStackChemicalToItemStackRecipeBuilder;
+import mekanism.api.datagen.recipe.builder.ItemStackToItemStackRecipeBuilder;
+import mekanism.api.datagen.recipe.builder.SawmillRecipeBuilder;
+import mekanism.api.recipes.ingredients.creator.IngredientCreatorAccess;
+import mekanism.common.registries.MekanismChemicals;
+import mekanism.common.registries.MekanismItems;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +45,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.maple.resource_farm.ResourceFarm.isModLoaded;
 import static com.maple.resource_farm.resourceTree.ResourceTreeAccessManagement.addTreeRecipeCount;
 import static com.maple.resource_farm.resourceTree.ResourceTreeAccessManagement.getTreeRecipeCount;
 
@@ -209,21 +220,68 @@ public class TreeRecipe {
                 if (blockTagSoil)
                     builder.addSoil(new BlockTagIngredient(resourceTree.getResourceTreeConfig().customPlaceBlockTag()).toVanilla());
                 if (!blockSoil && !blockTagSoil)
-                    builder.addSoil(Ingredient.of(BuiltInRegistries.ITEM.getOrThrow(ResourceFarmItemTags.TREE_SOILS)));
+                    builder.addSoil(Ingredient.of(ResourceFarmItemTags.TREE_SOILS));
                 if (resourceTree.getResourceTreeConfig().fertilizeSetting() != ResourceTreeFertilizeSettings.DEFAULT)
                     builder.fertilizable(false);
                 builder.register();
             }
-        });
-    }
 
-    public static void SimpleTreeItemAndSaplingRecipeBuild(RecipeOutput consumer, String... ids) {
-        for (String id : ids) {
-            String treeId = id + "_tree";
-            ResourceTree resourceTree = ResourceTreeAccessManagement.ResourceTreeMap.get(treeId);
-            if (resourceTree == null) return;
-            SimpleTreeItemAndSaplingRecipeBuild(consumer, treeId, resourceTree);
-        }
+            if (isModLoaded("create")) {
+                if (ResourceFarmConfigHolder.treeConfigHolder.tree.recipeGeneration.generateCreateRecipe) {
+                    // 漂洗配方 漂洗树叶 增产约 275%
+                    BlockEntry<?> leavesEntry = resourceTree.getLeaves();
+                    new SplashingRecipe.Builder<>(SplashingRecipe::new, ResourceFarm.id("wash_" + name))
+                            .require(leavesEntry)
+                            .output(0.125f, resourceTree.getResin(), 2)
+                            .output(0.5f, resourceTree.getFruit(), 2)
+                            .build(consumer);
+
+                    // 混合搅拌配方 水萃原木获得树脂 增产 25%
+                    ItemEntry<?> resin = resourceTree.getResin();
+                    new MixingRecipe.Builder<>(MixingRecipe::new, ResourceFarm.id(name + "_water_extraction_logs"))
+                            .require(Ingredient.of(logs.toArray(new ItemLike[0]))).require(Fluids.WATER, 1000)
+                            .output(resin.asStack(4)).output(0.25f, resin.asStack(4))
+                            .duration(200).requiresHeat(HeatCondition.HEATED).build(consumer);
+
+                    new MixingRecipe.Builder<>(MixingRecipe::new, ResourceFarm.id(name + "_water_extraction_planks"))
+                            .require(resourceTree.getPlanks()).require(Fluids.WATER, 1000)
+                            .output(resin.asStack()).output(0.25f, resin.asStack())
+                            .duration(200).requiresHeat(HeatCondition.HEATED).build(consumer);
+                }
+            }
+
+            if (isModLoaded("mekanism")) {
+                if (GENERATE_PLANKS && ResourceFarmConfigHolder.treeConfigHolder.tree.recipeGeneration.generateMekanismRecipe) {
+                    SawmillRecipeBuilder.sawing(
+                            IngredientCreatorAccess.item().from(Ingredient.of(logs.toArray(new ItemLike[0]))),
+                            resourceTree.getPlanks().asStack(6),
+                            MekanismItems.SAWDUST.asStack(), 0.25)
+                            .build(consumer, ResourceFarm.id(name + "_sawing_logs"));
+                }
+
+                if (ResourceFarmConfigHolder.treeConfigHolder.tree.blockGeneration.generateClump() &&
+                        ResourceFarmConfigHolder.treeConfigHolder.tree.recipeGeneration.generateMekanismRecipe) {
+                    ItemStackChemicalToItemStackRecipeBuilder.injecting(
+                            IngredientCreatorAccess.item().from(Ingredient.of(logs.toArray(new ItemLike[0])), 2),
+                            IngredientCreatorAccess.chemicalStack().from(MekanismChemicals.HYDROGEN.asStack(1)),
+                            resourceTree.getClump().asStack(15),
+                            true)
+                            .build(consumer, ResourceFarm.id(name + "_injecting_logs"));
+
+                    ItemStackChemicalToItemStackRecipeBuilder.purifying(
+                            IngredientCreatorAccess.item().from(resourceTree.getClump()),
+                            IngredientCreatorAccess.chemicalStack().from(MekanismChemicals.OXYGEN.asStack(1)),
+                            resourceTree.getResin().asStack(),
+                            true)
+                            .build(consumer, ResourceFarm.id(name + "_purifying_clump"));
+
+                    ItemStackToItemStackRecipeBuilder.enriching(
+                            IngredientCreatorAccess.item().from(resourceTree.getLeaves(), resourceTree.getSapling()),
+                            resourceTree.getFruit().asStack(2))
+                            .build(consumer, ResourceFarm.id(name + "_enriching_leaves_or_sapling"));
+                }
+            }
+        });
     }
 
     public static void SimpleTreeItemAndSaplingRecipeBuild(RecipeOutput consumer, String treeId, ResourceTree resourceTree) {
@@ -252,21 +310,6 @@ public class TreeRecipe {
         }
     }
 
-    @SafeVarargs
-    public static void TreeItemAndSaplingRecipeBuild(RecipeOutput consumer, String id, IntObjectHolder<Item>... treeItems) {
-        TreeSaplingRecipeBuild(consumer, id, Arrays.stream(treeItems).map(holder -> holder.obj()).toArray(Object[]::new));
-        TreeItemRecipeBuild(consumer, id, treeItems);
-    }
-
-    public static void TreeSaplingRecipeBuild(RecipeOutput consumer, String id, Object... treeItems) {
-        if (!GENERATE_SAPLING_RECIPES) return;
-        String treeId = id + "_tree";
-        ResourceTree resourceTree = ResourceTreeAccessManagement.ResourceTreeMap.get(treeId);
-        if (resourceTree == null) return;
-
-        TreeSaplingRecipeBuild(consumer, treeId, resourceTree, treeItems);
-    }
-
     public static void TreeSaplingRecipeBuild(RecipeOutput consumer, String treeId, ResourceTree resourceTree, Object... treeItems) {
         if (!GENERATE_SAPLING_RECIPES) return;
         Object[] newTreeItems = refactorShape(treeItems);
@@ -274,28 +317,6 @@ public class TreeRecipe {
         VanillaRecipeHelper.shaped(consumer, ResourceFarm.id(treeId + "_craft_sapling"))
                 .output(resourceTree.getSapling().get())
                 .pattern(RFArrayUtils.concatenateArrays("ABC", "DIE", "FGH", RFArrayUtils.insertCharBeforeElement(RFArrayUtils.concatenateArrays(
-                        newTreeItems, ItemTags.SAPLINGS))))
-                .save();
-    }
-
-    public static void AscensionTreeSaplingRecipeBuild(RecipeOutput consumer, String id, Item items, String... ids) {
-        if (!GENERATE_SAPLING_RECIPES) return;
-        String treeId = id + "_tree";
-        ResourceTree resourceTree = ResourceTreeAccessManagement.ResourceTreeMap.get(treeId);
-        if (resourceTree == null) return;
-
-        Object[] treeItems = new Object[ids.length];
-        for (int i = 0; i < ids.length; i++) {
-            ResourceTree tree = ResourceTreeAccessManagement.ResourceTreeMap.get(ids[i] + "_tree");
-            if (tree == null) return;
-            treeItems[i] = tree.getResin();
-        }
-
-        Object[] newTreeItems = refactorShape(treeItems);
-
-        VanillaRecipeHelper.shaped(consumer, ResourceFarm.id("ascension_" + treeId + "_craft_sapling"))
-                .output(resourceTree.getSapling().get())
-                .pattern(RFArrayUtils.concatenateArrays(SAPLING_RECIPE_BASE, RFArrayUtils.insertCharBeforeElement(RFArrayUtils.concatenateArrays(
                         newTreeItems, ItemTags.SAPLINGS))))
                 .save();
     }
@@ -314,16 +335,6 @@ public class TreeRecipe {
     }
 
     @SafeVarargs
-    public static void TreeItemRecipeBuild(RecipeOutput consumer, String id, IntObjectHolder<Item>... treeItems) {
-        if (!GENERATE_TREE_ITEM_RECIPES) return;
-        String treeId = id + "_tree";
-        ResourceTree resourceTree = ResourceTreeAccessManagement.ResourceTreeMap.get(treeId);
-        if (resourceTree == null) return;
-
-        TreeItemRecipeBuild(consumer, treeId, resourceTree, treeItems);
-    }
-
-    @SafeVarargs
     public static void TreeItemRecipeBuild(RecipeOutput consumer, String treeId, ResourceTree resourceTree, IntObjectHolder<Item>... treeItems) {
         if (!GENERATE_TREE_ITEM_RECIPES) return;
 
@@ -336,14 +347,6 @@ public class TreeRecipe {
                     .save();
             addTreeRecipeCount(treeId, 1);
         }
-    }
-
-    public static void TreeItemRecipeBuildWithExtra(RecipeOutput consumer, String id, Item extra, int count, IntObjectHolder<Item> item) {
-        String treeId = id + "_tree";
-        ResourceTree resourceTree = ResourceTreeAccessManagement.ResourceTreeMap.get(treeId);
-        if (resourceTree == null) return;
-
-        TreeItemRecipeBuildWithExtra(consumer, treeId, resourceTree, extra, count, item);
     }
 
     public static void TreeItemRecipeBuildWithExtra(RecipeOutput consumer, String treeId, ResourceTree resourceTree,

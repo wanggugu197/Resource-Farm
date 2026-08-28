@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:red_mushroom",
-  "soils": [
-    "#resource_farm:mushroom_soils"
-  ]
+  "seed": {"item": "minecraft:red_mushroom"},
+  "soils": [{"tag": "resource_farm:mushroom_soils"}]
 }

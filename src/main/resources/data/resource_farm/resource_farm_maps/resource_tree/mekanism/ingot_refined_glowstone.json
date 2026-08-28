@@ -1,0 +1,19 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:ingot_refined_glowstone",
+  "automatic_basic_recipe": false,
+  "product_output": 8,
+  "style": {
+    "tree_style": "resource_farm:oak",
+    "ore_style": "resource_farm:gold",
+    "grower": "resource_farm:oak",
+    "light_level": 0,
+    "color": "0xFFF0A5"
+  },
+  "fertilize": {
+    "main_item": "mekanism:nugget_refined_glowstone",
+    "main_chance": 0.9
+  },
+  "growth_frequency": 100,
+  "custom_place_block": "mekanism:block_refined_glowstone"
+}

@@ -5,10 +5,10 @@ import com.maple.resource_farm.plantPot.block.ClocheHelper;
 import com.maple.resource_farm.plantPot.block.HoppingBonsaiPotBlockEntity;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IServerDataProvider;
 
@@ -16,15 +16,15 @@ public enum HoppingBonsaiPotProvider implements IServerDataProvider<BlockAccesso
 
     INSTANCE;
 
-    public static final Identifier UID = ResourceFarm.id("hopping_bonsai_pot_info");
+    public static final ResourceLocation UID = ResourceFarm.id("hopping_bonsai_pot_info");
 
     @Override
-    public @NonNull Identifier getUid() {
+    public @NotNull ResourceLocation getUid() {
         return UID;
     }
 
     @Override
-    public void appendServerData(@NonNull CompoundTag data, BlockAccessor accessor) {
+    public void appendServerData(@NotNull CompoundTag data, BlockAccessor accessor) {
         BlockEntity be = accessor.getBlockEntity();
         if (!(be instanceof HoppingBonsaiPotBlockEntity bed)) return;
         int cloched = bed.getClochedTier();

@@ -2,20 +2,20 @@ package com.maple.resource_farm.resourceTree.data.dataMaps;
 
 import com.maple.resource_farm.ResourceFarm;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 /** 矿石/叠加纹理样式（数据包 JSON）。 */
 public record ResourceTreeExtraType(
-                                    Identifier base,
-                                    Identifier center) {
+                                    ResourceLocation base,
+                                    ResourceLocation center) {
 
     public static final Codec<ResourceTreeExtraType> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Identifier.CODEC.optionalFieldOf("base", ResourceFarm.id("block/ore/iron"))
+            ResourceLocation.CODEC.optionalFieldOf("base", ResourceFarm.id("block/ore/iron"))
                     .forGetter(ResourceTreeExtraType::base),
-            Identifier.CODEC.optionalFieldOf("center", ResourceFarm.id("block/ore/center"))
+            ResourceLocation.CODEC.optionalFieldOf("center", ResourceFarm.id("block/ore/center"))
                     .forGetter(ResourceTreeExtraType::center))
             .apply(instance, ResourceTreeExtraType::new));
 

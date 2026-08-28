@@ -1,6 +1,5 @@
 dependencies {
-    // Configuration
-    jarJar(api(forge.configuration.get()))
+    implementation(forge.configuration)
 
     // RegistryLib + MapleUtilLib
     implementation(forge.registrylib)
@@ -17,6 +16,21 @@ dependencies {
     localRuntime(forge.jade)
 
     // localRuntime(forge.bundles.extraMystical)
-
     // localRuntime(forge.ae2)
+
+    configurations.configureEach {
+        exclude group: 'xaero.lib'
+        exclude group: 'curse.maven'
+        exclude group: 'info.journeymap'
+        exclude group: 'cc.tweaked'
+        exclude group: 'top.theillusivec4.curios'
+        exclude group: 'dev.ftb.mods'
+        exclude group: 'dev.architectury'
+    }
+
+    compileOnly(forge.create)
+    compileOnly(forge.mekanism)
+
+    // localRuntime(forge.create)
+    // localRuntime(forge.mekanism)
 }

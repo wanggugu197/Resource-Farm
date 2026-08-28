@@ -15,8 +15,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:glowflower",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "biomesoplenty:glowflower"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

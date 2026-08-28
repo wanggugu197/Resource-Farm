@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:nether_wart",
-  "soils": [
-    "#resource_farm:soul_sand_soils"
-  ]
+  "seed": {"item": "minecraft:nether_wart"},
+  "soils": [{"tag": "resource_farm:soul_sand_soils"}]
 }

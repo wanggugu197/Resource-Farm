@@ -27,8 +27,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:sculk",
-  "soils": [
-    "#resource_farm:sculk_soils"
-  ]
+  "seed": {"item": "minecraft:sculk"},
+  "soils": [{"tag": "resource_farm:sculk_soils"}]
 }

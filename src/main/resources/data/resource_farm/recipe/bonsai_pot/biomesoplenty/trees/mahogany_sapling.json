@@ -26,8 +26,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:mahogany_sapling",
-  "soils": [
-    "#resource_farm:tree_soils"
-  ]
+  "seed": {"item": "biomesoplenty:mahogany_sapling"},
+  "soils": [{"tag": "resource_farm:tree_soils"}]
 }

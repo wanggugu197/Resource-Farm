@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import com.mojang.serialization.MapCodec;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -49,24 +49,24 @@ public class HoppingBonsaiPotBlock extends BonsaiPotBlock {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.@NonNull Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
     }
 
     @Override
-    protected @NonNull VoxelShape getShape(@NonNull BlockState state, @NonNull BlockGetter level,
-                                           @NonNull BlockPos pos, @NonNull CollisionContext context) {
+    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level,
+                                           @NotNull BlockPos pos, @NotNull CollisionContext context) {
         return SHAPE;
     }
 
     @Override
-    protected @NonNull MapCodec<? extends BonsaiPotBlock> codec() {
+    protected @NotNull MapCodec<? extends BonsaiPotBlock> codec() {
         return CODEC;
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(@NonNull BlockPos pos, @NonNull BlockState state) {
+    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state) {
         return new HoppingBonsaiPotBlockEntity(
                 ResourcePlantPotRegister.HOPPING_BONSAI_POT_BLOCK_ENTITY.get(), pos, state);
     }
@@ -75,12 +75,12 @@ public class HoppingBonsaiPotBlock extends BonsaiPotBlock {
     // 右键交互
     // ============================================================
     @Override
-    protected @NonNull InteractionResult useItemOn(@NonNull ItemStack stack, @NonNull BlockState state,
-                                                   @NonNull Level level, @NonNull BlockPos pos,
-                                                   @NonNull Player player, @NonNull InteractionHand hand,
-                                                   @NonNull BlockHitResult hitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack, @NotNull BlockState state,
+                                                       @NotNull Level level, @NotNull BlockPos pos,
+                                                       @NotNull Player player, @NotNull InteractionHand hand,
+                                                       @NotNull BlockHitResult hitResult) {
         if (!(level.getBlockEntity(pos) instanceof HoppingBonsaiPotBlockEntity be)) {
-            return InteractionResult.FAIL;
+            return ItemInteractionResult.FAIL;
         }
 
         ItemStack heldItem = player.getItemInHand(hand);
@@ -101,35 +101,35 @@ public class HoppingBonsaiPotBlock extends BonsaiPotBlock {
         }
 
         // 有玻璃罩且未触发上述操作 → 拒绝交互
-        return InteractionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     // ---------- 辅助方法 ----------
-    private InteractionResult handleClocheRemoval(Level level, BlockPos pos, HoppingBonsaiPotBlockEntity be) {
+    private ItemInteractionResult handleClocheRemoval(Level level, BlockPos pos, HoppingBonsaiPotBlockEntity be) {
         if (level.isClientSide()) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(true);
         }
 
         ItemStack cloche = ClocheHelper.getClocheItem(be.getClochedTier());
         if (cloche.isEmpty()) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         be.setClochedTier(0);
         level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, cloche));
         level.playSound(null, pos, SoundEvents.GLASS_BREAK, SoundSource.BLOCKS, 0.5F, 1.2F);
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(false);
     }
 
-    private InteractionResult handleClochePlace(Level level, BlockPos pos, Player player,
-                                                ItemStack heldItem, HoppingBonsaiPotBlockEntity be) {
+    private ItemInteractionResult handleClochePlace(Level level, BlockPos pos, Player player,
+                                                    ItemStack heldItem, HoppingBonsaiPotBlockEntity be) {
         if (level.isClientSide()) {
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(true);
         }
 
         int tier = ClocheHelper.getClocheTire(heldItem.getItem());
         if (tier == 0) {
-            return InteractionResult.PASS;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         be.setClochedTier(tier);
@@ -137,16 +137,16 @@ public class HoppingBonsaiPotBlock extends BonsaiPotBlock {
             heldItem.shrink(1);
         }
         level.playSound(null, pos, SoundEvents.GLASS_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(false);
     }
 
     // ============================================================
     // Ticker
     // ============================================================
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NonNull Level level, @NonNull BlockState state,
-                                                                  @NonNull BlockEntityType<T> type) {
-        return (lvl, pos, _, be) -> {
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state,
+                                                                  @NotNull BlockEntityType<T> type) {
+        return (lvl, pos, ignoredState, be) -> {
             if (be instanceof HoppingBonsaiPotBlockEntity station) {
                 HoppingBonsaiPotBlockEntity.tick(lvl, pos, station);
             }

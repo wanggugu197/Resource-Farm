@@ -6,10 +6,8 @@
     }
   ],
   "type": "resource_farm:growth",
-  "seed": "forbidden_arcanus:growing_edelwood",
-  "soils": [
-    "#resource_farm:tree_soils"
-  ],
+  "seed": {"item": "forbidden_arcanus:growing_edelwood"},
+  "soils": [{"tag": "resource_farm:tree_soils"}],
   "output": [
     {
       "item": "forbidden_arcanus:edelwood_log",

@@ -26,8 +26,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:crimson_fungus",
-  "soils": [
-    "#resource_farm:nether_soils"
-  ]
+  "seed": {"item": "minecraft:crimson_fungus"},
+  "soils": [{"tag": "resource_farm:nether_soils"}]
 }

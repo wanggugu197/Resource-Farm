@@ -1,0 +1,25 @@
+{
+  "type": "create:milling",
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "create:precision_mechanism"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateTreeItemRecipes"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "resource_farm:create_precision_mechanism_resin"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "id": "create:precision_mechanism"
+    }
+  ],
+  "processing_time": 50
+}

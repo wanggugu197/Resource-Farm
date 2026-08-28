@@ -3,7 +3,7 @@ package com.maple.resource_farm.data.misc;
 import com.maple.resource_farm.ResourceFarm;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
@@ -51,7 +51,7 @@ public class ResourceFarmItemTags {
         return TagKey.create(Registries.ITEM, ResourceFarm.id(path));
     }
 
-    public static TagKey<Item> createItemTag(Identifier location) {
+    public static TagKey<Item> createItemTag(ResourceLocation location) {
         return TagKey.create(Registries.ITEM, location);
     }
 }

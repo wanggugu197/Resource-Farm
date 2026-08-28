@@ -1,0 +1,19 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:hdpe_pellet",
+  "automatic_basic_recipe": false,
+  "product_output": 8,
+  "style": {
+    "tree_style": "resource_farm:acacia",
+    "ore_style": "resource_farm:nether_gold",
+    "grower": "resource_farm:acacia",
+    "light_level": 0,
+    "color": "0xEBEDEE"
+  },
+  "fertilize": {
+    "main_item": "mekanism:substrate",
+    "main_chance": 0.6
+  },
+  "growth_frequency": 50,
+  "custom_place_block": "mekanism:block_bio_fuel"
+}

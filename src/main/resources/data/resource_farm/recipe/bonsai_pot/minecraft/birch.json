@@ -20,8 +20,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:birch_sapling",
-  "soils": [
-    "#resource_farm:tree_soils"
-  ]
+  "seed": {"item": "minecraft:birch_sapling"},
+  "soils": [{"tag": "resource_farm:tree_soils"}]
 }

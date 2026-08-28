@@ -1,0 +1,22 @@
+{
+  "group": "create",
+  "item": "create:raw_zinc",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:dark_oak",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:dark_oak",
+    "light_level": 0,
+    "color": "0xB7E6BF"
+  },
+  "fertilize": {
+    "main_item": "create:zinc_nugget",
+    "main_chance": 1
+,
+    "secondary_item": "minecraft:iron_nugget",
+    "secondary_chance": 0.8
+  },
+  "growth_frequency": 50,
+  "custom_place_block_tag": "c:ores/zinc"
+}

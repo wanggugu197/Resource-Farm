@@ -2,7 +2,7 @@ package com.maple.resource_farm.resourceTree.data.dataMaps;
 
 import com.maple.resource_farm.ResourceFarm;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 import com.mapleutillib.utils.RLUtils;
 import com.mojang.serialization.Codec;
@@ -14,24 +14,24 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 public record ResourceTreeBaseType(
                                    String type,
                                    // ---- 基底模型（models/block/...）----
-                                   Identifier saplingBase,
-                                   Identifier leavesBase,
-                                   Identifier logBase,
-                                   Identifier logHorizontalBase,
-                                   Identifier strippedLogBase,
-                                   Identifier strippedLogHorizontalBase,
-                                   Identifier woodBase,
-                                   Identifier strippedWoodBase,
-                                   Identifier planksBase,
+                                   ResourceLocation saplingBase,
+                                   ResourceLocation leavesBase,
+                                   ResourceLocation logBase,
+                                   ResourceLocation logHorizontalBase,
+                                   ResourceLocation strippedLogBase,
+                                   ResourceLocation strippedLogHorizontalBase,
+                                   ResourceLocation woodBase,
+                                   ResourceLocation strippedWoodBase,
+                                   ResourceLocation planksBase,
                                    // ---- 着色 / 物品叠加纹理 ----
-                                   Identifier saplingOverlay,
-                                   Identifier leavesOverlay,
-                                   Identifier resin,
-                                   Identifier resinOverlay,
-                                   Identifier fruit,
-                                   Identifier fruitOverlay,
-                                   Identifier clump,
-                                   Identifier clumpOverlay,
+                                   ResourceLocation saplingOverlay,
+                                   ResourceLocation leavesOverlay,
+                                   ResourceLocation resin,
+                                   ResourceLocation resinOverlay,
+                                   ResourceLocation fruit,
+                                   ResourceLocation fruitOverlay,
+                                   ResourceLocation clump,
+                                   ResourceLocation clumpOverlay,
                                    // ---- 翻译键 ----
                                    String saplingTranslateKey,
                                    String leavesTranslateKey,
@@ -46,63 +46,63 @@ public record ResourceTreeBaseType(
 
     /** JSON 嵌套：基底模型 */
     public record Models(
-                         Identifier saplingBase,
-                         Identifier leavesBase,
-                         Identifier logBase,
-                         Identifier logHorizontalBase,
-                         Identifier strippedLogBase,
-                         Identifier strippedLogHorizontalBase,
-                         Identifier woodBase,
-                         Identifier strippedWoodBase,
-                         Identifier planksBase) {
+                         ResourceLocation saplingBase,
+                         ResourceLocation leavesBase,
+                         ResourceLocation logBase,
+                         ResourceLocation logHorizontalBase,
+                         ResourceLocation strippedLogBase,
+                         ResourceLocation strippedLogHorizontalBase,
+                         ResourceLocation woodBase,
+                         ResourceLocation strippedWoodBase,
+                         ResourceLocation planksBase) {
 
         public static final Codec<Models> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                Identifier.CODEC.optionalFieldOf("sapling_base", RLUtils.mc("block/oak_sapling"))
+                ResourceLocation.CODEC.optionalFieldOf("sapling_base", RLUtils.mc("block/oak_sapling"))
                         .forGetter(Models::saplingBase),
-                Identifier.CODEC.optionalFieldOf("leaves_base", RLUtils.mc("block/oak_leaves"))
+                ResourceLocation.CODEC.optionalFieldOf("leaves_base", RLUtils.mc("block/oak_leaves"))
                         .forGetter(Models::leavesBase),
-                Identifier.CODEC.optionalFieldOf("log_base", RLUtils.mc("block/oak_log")).forGetter(Models::logBase),
-                Identifier.CODEC.optionalFieldOf("log_horizontal_base", RLUtils.mc("block/oak_log_horizontal"))
+                ResourceLocation.CODEC.optionalFieldOf("log_base", RLUtils.mc("block/oak_log")).forGetter(Models::logBase),
+                ResourceLocation.CODEC.optionalFieldOf("log_horizontal_base", RLUtils.mc("block/oak_log_horizontal"))
                         .forGetter(Models::logHorizontalBase),
-                Identifier.CODEC.optionalFieldOf("stripped_log_base", RLUtils.mc("block/stripped_oak_log"))
+                ResourceLocation.CODEC.optionalFieldOf("stripped_log_base", RLUtils.mc("block/stripped_oak_log"))
                         .forGetter(Models::strippedLogBase),
-                Identifier.CODEC.optionalFieldOf("stripped_log_horizontal_base", RLUtils.mc("block/stripped_oak_log_horizontal"))
+                ResourceLocation.CODEC.optionalFieldOf("stripped_log_horizontal_base", RLUtils.mc("block/stripped_oak_log_horizontal"))
                         .forGetter(Models::strippedLogHorizontalBase),
-                Identifier.CODEC.optionalFieldOf("wood_base", RLUtils.mc("block/oak_wood")).forGetter(Models::woodBase),
-                Identifier.CODEC.optionalFieldOf("stripped_wood_base", RLUtils.mc("block/stripped_oak_wood"))
+                ResourceLocation.CODEC.optionalFieldOf("wood_base", RLUtils.mc("block/oak_wood")).forGetter(Models::woodBase),
+                ResourceLocation.CODEC.optionalFieldOf("stripped_wood_base", RLUtils.mc("block/stripped_oak_wood"))
                         .forGetter(Models::strippedWoodBase),
-                Identifier.CODEC.optionalFieldOf("planks_base", RLUtils.mc("block/oak_planks"))
+                ResourceLocation.CODEC.optionalFieldOf("planks_base", RLUtils.mc("block/oak_planks"))
                         .forGetter(Models::planksBase))
                 .apply(instance, Models::new));
     }
 
     /** JSON 嵌套：叠加 / 物品纹理 */
     public record Overlays(
-                           Identifier saplingOverlay,
-                           Identifier leavesOverlay,
-                           Identifier resin,
-                           Identifier resinOverlay,
-                           Identifier fruit,
-                           Identifier fruitOverlay,
-                           Identifier clump,
-                           Identifier clumpOverlay) {
+                           ResourceLocation saplingOverlay,
+                           ResourceLocation leavesOverlay,
+                           ResourceLocation resin,
+                           ResourceLocation resinOverlay,
+                           ResourceLocation fruit,
+                           ResourceLocation fruitOverlay,
+                           ResourceLocation clump,
+                           ResourceLocation clumpOverlay) {
 
         public static final Codec<Overlays> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-                Identifier.CODEC.optionalFieldOf("sapling_overlay", ResourceFarm.id("block/tree/sapling/oak_sapling_overlay"))
+                ResourceLocation.CODEC.optionalFieldOf("sapling_overlay", ResourceFarm.id("block/tree/sapling/oak_sapling_overlay"))
                         .forGetter(Overlays::saplingOverlay),
-                Identifier.CODEC.optionalFieldOf("leaves_overlay", ResourceFarm.id("block/tree/leaves/oak_leaves_overlay"))
+                ResourceLocation.CODEC.optionalFieldOf("leaves_overlay", ResourceFarm.id("block/tree/leaves/oak_leaves_overlay"))
                         .forGetter(Overlays::leavesOverlay),
-                Identifier.CODEC.optionalFieldOf("resin", ResourceFarm.id("item/resin/base_resin"))
+                ResourceLocation.CODEC.optionalFieldOf("resin", ResourceFarm.id("item/resin/base_resin"))
                         .forGetter(Overlays::resin),
-                Identifier.CODEC.optionalFieldOf("resin_overlay", ResourceFarm.id("item/resin/base_resin"))
+                ResourceLocation.CODEC.optionalFieldOf("resin_overlay", ResourceFarm.id("item/resin/base_resin"))
                         .forGetter(Overlays::resinOverlay),
-                Identifier.CODEC.optionalFieldOf("fruit", ResourceFarm.id("item/fruit/base_fruit"))
+                ResourceLocation.CODEC.optionalFieldOf("fruit", ResourceFarm.id("item/fruit/base_fruit"))
                         .forGetter(Overlays::fruit),
-                Identifier.CODEC.optionalFieldOf("fruit_overlay", ResourceFarm.id("item/fruit/base_fruit_overlay"))
+                ResourceLocation.CODEC.optionalFieldOf("fruit_overlay", ResourceFarm.id("item/fruit/base_fruit_overlay"))
                         .forGetter(Overlays::fruitOverlay),
-                Identifier.CODEC.optionalFieldOf("clump", ResourceFarm.id("item/crossover/clump"))
+                ResourceLocation.CODEC.optionalFieldOf("clump", ResourceFarm.id("item/crossover/clump"))
                         .forGetter(Overlays::clump),
-                Identifier.CODEC.optionalFieldOf("clump_overlay", ResourceFarm.id("item/crossover/clump_overlay"))
+                ResourceLocation.CODEC.optionalFieldOf("clump_overlay", ResourceFarm.id("item/crossover/clump_overlay"))
                         .forGetter(Overlays::clumpOverlay))
                 .apply(instance, Overlays::new));
     }
@@ -238,7 +238,7 @@ public record ResourceTreeBaseType(
             "item.resource_farm.tree.clump");
 
     /** 树苗物品底层纹理：与基底模型同路径约定。 */
-    public Identifier saplingItemTexture() {
+    public ResourceLocation saplingItemTexture() {
         return saplingBase;
     }
 }

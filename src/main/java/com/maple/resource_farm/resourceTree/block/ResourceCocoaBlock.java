@@ -12,7 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -124,10 +124,10 @@ public class ResourceCocoaBlock extends CocoaBlock {
     }
 
     @Override
-    protected @NotNull InteractionResult useItemOn(ItemStack stack, @NotNull BlockState state, @NotNull Level level,
-                                                   @NotNull BlockPos pos, @NotNull Player player,
-                                                   @NotNull InteractionHand hand,
-                                                   @NotNull BlockHitResult hitResult) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack stack, @NotNull BlockState state, @NotNull Level level,
+                                                       @NotNull BlockPos pos, @NotNull Player player,
+                                                       @NotNull InteractionHand hand,
+                                                       @NotNull BlockHitResult hitResult) {
         Item heldItem = stack.getItem();
         double successChance;
 
@@ -136,7 +136,7 @@ public class ResourceCocoaBlock extends CocoaBlock {
         } else if (fertilizeSetting.secondaryRipeningItem() != null && heldItem == fertilizeSetting.secondaryRipeningItem().get()) {
             successChance = fertilizeSetting.secondaryChance();
         } else {
-            return InteractionResult.TRY_WITH_EMPTY_HAND;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
 
         if (!level.isClientSide()) {
@@ -147,11 +147,11 @@ public class ResourceCocoaBlock extends CocoaBlock {
                 level.setBlock(pos, state.setValue(AGE, currentAge + 1), 2);
                 if (!player.isCreative()) stack.shrink(1);
                 level.levelEvent(player, 2005, pos, 0);
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.sidedSuccess(level.isClientSide());
             }
         }
 
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override

@@ -10,7 +10,6 @@
     "minecraft:mud",
     "minecraft:muddy_mangrove_roots",
     "minecraft:moss_block",
-    "minecraft:pale_moss_block",
     {"id":"aether_ii:aether_dirt", "required": false},
     {"id":"aether_ii:coarse_aether_dirt", "required": false},
     {"id":"aether_ii:mycelial_aether_dirt", "required": false},

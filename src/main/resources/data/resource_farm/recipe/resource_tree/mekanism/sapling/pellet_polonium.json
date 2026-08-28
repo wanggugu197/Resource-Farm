@@ -1,0 +1,25 @@
+{
+  "type": "mekanism:combining",
+  "neoforge:conditions": [
+    {
+      "type": "resource_farm:tree_exists",
+      "tree_id": "mekanism:pellet_polonium"
+    },
+    {
+      "type": "resource_farm:config",
+      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
+    }
+  ],
+  "main_input": {
+    "count": 1,
+    "tag": "minecraft:saplings"
+  },
+  "extra_input": {
+    "count": 1,
+    "item": "mekanism:sps_casing"
+  },
+  "output": {
+    "count": 1,
+    "id": "resource_farm:mekanism_pellet_polonium_sapling"
+  }
+}

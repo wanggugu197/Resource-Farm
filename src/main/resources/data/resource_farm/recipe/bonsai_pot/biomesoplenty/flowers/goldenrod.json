@@ -15,8 +15,6 @@
       "min": 1
     }
   ],
-  "seed": "biomesoplenty:goldenrod",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "biomesoplenty:goldenrod"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

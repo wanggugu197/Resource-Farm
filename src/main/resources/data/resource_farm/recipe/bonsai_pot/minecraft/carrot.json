@@ -9,8 +9,6 @@
       "min": 2
     }
   ],
-  "seed": "minecraft:carrot",
-  "soils": [
-    "#resource_farm:farmland_soils"
-  ]
+  "seed": {"item": "minecraft:carrot"},
+  "soils": [{"tag": "resource_farm:farmland_soils"}]
 }

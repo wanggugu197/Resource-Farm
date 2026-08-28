@@ -1,0 +1,19 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:ingot_steel",
+  "automatic_basic_recipe": false,
+  "product_output": 16,
+  "style": {
+    "tree_style": "resource_farm:cherry",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:cherry",
+    "light_level": 0,
+    "color": "0x999996"
+  },
+  "fertilize": {
+    "main_item": "mekanism:nugget_steel",
+    "main_chance": 0.9
+  },
+  "growth_frequency": 50,
+  "custom_place_block": "mekanism:block_steel"
+}

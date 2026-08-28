@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:moss_block",
-  "soils": [
-    "#resource_farm:stone_soils"
-  ]
+  "seed": {"item": "minecraft:moss_block"},
+  "soils": [{"tag": "resource_farm:stone_soils"}]
 }

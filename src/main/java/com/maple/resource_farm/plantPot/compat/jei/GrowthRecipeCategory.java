@@ -10,12 +10,13 @@ import com.lowdragmc.lowdraglib2.integration.xei.jei.ModularUIRecipeCategory;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.types.IRecipeType;
-import org.jspecify.annotations.NonNull;
+import mezz.jei.api.recipe.RecipeType;
+
+import javax.annotation.Nonnull;
 
 public class GrowthRecipeCategory extends ModularUIRecipeCategory<GrowthRecipe> {
 
-    public static final IRecipeType<GrowthRecipe> GROWTH_RECIPE_TYPE = IRecipeType.create(ResourceFarm.id("growth"), GrowthRecipe.class);
+    public static final RecipeType<GrowthRecipe> GROWTH_RECIPE_TYPE = new RecipeType<>(ResourceFarm.id("growth"), GrowthRecipe.class);
 
     private final IDrawable icon;
 
@@ -25,12 +26,12 @@ public class GrowthRecipeCategory extends ModularUIRecipeCategory<GrowthRecipe> 
     }
 
     @Override
-    public @NonNull IRecipeType<GrowthRecipe> getRecipeType() {
+    public @Nonnull RecipeType<GrowthRecipe> getRecipeType() {
         return GROWTH_RECIPE_TYPE;
     }
 
     @Override
-    public @NonNull Component getTitle() {
+    public @Nonnull Component getTitle() {
         return Component.translatable("jei.resource_farm.growth_recipe");
     }
 

@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:white_tulip",
-  "soils": [
-    "#resource_farm:dirt_soils"
-  ]
+  "seed": {"item": "minecraft:white_tulip"},
+  "soils": [{"tag": "resource_farm:dirt_soils"}]
 }

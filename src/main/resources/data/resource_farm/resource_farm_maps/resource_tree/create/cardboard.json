@@ -1,0 +1,19 @@
+{
+  "group": "create",
+  "item": "create:cardboard",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:spruce",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:spruce",
+    "light_level": 0,
+    "color": "0xCFA87E"
+  },
+  "fertilize": {
+    "main_item": "create:pulp",
+    "main_chance": 0.8
+  },
+  "growth_frequency": 50,
+  "custom_place_block": "create:cardboard_block"
+}

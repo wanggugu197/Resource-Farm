@@ -26,8 +26,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:flowering_azalea",
-  "soils": [
-    "#resource_farm:tree_soils"
-  ]
+  "seed": {"item": "minecraft:flowering_azalea"},
+  "soils": [{"tag": "resource_farm:tree_soils"}]
 }

@@ -9,8 +9,6 @@
       "min": 1
     }
   ],
-  "seed": "minecraft:kelp",
-  "soils": [
-    "#resource_farm:water_soils"
-  ]
+  "seed": {"item": "minecraft:kelp"},
+  "soils": [{"tag": "resource_farm:water_soils"}]
 }

@@ -1,0 +1,19 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:pellet_antimatter",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:acacia",
+    "ore_style": "resource_farm:emerald",
+    "grower": "resource_farm:acacia",
+    "light_level": 6,
+    "color": "0xC270D8"
+  },
+  "fertilize": {
+    "main_item": "mekanism:pellet_antimatter",
+    "main_chance": 1
+  },
+  "growth_frequency": 500,
+  "custom_place_block": "mekanism:sps_casing"
+}

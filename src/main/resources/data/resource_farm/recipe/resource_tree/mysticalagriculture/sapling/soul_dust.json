@@ -1,27 +1,45 @@
 {
-  "type": "mysticalagriculture:infusion",
-  "neoforge:conditions": [
-    {
-      "type": "resource_farm:tree_exists",
-      "tree_id": "mysticalagriculture:soul_dust"
-    },
-    {
-      "type": "resource_farm:config",
-      "config_id": "tree.recipeGeneration.generateSaplingRecipes"
-    }
-  ],
-  "input": "#minecraft:saplings",
-  "ingredients": [
-    "mysticalagriculture:blank_skull",
-    "mysticalagriculture:soul_glass",
-    "mysticalagriculture:blank_skull",
-    "mysticalagriculture:soul_glass",
-    "mysticalagriculture:blank_skull",
-    "mysticalagriculture:soul_glass",
-    "mysticalagriculture:blank_skull",
-    "mysticalagriculture:soul_glass"
-  ],
-  "result": {
-    "id": "resource_farm:mysticalagriculture_soul_dust_sapling"
-  }
+    "type":  "mysticalagriculture:infusion",
+    "neoforge:conditions":  [
+                                {
+                                    "type":  "resource_farm:tree_exists",
+                                    "tree_id":  "mysticalagriculture:soul_dust"
+                                },
+                                {
+                                    "type":  "resource_farm:config",
+                                    "config_id":  "tree.recipeGeneration.generateSaplingRecipes"
+                                }
+                            ],
+    "input":  {
+                  "tag":  "minecraft:saplings"
+              },
+    "ingredients":  [
+                        {
+                            "item":  "mysticalagriculture:blank_skull"
+                        },
+                        {
+                            "item":  "mysticalagriculture:soul_glass"
+                        },
+                        {
+                            "item":  "mysticalagriculture:blank_skull"
+                        },
+                        {
+                            "item":  "mysticalagriculture:soul_glass"
+                        },
+                        {
+                            "item":  "mysticalagriculture:blank_skull"
+                        },
+                        {
+                            "item":  "mysticalagriculture:soul_glass"
+                        },
+                        {
+                            "item":  "mysticalagriculture:blank_skull"
+                        },
+                        {
+                            "item":  "mysticalagriculture:soul_glass"
+                        }
+                    ],
+    "result":  {
+                   "id":  "resource_farm:mysticalagriculture_soul_dust_sapling"
+               }
 }

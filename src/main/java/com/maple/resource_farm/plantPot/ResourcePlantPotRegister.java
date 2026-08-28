@@ -8,7 +8,6 @@ import com.maple.resource_farm.plantPot.datamap.FertilizerData;
 import com.maple.resource_farm.plantPot.datamap.SoilModifierData;
 import com.maple.resource_farm.plantPot.recipe.GrowthRecipe;
 
-import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -16,18 +15,20 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 
-import com.gto.registrylib.datagen.ProviderType;
 import com.gto.registrylib.tooltip.SubNode;
+import com.gto.registrylib.util.DistExecutor;
 import com.gto.registrylib.util.entry.BlockEntityTypeEntry;
 import com.gto.registrylib.util.entry.BlockEntry;
 import com.gto.registrylib.util.entry.ItemEntry;
 import com.gto.registrylib.util.entry.RecipeTypeEntry;
+import com.mapleutillib.client.ClientInit;
 import com.mapleutillib.utils.recipe.VanillaRecipeHelper;
 
 import static com.maple.resource_farm.ResourceFarm.REGISTRY;
@@ -135,7 +136,7 @@ public final class ResourcePlantPotRegister {
     // 能力注册
     // ============================================================
     private static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(Capabilities.Item.BLOCK, HOPPING_BONSAI_POT_BLOCK_ENTITY.get(), (be, _) -> be.getItemCapability());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, HOPPING_BONSAI_POT_BLOCK_ENTITY.get(), (be, ignoredSide) -> be.getItemCapability());
     }
 
     // ============================================================
@@ -215,12 +216,10 @@ public final class ResourcePlantPotRegister {
         Style style = Style.EMPTY.withColor(color);
         var entry = REGISTRY.item(id)
                 .langCn(langName)
-                .model(() -> (item, prov) -> prov.itemModelOutput
-                        .accept(item, ItemModelUtils.tintedModel(
-                                ResourceFarm.id("block/cloche"),
-                                ItemModelUtils.constantTint(color))))
+                // 1.21.1：模型为普通 parent JSON（委托到方块模型），着色由运行时 ItemColor 驱动
+                .model(() -> (item, prov) -> prov.createWithExistingModel(item, ResourceFarm.id("block/cloche")))
                 .addTab(PLANT_POT_TAB.getKey())
-                .addTooltip((collector, _) -> {
+                .addTooltip((collector, ignored) -> {
                     collector.node(new SubNode.Basic(
                             Component.translatable("tooltip.resource_farm.cloche_item_1", tier)
                                     .withStyle(style)));
@@ -231,6 +230,12 @@ public final class ResourcePlantPotRegister {
                                     .withStyle(style)));
                 })
                 .register();
+        // 1.21.1：registrylib 的条目在 RegisterEvent 时才绑定，此处条目尚未绑定，
+        // 因此把运行时 tint 注册推迟到注册完成后（MapleUtilLib ClientInit 统一注册）。
+        // 仅客户端执行：服务端加载 ClientInit/ItemColor 会触发 RuntimeDistCleaner 崩溃。
+        REGISTRY.addRegisterCallback(Registries.ITEM,
+                () -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT,
+                        () -> () -> ClientInit.registerItemTint(entry.get(), (stack, tintIndex) -> color)));
         // 注册到 ClocheHelper
         ClocheHelper.addCloche(entry, tier, speedModifier, yieldModifier);
         return entry;

@@ -1,0 +1,19 @@
+{
+  "group": "create",
+  "item": "create:zinc_ingot",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:dark_oak",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:dark_oak",
+    "light_level": 4,
+    "color": "0xBFCCCCCC"
+  },
+  "fertilize": {
+    "main_item": "create:raw_zinc",
+    "main_chance": 0.6
+  },
+  "growth_frequency": 10,
+  "custom_place_block": "create:zinc_ore"
+}

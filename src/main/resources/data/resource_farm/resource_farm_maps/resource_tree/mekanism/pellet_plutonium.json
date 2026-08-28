@@ -1,0 +1,19 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:pellet_plutonium",
+  "automatic_basic_recipe": false,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:birch",
+    "ore_style": "resource_farm:diamond",
+    "grower": "resource_farm:birch",
+    "light_level": 5,
+    "color": "0xACF6F8"
+  },
+  "fertilize": {
+    "main_item": "mekanism:pellet_plutonium",
+    "main_chance": 1
+  },
+  "growth_frequency": 500,
+  "custom_place_block": "mekanism:sps_casing"
+}

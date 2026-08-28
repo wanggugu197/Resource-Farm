@@ -8,7 +8,7 @@ import net.neoforged.neoforge.common.conditions.ICondition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import org.jspecify.annotations.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 public record ConfigCondition(String configId) implements ICondition {
 
@@ -16,7 +16,7 @@ public record ConfigCondition(String configId) implements ICondition {
             Codec.STRING.fieldOf("config_id").forGetter(ConfigCondition::configId)).apply(inst, ConfigCondition::new));
 
     @Override
-    public boolean test(ICondition.@NonNull IContext context) {
+    public boolean test(ICondition.@NotNull IContext context) {
         PresetResourceTreeConfigHolder cfg = PresetResourceTreeConfigHolder.INSTANCE.getConfigInstance();
         PresetResourceTreeConfigHolder.TreeConfigs tree = cfg.tree;
         PresetResourceTreeConfigHolder.BlockGenerationConfigs blockGen = tree.blockGeneration;
@@ -43,6 +43,9 @@ public record ConfigCondition(String configId) implements ICondition {
             case "tree.recipeGeneration.generateBasicWoodConversionRecipes" -> recipeGen.generateBasicWoodConversionRecipes;
             case "tree.recipeGeneration.generateBonsaiPotRecipes" -> recipeGen.generateBonsaiPotRecipes;
 
+            case "tree.recipeGeneration.generateCreateRecipe" -> recipeGen.generateCreateRecipe;
+            case "tree.recipeGeneration.generateMekanismRecipe" -> recipeGen.generateMekanismRecipe;
+
             case "tree.enablePresetTreeGroups" -> cfg.enablePresetTreeGroups;
 
             case "tree.presetTreeGeneration.minecraftBase" -> presetGen.minecraftBase;
@@ -51,13 +54,15 @@ public record ConfigCondition(String configId) implements ICondition {
             case "tree.presetTreeGeneration.minecraftAgriculture" -> presetGen.minecraftAgriculture;
             case "tree.presetTreeGeneration.mysticalAgriculture" -> presetGen.mysticalAgriculture();
             case "tree.presetTreeGeneration.ae2" -> presetGen.ae2();
+            case "tree.presetTreeGeneration.generateCreateRecipe" -> presetGen.create();
+            case "tree.presetTreeGeneration.generateMekanismRecipe" -> presetGen.mekanism();
 
             default -> false;
         };
     }
 
     @Override
-    public @NonNull MapCodec<? extends ICondition> codec() {
+    public @NotNull MapCodec<? extends ICondition> codec() {
         return CODEC;
     }
 }

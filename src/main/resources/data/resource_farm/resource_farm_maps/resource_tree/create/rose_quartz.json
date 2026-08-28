@@ -1,0 +1,22 @@
+{
+  "group": "create",
+  "item": "create:rose_quartz",
+  "automatic_basic_recipe": true,
+  "product_output": 1,
+  "style": {
+    "tree_style": "resource_farm:jungle",
+    "ore_style": "resource_farm:iron",
+    "grower": "resource_farm:jungle",
+    "light_level": 0,
+    "color": "0xFC8383"
+  },
+  "fertilize": {
+    "main_item": "minecraft:quartz",
+    "main_chance": 1
+,
+    "secondary_item": "minecraft:redstone",
+    "secondary_chance": 0.75
+  },
+  "growth_frequency": 50,
+  "custom_place_block": "create:rose_quartz_lamp"
+}

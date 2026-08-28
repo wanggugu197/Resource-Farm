@@ -1,0 +1,15 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:raw_tin",
+  "automatic_basic_recipe": false,
+  "product_output": 32,
+  "style": {
+    "tree_style": "resource_farm:jungle",
+    "ore_style": "resource_farm:copper",
+    "grower": "resource_farm:jungle",
+    "light_level": 0,
+    "color": "0xF0E9D9"
+  },
+  "growth_frequency": 15,
+  "custom_place_block_tag": "c:ores/tin"
+}

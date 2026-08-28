@@ -1,0 +1,19 @@
+{
+  "group": "mekanism",
+  "item": "mekanism:dust_lithium",
+  "automatic_basic_recipe": false,
+  "product_output": 32,
+  "style": {
+    "tree_style": "resource_farm:spruce",
+    "ore_style": "resource_farm:lapis",
+    "grower": "resource_farm:spruce",
+    "light_level": 0,
+    "color": "0xB9A79C"
+  },
+  "fertilize": {
+    "main_item": "mekanism:dust_lithium",
+    "main_chance": 0.9
+  },
+  "growth_frequency": 50,
+  "custom_place_block": "mekanism:thermal_evaporation_block"
+}
