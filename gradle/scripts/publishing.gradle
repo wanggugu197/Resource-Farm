@@ -32,9 +32,9 @@ gtoPublish {
 
     mavenRepoUrl = 'releases'
 
-    minecraftVersion = '26.1.2'
+    minecraftVersion = '1.21.1'
     modLoader = 'NeoForge'
 
     curseforgeProjectId = '1422330'
-    curseforgeJavaVersion = 'Java 25'
+    curseforgeJavaVersion = 'Java 21'
 }
